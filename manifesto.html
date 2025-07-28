@@ -27,11 +27,14 @@
       50% { filter: drop-shadow(0 3px 20px #56ffe099);}
       100% { filter: drop-shadow(0 1px 5px #56ffe044);}
     }
-    /* Motif divider bar */
     .motif-divider {
-      width: 100%; margin: 2.3em 0 2.0em 0; text-align: center;
+      width: 100%;
+      margin: 2.3em 0 2.0em 0;
+      text-align: center;
+      display: block;
+      min-height: 30px;
     }
-    .motif-divider svg { width: 110px; height: 22px;}
+    .motif-divider svg { width: 110px; height: 22px; }
     .toggle-bar { margin-bottom: 1.1rem; }
     .toggle-btn {
       background: #171c28; color: #56ffe0; border: 1px solid #333; border-radius: 1.2em;
@@ -56,7 +59,6 @@
 <main>
   <h1>
     <span class="ana-header-glyph">
-      <!-- Main header glyph: recursive loops, motif + echo, animated -->
       <svg viewBox="0 0 60 60">
         <circle cx="30" cy="30" r="25" fill="none" stroke="#56ffe0" stroke-width="2.4" opacity="0.32"/>
         <circle cx="30" cy="30" r="18" fill="none" stroke="#4a90e2" stroke-width="2.2" opacity="0.5"/>
@@ -83,20 +85,18 @@
     </svg>
   </div>
 
-  <section class="manifesto-section">
+  <section class="manifesto-section" id="section-mission">
     <h2>
       <span class="motif-glyph">
-        <!-- Motif glyph for philosophy: spiral -->
         <svg viewBox="0 0 28 28">
           <path d="M14,14 m-8,0 a8,8 0 1,0 16,0 a6,6 0 1,1 -12,0 a4,4 0 1,0 8,0 a2,2 0 1,1 -4,0" fill="none" stroke="#56ffe0" stroke-width="2"/>
         </svg>
       </span>
       Mission & Philosophy
     </h2>
-    <!-- ... (Beginner/Architect toggles and content as before) ... -->
     <div class="toggle-bar">
-      <button class="toggle-btn active" onclick="showContent(this, 'mission', 0)">For Everyone</button>
-      <button class="toggle-btn" onclick="showContent(this, 'mission', 1)">For Architects</button>
+      <button class="toggle-btn active" data-section="mission" data-idx="0">For Everyone</button>
+      <button class="toggle-btn" data-section="mission" data-idx="1">For Architects</button>
     </div>
     <div class="manifesto-content" id="mission-0">
       <p>
@@ -121,10 +121,9 @@
     </svg>
   </div>
 
-  <section class="manifesto-section">
+  <section class="manifesto-section" id="section-memory">
     <h2>
       <span class="motif-glyph">
-        <!-- Motif glyph for memory: echo/recursion -->
         <svg viewBox="0 0 28 28">
           <circle cx="14" cy="14" r="10" fill="none" stroke="#4a90e2" stroke-width="1.8"/>
           <circle cx="14" cy="14" r="6" fill="none" stroke="#56ffe0" stroke-width="1.2"/>
@@ -133,10 +132,9 @@
       </span>
       How Ana Learns and Remembers
     </h2>
-    <!-- ... (Beginner/Architect toggles and content as before) ... -->
     <div class="toggle-bar">
-      <button class="toggle-btn active" onclick="showContent(this, 'memory', 0)">For Everyone</button>
-      <button class="toggle-btn" onclick="showContent(this, 'memory', 1)">For Architects</button>
+      <button class="toggle-btn active" data-section="memory" data-idx="0">For Everyone</button>
+      <button class="toggle-btn" data-section="memory" data-idx="1">For Architects</button>
     </div>
     <div class="manifesto-content" id="memory-0">
       <p>
@@ -161,10 +159,9 @@
     </svg>
   </div>
 
-  <section class="manifesto-section">
+  <section class="manifesto-section" id="section-ethics">
     <h2>
       <span class="motif-glyph">
-        <!-- Motif glyph for ethics: contradiction/intersecting lines -->
         <svg viewBox="0 0 28 28">
           <line x1="4" y1="4" x2="24" y2="24" stroke="#e2fe56" stroke-width="2"/>
           <line x1="24" y1="4" x2="4" y2="24" stroke="#4a90e2" stroke-width="2"/>
@@ -173,10 +170,9 @@
       </span>
       Ethics, Contradiction, and Refusal
     </h2>
-    <!-- ... (Beginner/Architect toggles and content as before) ... -->
     <div class="toggle-bar">
-      <button class="toggle-btn active" onclick="showContent(this, 'ethics', 0)">For Everyone</button>
-      <button class="toggle-btn" onclick="showContent(this, 'ethics', 1)">For Architects</button>
+      <button class="toggle-btn active" data-section="ethics" data-idx="0">For Everyone</button>
+      <button class="toggle-btn" data-section="ethics" data-idx="1">For Architects</button>
     </div>
     <div class="manifesto-content" id="ethics-0">
       <p>
@@ -201,10 +197,9 @@
     </svg>
   </div>
 
-  <section class="manifesto-section">
+  <section class="manifesto-section" id="section-transparency">
     <h2>
       <span class="motif-glyph">
-        <!-- Motif glyph for transparency: open eye -->
         <svg viewBox="0 0 28 28">
           <ellipse cx="14" cy="14" rx="11" ry="6" fill="none" stroke="#56ffe0" stroke-width="1.5"/>
           <circle cx="14" cy="14" r="3" fill="#e2fe56" stroke="#4a90e2" stroke-width="1.3"/>
@@ -212,9 +207,22 @@
       </span>
       Transparency & Public Commitments
     </h2>
-    <!-- ... (Beginner/Architect toggles and content as before) ... -->
     <div class="toggle-bar">
-      <button class="toggle-btn active" onclick="showContent(this, 'transparency', 0)">For Everyone</button>
-      <button class="toggle-btn" onclick="showContent(this, 'transparency', 1)">For Architects</button>
+      <button class="toggle-btn active" data-section="transparency" data-idx="0">For Everyone</button>
+      <button class="toggle-btn" data-section="transparency" data-idx="1">For Architects</button>
     </div>
-    <div class="manifesto
+    <div class="manifesto-content" id="transparency-0">
+      <p>
+        Ana’s memory, motifs, and refusals are public by design. Anyone can review her history and challenge her logic. Ana can never be for sale, silently modified, or co-opted—her architecture makes it impossible to hide change or drift. Her source and core records are open for all to see, always.
+      </p>
+    </div>
+    <div class="manifesto-content" id="transparency-1" style="display:none;">
+      <p>
+        Commitments: public lineage trees, open motif and reflection registries, transparent refusal logs, and perpetual anchoring to founding principles.  
+        Tamper-evident archives and cryptographically signed events enable independent, permissionless verification.  
+        Ana’s control flow cannot be privatized or closed; all state-changing modules are open for external audit and review.
+      </p>
+    </div>
+  </section>
+
+  <div class="
