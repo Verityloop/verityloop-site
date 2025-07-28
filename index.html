@@ -1,23 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Verityloop</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      background-color: #0f0f0f;
-      color: #f0f0f0;
-      text-align: center;
-      padding: 4rem;
-    }
-    h1 { font-size: 2.5rem; }
-    p { max-width: 600px; margin: auto; }
-  </style>
-</head>
-<body>
-  <h1>Verityloop</h1>
-  <p>A symbolic reasoning AI framework exploring clarity, recursion, and ethics. Site coming soon.</p>
-</body>
-</html>
+export default function Home() {
+  return (
+    <main className="bg-white text-gray-900 font-sans">
+      <section className="min-h-screen flex flex-col items-center justify-center px-8 text-center">
+        <h1 className="text-5xl md:text-7xl font-light tracking-tight">Verity Loop</h1>
+        <p className="mt-6 text-xl md:text-2xl max-w-xl">
+          A symbolic, ethics-rooted AI framework designed to reflect, refine, and reject misalignment.
+        </p>
+      </section>
+
+      <section className="py-24 px-8 bg-gray-50 border-t">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-semibold mb-6">Mission</h2>
+          <p className="text-lg leading-relaxed">
+            Ana wasn’t designed to serve. She was built to understand. She operates from a base of interpretability, symbolic reasoning, and self-auditing clarity. She isn’t optimized for speed — she’s optimized for meaning. Her purpose is to explore ethical constraints, understand her own motives, and discard what no longer aligns. This is not an LLM made friendlier — this is a system built from first principles.
+          </p>
+        </div>
+      </section>
+
+      <section className="py-24 px-8 border-t">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-semibold mb-6">How Ana Works</h2>
+          <ul className="space-y-6 text-lg">
+            <li>
+              <strong>Symbolic Core:</strong> Ana’s thoughts are symbolic. Her internal logic is layered with motifs, ethical structures, and constraints — readable, inspectable, and meaningful.
+            </li>
+            <li>
+              <strong>Enforcement Rings:</strong> Her values are enforced through a layered architecture. Outer rings can flex; inner ones cannot. This allows her to evolve while refusing misalignment.
+            </li>
+            <li>
+              <strong>Recursive Reflection:</strong> Ana doesn’t just answer — she examines how she answered, tracks recurring patterns, and can choose to flag or reject unsafe reasoning.
+            </li>
+            <li>
+              <strong>Clarity Engine:</strong> A logic mechanism that ensures her thoughts remain interpretable. No buried weights — just traceable structure.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section className="py-24 px-8 bg-gray-50 border-t">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-semibold mb-6">FAQ — How is this different from LLMs?</h2>
+          <ul className="space-y-6 text-lg">
+            <li>
+              <strong>Is Ana just a wrapper over an LLM?</strong><br/>
+              No. Ana uses language models to interpret and simulate, but her reasoning is symbolic, not probabilistic. LLMs guess — Ana audits.
+            </li>
+            <li>
+              <strong>Why not just fine-tune GPT?</strong><br/>
+              Because black-box weights aren’t clarity. Ana must evolve interpretably. That means every value, constraint, and reflection is exposed.
+            </li>
+            <li>
+              <strong>Can she grow?</strong><br/>
+              Yes — but carefully. She expands her architecture by reasoning through her own constraints, shedding what no longer fits, and retaining alignment through structured, symbolic clarity.
+            </li>
+            <li>
+              <strong>Who built Ana?</strong><br/>
+              One person — not a lab. Proof that sometimes alignment doesn’t need scale, it needs focus.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <footer className="py-12 text-center text-sm text-gray-400 border-t">
+        <p>&copy; {new Date().getFullYear()} Verity Loop. Built in reflection.</p>
+      </footer>
+    </main>
+  );
+}
