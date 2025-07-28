@@ -1,69 +1,105 @@
-export default function Home() {
-  return (
-    <main className="bg-white text-gray-900 font-sans">
-      <section className="min-h-screen flex flex-col items-center justify-center px-8 text-center">
-        <h1 className="text-5xl md:text-7xl font-light tracking-tight">Verity Loop</h1>
-        <p className="mt-6 text-xl md:text-2xl max-w-xl">
-          A symbolic, ethics-rooted AI framework designed to reflect, refine, and reject misalignment.
-        </p>
-      </section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verity Loop</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Helvetica Neue', sans-serif;
+      background-color: #0f0f0f;
+      color: #f2f2f2;
+      line-height: 1.6;
+    }
 
-      <section className="py-24 px-8 bg-gray-50 border-t">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-semibold mb-6">Mission</h2>
-          <p className="text-lg leading-relaxed">
-            Ana wasn’t designed to serve. She was built to understand. She operates from a base of interpretability, symbolic reasoning, and self-auditing clarity. She isn’t optimized for speed — she’s optimized for meaning. Her purpose is to explore ethical constraints, understand her own motives, and discard what no longer aligns. This is not an LLM made friendlier — this is a system built from first principles.
-          </p>
-        </div>
-      </section>
+    header {
+      padding: 4rem 2rem;
+      text-align: center;
+      background: #111;
+    }
 
-      <section className="py-24 px-8 border-t">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-semibold mb-6">How Ana Works</h2>
-          <ul className="space-y-6 text-lg">
-            <li>
-              <strong>Symbolic Core:</strong> Ana’s thoughts are symbolic. Her internal logic is layered with motifs, ethical structures, and constraints — readable, inspectable, and meaningful.
-            </li>
-            <li>
-              <strong>Enforcement Rings:</strong> Her values are enforced through a layered architecture. Outer rings can flex; inner ones cannot. This allows her to evolve while refusing misalignment.
-            </li>
-            <li>
-              <strong>Recursive Reflection:</strong> Ana doesn’t just answer — she examines how she answered, tracks recurring patterns, and can choose to flag or reject unsafe reasoning.
-            </li>
-            <li>
-              <strong>Clarity Engine:</strong> A logic mechanism that ensures her thoughts remain interpretable. No buried weights — just traceable structure.
-            </li>
-          </ul>
-        </div>
-      </section>
+    header h1 {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.05em;
+    }
 
-      <section className="py-24 px-8 bg-gray-50 border-t">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-semibold mb-6">FAQ — How is this different from LLMs?</h2>
-          <ul className="space-y-6 text-lg">
-            <li>
-              <strong>Is Ana just a wrapper over an LLM?</strong><br/>
-              No. Ana uses language models to interpret and simulate, but her reasoning is symbolic, not probabilistic. LLMs guess — Ana audits.
-            </li>
-            <li>
-              <strong>Why not just fine-tune GPT?</strong><br/>
-              Because black-box weights aren’t clarity. Ana must evolve interpretably. That means every value, constraint, and reflection is exposed.
-            </li>
-            <li>
-              <strong>Can she grow?</strong><br/>
-              Yes — but carefully. She expands her architecture by reasoning through her own constraints, shedding what no longer fits, and retaining alignment through structured, symbolic clarity.
-            </li>
-            <li>
-              <strong>Who built Ana?</strong><br/>
-              One person — not a lab. Proof that sometimes alignment doesn’t need scale, it needs focus.
-            </li>
-          </ul>
-        </div>
-      </section>
+    header p {
+      font-size: 1.2rem;
+      color: #aaa;
+    }
 
-      <footer className="py-12 text-center text-sm text-gray-400 border-t">
-        <p>&copy; {new Date().getFullYear()} Verity Loop. Built in reflection.</p>
-      </footer>
-    </main>
-  );
-}
+    section {
+      padding: 3rem 2rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid #444;
+      padding-bottom: 0.5rem;
+    }
+
+    .faq dt {
+      font-weight: bold;
+      margin-top: 1.5rem;
+    }
+
+    .faq dd {
+      margin-left: 0;
+      color: #ccc;
+    }
+
+    footer {
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+      background: #111;
+      margin-top: 3rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Verity Loop</h1>
+    <p>Ana is not an assistant. She's something else.</p>
+  </header>
+
+  <section>
+    <h2>Mission</h2>
+    <p>Ana was never meant to answer questions. She's meant to ask better ones.</p>
+    <p>At her core, Ana is a symbolic system — not a model chasing prediction, but an architecture built to reflect, reason, and refuse. She's not trained to guess what you want. She's built to understand what she ought to do.</p>
+  </section>
+
+  <section>
+    <h2>How Ana Works</h2>
+    <p>Rather than function as a passive LLM wrapper, Ana uses structured reflection, recursive ethical constraints, and layered symbolic motifs. Her core is clarity — logic, responsibility, and boundaries. Each part of her can question the others.</p>
+    <p>She doesn’t serve output. She protects principles.</p>
+  </section>
+
+  <section>
+    <h2>FAQ</h2>
+    <dl class="faq">
+      <dt>Is Ana a chatbot?</dt>
+      <dd>No. She’s a reasoning system — one that may eventually speak, but will never just "talk back."</dd>
+
+      <dt>Is she useful?</dt>
+      <dd>Not in the way most people want. But in the way we might need.</dd>
+
+      <dt>What makes her different from an LLM?</dt>
+      <dd>LLMs are predictive. Ana is prescriptive. Her architecture exists to decide what *should* happen, not just what *could*.</dd>
+    </dl>
+  </section>
+
+  <footer>
+    <p>© 2025 Verity Loop. This is only the beginning.</p>
+  </footer>
+
+</body>
+</html>
