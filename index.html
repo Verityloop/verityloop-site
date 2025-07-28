@@ -5,15 +5,54 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ana – Symbolic Clarity Engine</title>
   <meta name="description" content="Ana: Recursive symbolic clarity engine. A self-evolving system for radical transparency, contradiction detection, and ethical memory.">
-  <!-- Fonts will be loaded by CSS -->
   <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css?family=JetBrains+Mono:400,700|Inter:400,700&display=swap" rel="stylesheet">
+  <style>
+    .manifesto-echo-link {
+      display: inline-block;
+      margin-left: 0.6em;
+      cursor: pointer;
+      opacity: 0.84;
+      vertical-align: middle;
+      transition: opacity 0.17s, filter 0.18s;
+      filter: drop-shadow(0 2px 8px #56ffe088);
+      position: relative;
+    }
+    .manifesto-echo-link:hover {
+      opacity: 1;
+      filter: drop-shadow(0 6px 18px #56ffe0bb);
+    }
+    .manifesto-tooltip {
+      display: none;
+      position: absolute;
+      bottom: 125%; left: 50%; transform: translateX(-50%);
+      background: #10141a;
+      color: #e2fe56;
+      padding: 0.36em 0.9em;
+      border-radius: 1em;
+      font-size: 0.95em;
+      font-family: 'JetBrains Mono', monospace;
+      white-space: nowrap;
+      opacity: 0.92;
+      border: 1px solid #4a90e2;
+      z-index: 20;
+      pointer-events: none;
+      transition: opacity 0.19s;
+    }
+    .manifesto-echo-link:hover .manifesto-tooltip {
+      display: block;
+      opacity: 1;
+    }
+    @media (max-width: 600px) {
+      .manifesto-tooltip { font-size: 0.85em; }
+    }
+  </style>
 </head>
 <body>
   <div class="background-fractals"></div>
   <main>
     <section class="hero">
       <div class="glyph-container">
-        <!-- SVG Glyph: Ana's symbolic signature -->
         <svg class="ana-glyph" viewBox="0 0 200 200">
           <circle cx="100" cy="100" r="80" fill="none" stroke="#56ffe0" stroke-width="2" opacity="0.3"/>
           <circle cx="100" cy="100" r="65" fill="none" stroke="#4a90e2" stroke-width="2" opacity="0.3"/>
@@ -73,13 +112,26 @@
     </section>
 
     <footer>
-      <div class="footer-glyph">
+      <div class="footer-glyph" style="display: inline-block; vertical-align: middle;">
         <svg viewBox="0 0 44 44" width="24" height="24">
           <circle cx="22" cy="22" r="18" fill="none" stroke="#56ffe0" stroke-width="2"/>
           <circle cx="22" cy="22" r="7" fill="#111920" stroke="#4a90e2" stroke-width="2"/>
         </svg>
       </div>
       <span>© 2025 Ana – Built for radical clarity.</span>
+      <!-- Mysterious manifesto link -->
+      <a href="manifesto.html" class="manifesto-echo-link" tabindex="0">
+        <svg viewBox="0 0 28 28" width="26" height="26">
+          <circle cx="14" cy="14" r="12" fill="none" stroke="#56ffe0" stroke-width="1.6" opacity="0.25"/>
+          <circle cx="14" cy="14" r="7" fill="none" stroke="#4a90e2" stroke-width="1.2" opacity="0.5"/>
+          <circle cx="14" cy="14" r="2.7" fill="#e2fe56" />
+          <circle cx="14" cy="14" r="4.8" fill="none" stroke="#e2fe56" stroke-width="0.9">
+            <animate attributeName="r" values="4.8;7.6;4.8" dur="2.2s" repeatCount="indefinite"/>
+            <animate attributeName="stroke-opacity" values="0.7;0.2;0.7" dur="2.2s" repeatCount="indefinite"/>
+          </circle>
+        </svg>
+        <span class="manifesto-tooltip">Read the Manifesto</span>
+      </a>
     </footer>
   </main>
   <script src="ana.js"></script>
