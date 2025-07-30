@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <title>Ana: Myth & Method</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" id="favicon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><circle cx='60' cy='60' r='48' fill='none' stroke='%23c8b85f' stroke-width='2.2' opacity='0.19'/><circle cx='60' cy='60' r='28' fill='none' stroke='%234a90e2' stroke-width='2.1' opacity='0.30'/><path d='M60 14 Q83 50 106 60 Q83 70 60 106 Q37 70 14 60 Q37 50 60 14Z' fill='none' stroke='%23c8b85f' stroke-width='2'/><circle cx='60' cy='60' r='11' fill='%23181e27' stroke='%234a90e2' stroke-width='1.6'/><circle cx='60' cy='60' r='17' fill='none' stroke='%23d4a574' stroke-width='1.2'/></svg>">
   <style>
     :root {
       --font-main: 'Inter', system-ui, sans-serif;
@@ -307,6 +308,11 @@
     .example-content {
       display: none;
       margin-top: 0.5em;
+      color: rgba(255, 227, 117, 0.7); /* Paler myth theme color */
+    }
+
+    body.theme-method .example-content {
+      color: rgba(181, 168, 255, 0.7); /* Paler method theme color */
     }
 
     .example-block.open .example-content {
@@ -439,7 +445,7 @@
     <path d="M60 14 Q83 50 106 60 Q83 70 60 106 Q37 70 14 60 Q37 50 60 14Z"
           fill="none" stroke="${outer}" stroke-width="2"/>
     <circle cx="60" cy="60" r="11" fill="#181e27" stroke="#4a90e2" stroke-width="1.6"/>
-    <circle cx="60" cy="60" r="17" fill="none" stroke="${iris}" stroke-width="1.2">
+    <circle cx="60" cy="60" r="17" fill="none" stroke="#d4a574" stroke-width="1.2">
       <animate attributeName="r" values="17;20;17" dur="2.7s" repeatCount="indefinite"/>
       <animate attributeName="stroke-opacity" values="0.6;0.2;0.6" dur="2.7s" repeatCount="indefinite"/>
     </circle>
@@ -704,6 +710,15 @@
       });
     }
     
+    // Update favicon to match current theme
+    function updateFavicon(theme) {
+      const outer = theme === 'myth' ? '%23c8b85f' : '%237b6ae0';
+      const center = theme === 'myth' ? '%23181e27' : '%23181e27';
+      const faviconSvg = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><circle cx='60' cy='60' r='48' fill='none' stroke='${outer}' stroke-width='2.2' opacity='0.19'/><circle cx='60' cy='60' r='28' fill='none' stroke='%234a90e2' stroke-width='2.1' opacity='0.30'/><path d='M60 14 Q83 50 106 60 Q83 70 60 106 Q37 70 14 60 Q37 50 60 14Z' fill='none' stroke='${outer}' stroke-width='2'/><circle cx='60' cy='60' r='11' fill='${center}' stroke='%234a90e2' stroke-width='1.6'/><circle cx='60' cy='60' r='17' fill='none' stroke='%23d4a574' stroke-width='1.2'/></svg>`;
+      
+      document.getElementById('favicon').href = faviconSvg;
+    }
+    
     // Main theme switching function - updates colors, content, and TOC
     function setTheme(theme) {
       // Update page styling and save preference
@@ -716,6 +731,7 @@
       updateLogicPath(theme);
       updateTOCTheme(theme);
       updateThemeBtnStates(theme);
+      updateFavicon(theme);
       
       // Load new content and rebuild TOC
       updateContent(theme);
