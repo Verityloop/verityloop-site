@@ -100,6 +100,34 @@
       font-weight: 700;
     }
 
+    /* Subtle back button */
+    .back-link {
+      position: absolute;
+      top: 1.2rem;
+      left: 1.2rem;
+      color: rgba(249, 244, 226, 0.3);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+      transition: color 0.3s ease, opacity 0.3s ease;
+      opacity: 0.6;
+      z-index: 50;
+    }
+
+    .back-link:hover {
+      color: rgba(249, 244, 226, 0.7);
+      opacity: 1;
+    }
+
+    body.theme-method .back-link {
+      color: rgba(201, 188, 255, 0.3);
+    }
+
+    body.theme-method .back-link:hover {
+      color: rgba(201, 188, 255, 0.7);
+    }
+
     /* Table of Contents */
     #toc-container {
       position: fixed;
@@ -408,6 +436,7 @@
 </head>
 
 <body class="theme-myth">
+  <a href="index.html" class="back-link" title="Back to Ana">← back</a>
   <div class="ana-header">
     <span id="ana-glyph-header" class="ana-glyph-header">
       <span id="header-glyph"></span>
