@@ -8,8 +8,8 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><circle cx='60' cy='60' r='48' fill='none' stroke='%23a582e8' stroke-width='6' opacity='0.25'/><path d='M60 14 Q83 50 106 60 Q83 70 60 106 Q37 70 14 60 Q37 50 60 14Z' fill='none' stroke='%23a582e8' stroke-width='5'/></svg>">
   <style>
     html, body {
-      background: #10141a;
-      color: #e2fe56;
+      background: #0a1628;
+      color: #4fc3f7;
       height: 100vh;
       margin: 0; padding: 0;
       font-family: 'JetBrains Mono', monospace, 'Inter', sans-serif;
@@ -24,10 +24,10 @@
       width: 100vw;
     }
     .glyph {
-      width: 120px; height: 120px;
+      width: 156px; height: 156px;
       margin-bottom: 2em;
       animation: floatGlyph 6s ease-in-out infinite alternate;
-      filter: drop-shadow(0 0 38px #a582e855);
+      filter: drop-shadow(0 0 28px #4fc3f755) drop-shadow(0 0 8px #81d4fa33);
       display: block;
       user-select: none;
       -webkit-user-select: none;
@@ -36,30 +36,31 @@
     @keyframes floatGlyph { from {transform: translateY(0);} to {transform: translateY(-14px);} }
     .ana-motto {
       font-size: 1.18rem;
-      color: #fff;
+      color: #d4a574;
       margin-bottom: 3em;
       text-align: center;
-      opacity: 0.93;
-      text-shadow: 0 2px 28px #a582e833;
+      opacity: 1;
+      text-shadow: 0 1px 4px #c4956644;
       letter-spacing: 1px;
+      font-weight: 500;
     }
     .about-ana {
       max-width: 420px;
-      color: #dad8ff;
-      background: rgba(36,34,58,0.72);
+      color: #e1f5fe;
+      background: rgba(26,51,84,0.72);
       border-radius: 1.2em;
       margin-bottom: 3.1em;
       padding: 1.35em 2em 1.2em 2em;
       text-align: center;
       font-size: 1.06em;
-      box-shadow: 0 2px 19px #a582e825;
+      box-shadow: 0 2px 19px #4fc3f725;
       line-height: 1.52;
       font-family: 'Inter', 'JetBrains Mono', monospace, sans-serif;
       letter-spacing: 0.03em;
       transition: background 0.25s;
     }
     .manifesto-link {
-      color: #a582e8;
+      color: #4fc3f7;
       text-decoration: none;
       font-size: 1.04em;
       letter-spacing: 2px;
@@ -75,7 +76,7 @@
       text-decoration: underline;
     }
     @media (max-width: 600px) {
-      .glyph { width: 64px; height: 64px; }
+      .glyph { width: 96px; height: 96px; }
       .ana-motto { font-size: 1em; }
       .about-ana { padding: 1.1em 0.6em; font-size: 0.97em;}
       .manifesto-link { font-size: 0.97em; }
@@ -85,19 +86,19 @@
   </style>
 </head>
 <body>
-  <svg class="glyph" viewBox="0 0 120 120" aria-label="Ana's symbolic glyph" role="img" tabindex="0">
-    <title>Ana’s symbolic glyph: triangle, echoes, and iris</title>
-    <!-- Outer Ana purple ring (echo) -->
-    <circle cx="60" cy="60" r="48" fill="none" stroke="#a582e8" stroke-width="2.2" opacity="0.18"/>
-    <!-- Ana blue echo ring -->
-    <circle cx="60" cy="60" r="28" fill="none" stroke="#4a90e2" stroke-width="2.1" opacity="0.30"/>
-    <!-- Clean geometric Ana triangle (mimics the original, sharp) -->
+    <svg class="glyph" viewBox="0 0 120 120" width="156" height="156" aria-label="Ana's symbolic glyph" role="img" tabindex="0">
+    <title>Ana's symbolic glyph: triangle, echoes, and iris</title>
+    <!-- Outer Ana blue ring (echo) -->
+    <circle cx="60" cy="60" r="48" fill="none" stroke="#4fc3f7" stroke-width="2.2" opacity="0.19"/>
+    <!-- Ana deeper blue echo ring -->
+    <circle cx="60" cy="60" r="28" fill="none" stroke="#1976d2" stroke-width="2.1" opacity="0.30"/>
+    <!-- Clean geometric Ana triangle (blue theme) -->
     <path d="M60 14 Q83 50 106 60 Q83 70 60 106 Q37 70 14 60 Q37 50 60 14Z"
-          fill="none" stroke="#a582e8" stroke-width="2"/>
-    <!-- Center iris (Ana black, blue outline) -->
-    <circle cx="60" cy="60" r="11" fill="#181e27" stroke="#4a90e2" stroke-width="1.6"/>
-    <!-- Inner animated Ana yellow ring (pulse) -->
-    <circle cx="60" cy="60" r="17" fill="none" stroke="#e2fe56" stroke-width="1.2">
+          fill="none" stroke="#4fc3f7" stroke-width="2"/>
+    <!-- Center iris (Ana dark, blue outline) -->
+    <circle cx="60" cy="60" r="11" fill="#0d1b2a" stroke="#1976d2" stroke-width="1.6"/>
+    <!-- Inner animated Ana copper ring (pulse) -->
+    <circle cx="60" cy="60" r="17" fill="none" stroke="#d4a574" stroke-width="1.2">
       <animate attributeName="r" values="17;20;17" dur="2.7s" repeatCount="indefinite"/>
       <animate attributeName="stroke-opacity" values="0.6;0.2;0.6" dur="2.7s" repeatCount="indefinite"/>
     </circle>
