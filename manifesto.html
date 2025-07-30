@@ -417,6 +417,13 @@
       outline: 2px solid #8e6cff;
     }
 
+    /* Hide mobile floating glyph on desktop */
+    @media (min-width: 769px) {
+      .mobile-floating-glyph {
+        display: none !important;
+      }
+    }
+
     /* Mobile tooltip behavior */
     @media (max-width: 768px) {
       .tooltip:hover .tooltip-text {
@@ -426,6 +433,32 @@
       .tooltip.active .tooltip-text {
         opacity: 1;
         visibility: visible;
+      }
+
+      /* Mobile floating glyph */
+      .mobile-floating-glyph {
+        position: fixed;
+        top: 4rem;
+        right: 1rem;
+        width: 42px;
+        height: 42px;
+        z-index: 60;
+        opacity: 0;
+        transform: scale(0.8);
+        transition: opacity 0.4s ease, transform 0.4s ease;
+        pointer-events: none;
+        filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+      }
+
+      .mobile-floating-glyph.visible {
+        opacity: 0.8;
+        transform: scale(1);
+        pointer-events: auto;
+      }
+
+      .mobile-floating-glyph.visible:hover {
+        opacity: 1;
+        transform: scale(1.1);
       }
     }
 
@@ -437,17 +470,26 @@
 
       .main-content {
         margin-left: 0;
+        padding: 0 1rem; /* Add horizontal padding */
       }
 
       .ana-header {
-        margin-top: 2.5rem; /* Account for back button */
+        margin-top: 3rem; /* More space for back button */
+        margin-bottom: 2rem; /* More space before content */
+        text-align: center;
+        padding: 0 1rem;
       }
 
       .ana-glyph-header {
         width: 111px;
         height: 111px;
-        margin: 0 auto 0.15rem auto; /* Ensure proper centering */
+        margin: 0 auto 1rem auto; /* Ensure proper centering with more bottom margin */
         display: block;
+      }
+
+      .ana-motto {
+        margin-bottom: 1.5rem; /* More space after motto */
+        padding: 0;
       }
 
       .back-link {
@@ -461,6 +503,8 @@
 
 <body class="theme-myth">
   <a href="index.html" class="back-link" title="Back to Ana">← back</a>
+  <!-- Mobile floating glyph (only visible on mobile) -->
+  <div class="mobile-floating-glyph" id="mobile-floating-glyph"></div>
   <div class="ana-header">
     <span id="ana-glyph-header" class="ana-glyph-header">
       <span id="header-glyph"></span>
@@ -508,6 +552,12 @@
       document.getElementById('header-glyph').innerHTML = getAnaGlyph(theme, 156);
       document.getElementById('moving-glyph').innerHTML = getAnaGlyph(theme, 156); // Start at header size
       document.getElementById('toc-glyph-placeholder').innerHTML = getAnaGlyph(theme, 92);
+      
+      // Set mobile floating glyph if it exists
+      const mobileGlyph = document.getElementById('mobile-floating-glyph');
+      if (mobileGlyph) {
+        mobileGlyph.innerHTML = getAnaGlyph(theme, 42);
+      }
     }
     // Animate the moving glyph from header to TOC on scroll
     function animateMovingGlyph() {
@@ -970,6 +1020,38 @@
     window.addEventListener('scroll', handleGlyphScroll, { passive: true });
     window.addEventListener('resize', handleGlyphScroll);
     setTimeout(handleGlyphScroll, 200);
+    
+    // ========== MOBILE FLOATING GLYPH ==========
+    // Handle mobile floating glyph animation on scroll
+    function handleMobileFloatingGlyph() {
+      if (window.innerWidth > 768) return; // Only on mobile
+      
+      const mobileGlyph = document.getElementById('mobile-floating-glyph');
+      if (!mobileGlyph) return;
+      
+      const header = document.getElementById('ana-glyph-header');
+      if (!header) return;
+      
+      const headerRect = header.getBoundingClientRect();
+      const scrollY = window.scrollY;
+      
+      // Show the floating glyph when the header glyph is scrolled out of view
+      if (headerRect.bottom < 0) {
+        mobileGlyph.classList.add('visible');
+        
+        // Add subtle pulse animation based on scroll speed
+        const scrollProgress = Math.min(scrollY / 1000, 1);
+        const pulseIntensity = 0.8 + (scrollProgress * 0.2);
+        mobileGlyph.style.opacity = pulseIntensity;
+      } else {
+        mobileGlyph.classList.remove('visible');
+      }
+    }
+    
+    // Set up mobile floating glyph tracking
+    window.addEventListener('scroll', handleMobileFloatingGlyph, { passive: true });
+    window.addEventListener('resize', handleMobileFloatingGlyph);
+    setTimeout(handleMobileFloatingGlyph, 200);
     
     // Hide TOC on small screens (responsive behavior)
     if (window.innerWidth < 900) {
