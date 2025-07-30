@@ -417,6 +417,18 @@
       outline: 2px solid #8e6cff;
     }
 
+    /* Mobile tooltip behavior */
+    @media (max-width: 768px) {
+      .tooltip:hover .tooltip-text {
+        display: none; /* Disable hover on mobile */
+      }
+      
+      .tooltip.active .tooltip-text {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+
     /* Responsive */
     @media (max-width: 600px) {
       #toc-container {
@@ -427,9 +439,21 @@
         margin-left: 0;
       }
 
+      .ana-header {
+        margin-top: 2.5rem; /* Account for back button */
+      }
+
       .ana-glyph-header {
         width: 111px;
         height: 111px;
+        margin: 0 auto 0.15rem auto; /* Ensure proper centering */
+        display: block;
+      }
+
+      .back-link {
+        top: 0.8rem;
+        left: 0.8rem;
+        font-size: 0.8rem;
       }
     }
   </style>
@@ -867,6 +891,35 @@
           tipText.setAttribute('aria-live', 'polite');
         }
       });
+
+      // Mobile-friendly tooltip behavior
+      if (window.innerWidth <= 768) {
+        document.querySelectorAll('.tooltip').forEach(tip => {
+          tip.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Close all other tooltips
+            document.querySelectorAll('.tooltip.active').forEach(activeTip => {
+              if (activeTip !== tip) {
+                activeTip.classList.remove('active');
+              }
+            });
+            
+            // Toggle this tooltip
+            tip.classList.toggle('active');
+          });
+        });
+
+        // Close tooltips when clicking outside
+        document.addEventListener('click', function(e) {
+          if (!e.target.closest('.tooltip')) {
+            document.querySelectorAll('.tooltip.active').forEach(tip => {
+              tip.classList.remove('active');
+            });
+          }
+        });
+      }
     }
     // ========== THEME BUTTON STYLING ==========
     // Update theme toggle buttons to show active state and proper colors
