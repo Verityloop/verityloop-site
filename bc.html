@@ -105,21 +105,19 @@
 
   <!-- MathJax for LaTeX math rendering -->
   <script>
-    window.MathJax = {
-      startup: { typeset: false },
-      tex: {
-        inlineMath: [['$', '$'], ['\\(', '\\)']],
-        displayMath: [['$$','$$'], ['\\[','\\]']],
-        tags: 'ams',
-        processEscapes: true,
-        processEnvironments: true
-      },
-      options: {
-        skipHtmlTags: ['script','noscript','style','textarea','pre','code'],
-      },
-      svg: { fontCache: 'global' }
-    };
-  </script>
+  window.MathJax = {
+    startup: { typeset: false },
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      tags: 'ams',
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] },
+    svg: { fontCache: 'global' }
+  };
+</script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 </head>
 <body>
