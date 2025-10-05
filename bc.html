@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Bounded Criticality</title>
+  <title>Notes — Obsidian-ish (Read-Only)</title>
   <link rel="preconnect" href="https://unpkg.com" crossorigin>
   <style>
     :root{
@@ -97,7 +97,8 @@
   <div class="wrap">
     <aside class="side">
       <div class="topbar">
-        <div class="title">Bounded Criticality</div>
+        <div class="title">Markdown Note</div>
+        <span class="chip" id="status">Ready</span>
       </div>
       <h2>Options</h2>
       <div class="row">
@@ -127,7 +128,7 @@
     // date: 2025-10-05
     // tags: [game-dev, design]
     // ---
-    const MARKDOWN = /* <<<MD */ `
+    const MARKDOWN = String.raw`
 # Bounded Criticality: A Unifying Framework for Complex Systems
 
 
@@ -1251,7 +1252,12 @@ Special recognition to the neuroscientists, physicists, organizational researche
 
 **License**: Creative Commons Attribution 4.0 International (CC BY 4.0)
 
-` /* MD>>> */;
+
+```js
+// code remains unaffected by math rendering
+console.log('no math here $E=mc^2$');
+```
+`;
     // ===== End paste area =====
 
     // Theme persistence
