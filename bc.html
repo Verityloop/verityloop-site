@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Bounded Criticality</title>
+  <title>Notes — Obsidian-ish (Read-Only)</title>
   <link rel="preconnect" href="https://unpkg.com" crossorigin>
   <style>
     :root{
@@ -73,7 +73,35 @@
     /* MathJax tweaks */
     .note mjx-container[jax="SVG"] { line-height: 0; }
     .note mjx-container { margin: .6em 0; }
-  </style>
+  
+    /* === Mobile sidebar (off‑canvas) === */
+    .mobile-toggle{
+      position: fixed; top: 12px; left: 12px; z-index: 1200;
+      padding: 10px 12px; border-radius: 12px; border: 1px solid var(--outline);
+      background: var(--panel); color: var(--fg); cursor: pointer;
+      box-shadow: var(--shadow); display: none;
+    }
+    .mobile-toggle:focus{ outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    .overlay{
+      position: fixed; inset: 0; background: rgba(0,0,0,.45);
+      opacity: 0; pointer-events: none; transition: opacity .2s ease; z-index: 1100;
+    }
+
+    @media (max-width: 900px){
+      .wrap{ grid-template-columns: 1fr; padding-top: 56px; } /* leave room for toggle */
+      .mobile-toggle{ display: inline-flex; align-items: center; gap: 8px; }
+      .side{
+        position: fixed; top: 0; left: 0; height: 100dvh; width: 86vw; max-width: 420px;
+        transform: translateX(-104%); transition: transform .22s ease;
+        border-top-right-radius: var(--radius); border-bottom-right-radius: var(--radius);
+        z-index: 1201;
+      }
+      body.side-open .side{ transform: translateX(0); }
+      body.side-open .overlay{ opacity: 1; pointer-events: auto; }
+    }
+
+</style>
 
   <!-- MathJax for LaTeX math rendering -->
   <script>
@@ -95,10 +123,14 @@
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 </head>
 <body>
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Open sidebar" aria-expanded="false">☰ Notes</button>
+  <div class="overlay" id="overlay" hidden></div>
+
   <div class="wrap">
     <aside class="side">
       <div class="topbar">
-        <div class="title">Bounded Criticality</div>
+        <div class="title">Markdown Note</div>
+        <span class="chip" id="status">Ready</span>
       </div>
       <h2>Options</h2>
       <div class="row">
@@ -1357,6 +1389,9 @@ Special recognition to the neuroscientists, physicists, organizational researche
       const safe = DOMPurify.sanitize(html, {USE_PROFILES: {html: true}});
       const noteEl = document.getElementById('note');
       noteEl.innerHTML = safe;
+      // Remove any prior MathJax render to avoid duplicates
+      noteEl.querySelectorAll('mjx-container').forEach(n => n.remove());
+      if (window.MathJax && MathJax.typesetPromise) { MathJax.typesetPromise([noteEl]).catch(() => {}); }
 
       // Typeset math (MathJax)
       if (window.MathJax && MathJax.typesetPromise) {
@@ -1380,6 +1415,31 @@ Special recognition to the neuroscientists, physicists, organizational researche
       // Ctrl/Cmd + \ : focus TOC
       if(meta && e.key === '\\'){ e.preventDefault(); document.getElementById('toc')?.querySelector('a')?.focus(); }
     });
-  </script>
+  
+    // Mobile sidebar toggle
+    (function(){
+      const btn = document.getElementById('mobileToggle');
+      const overlay = document.getElementById('overlay');
+      const side = document.querySelector('.side');
+      const body = document.body;
+      function openSide(){
+        body.classList.add('side-open'); btn.setAttribute('aria-expanded', 'true'); overlay.hidden = false;
+        // focus first focusable in sidebar
+        (side.querySelector('button, a, input, [tabindex]')||side).focus({preventScroll:true});
+      }
+      function closeSide(){
+        body.classList.remove('side-open'); btn.setAttribute('aria-expanded', 'false'); overlay.hidden = true;
+        btn.focus({preventScroll:true});
+      }
+      btn.addEventListener('click', () => {
+        if(body.classList.contains('side-open')) closeSide(); else openSide();
+      });
+      overlay.addEventListener('click', closeSide);
+      document.addEventListener('keydown', (e)=>{
+        if(e.key === 'Escape') closeSide();
+      });
+    })();
+
+</script>
 </body>
 </html>
