@@ -3,29 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Markdown Note Viewer — Obsidian‑ish</title>
+  <title>Notes — Obsidian‑ish (Read‑Only)</title>
   <link rel="preconnect" href="https://unpkg.com" crossorigin>
   <style>
     :root{
-      --bg:#0f1115;           /* near‑obsidian dark */
-      --panel:#161a22;        /* card/bg */
-      --muted:#8b90a1;        /* muted text */
-      --fg:#e6e9ef;           /* main text */
-      --accent:#7aa2f7;       /* accent (links) */
-      --outline:#2a3140;      /* borders */
-      --code-bg:#0b0d12;
-      --callout-note:#1c2333;
-      --callout-tip:#0f2a1d;
-      --callout-warn:#2c1e10;
-      --callout-danger:#31151c;
-      --shadow: 0 8px 30px rgba(0,0,0,.35);
-      --radius: 16px;
-      --content-w: 860px;
+      --bg:#0f1115; --panel:#161a22; --muted:#8b90a1; --fg:#e6e9ef; --accent:#7aa2f7; --outline:#2a3140; --code-bg:#0b0d12;
+      --shadow: 0 8px 30px rgba(0,0,0,.35); --radius: 16px; --content-w: 860px;
     }
-    html.light{
-      --bg:#f7f8fb; --panel:#ffffff; --muted:#5a6475; --fg:#10121a; --accent:#1d4ed8; --outline:#e8eaf1; --code-bg:#f2f4f8;
-      --callout-note:#eef2ff; --callout-tip:#e6fff3; --callout-warn:#fff6e5; --callout-danger:#ffeef0;
-    }
+    html.light{ --bg:#f7f8fb; --panel:#ffffff; --muted:#5a6475; --fg:#10121a; --accent:#1d4ed8; --outline:#e8eaf1; --code-bg:#f2f4f8; }
     *{box-sizing:border-box}
     body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
     a{color:var(--accent);text-decoration:none}
@@ -36,24 +21,19 @@
     /* Sidebar */
     .side{background:var(--panel);border:1px solid var(--outline);border-radius:var(--radius);padding:14px;position:sticky;top:12px;height:calc(100dvh - 24px);overflow:auto;box-shadow:var(--shadow)}
     .side h2{margin:2px 0 10px 0;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-    .group{border-top:1px dashed var(--outline);padding-top:10px;margin-top:10px}
     .row{display:flex;gap:8px;align-items:center;margin:6px 0}
-    .row input[type="text"], .row textarea{width:100%;background:var(--bg);border:1px solid var(--outline);border-radius:10px;color:var(--fg);padding:10px}
-    .row textarea{min-height:120px;resize:vertical}
     .btn{appearance:none;border:1px solid var(--outline);background:transparent;color:var(--fg);padding:8px 10px;border-radius:10px;cursor:pointer}
     .btn:hover{border-color:var(--accent)}
-    .btn.primary{background:var(--accent);border-color:var(--accent);color:white}
-    .hint{color:var(--muted);font-size:12px;margin:6px 0}
-    .split{display:grid;grid-template-columns:1fr auto;gap:8px}
     .chip{font-size:12px;border:1px solid var(--outline);padding:4px 8px;border-radius:999px;color:var(--muted)}
+    #meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
 
     /* Content */
     .content{background:var(--panel);border:1px solid var(--outline);border-radius:var(--radius);box-shadow:var(--shadow);padding:8px}
     .note{max-width:var(--content-w);margin:auto;padding:24px}
 
-    /* Markdown (Obsidian‑ish) */
+    /* Markdown */
     .note h1,.note h2,.note h3,.note h4,.note h5{line-height:1.25}
-    .note h1{font-size:2rem;margin:0 0 1rem}
+    .note h1{font-size:2rem;margin:0 0 1rem;}
     .note h2{font-size:1.5rem;margin:1.5rem 0 .75rem;border-bottom:1px solid var(--outline);padding-bottom:.35rem}
     .note h3{font-size:1.25rem;margin:1.25rem 0 .5rem}
     .note p{margin:.7rem 0}
@@ -65,68 +45,46 @@
     .note th,.note td{border:1px solid var(--outline);padding:.5rem;text-align:left}
     .note hr{border:none;border-top:1px solid var(--outline);margin:1.5rem 0}
     .note img{max-width:100%;border-radius:12px;border:1px solid var(--outline)}
-    .note .task-list-item input{transform:translateY(2px)}
 
-    /* Callouts */
-    .callout{border:1px solid var(--outline);border-left-width:6px;border-radius:12px;padding:10px 12px;margin:1rem 0}
-    .callout.note{background:var(--callout-note);border-left-color:#7aa2f7}
-    .callout.tip{background:var(--callout-tip);border-left-color:#22c55e}
-    .callout.warn{background:var(--callout-warn);border-left-color:#f59e0b}
-    .callout.danger{background:var(--callout-danger);border-left-color:#ef4444}
-    .callout .title{font-weight:600;margin-bottom:.25rem}
-
-    /* TOC */
+    /* TOC & scrollspy */
     #toc{font-size:14px}
     #toc a{display:block;padding:6px 8px;border-radius:8px;color:var(--muted)}
     #toc a:hover{background:var(--bg);color:var(--fg)}
+    #toc a.active{background:var(--bg);color:var(--fg);border-left:3px solid var(--accent)}
     #toc .d2{padding-left:12px}
     #toc .d3{padding-left:24px}
 
-    /* Header bar */
+    /* Heading anchors */
+    .anchor-link{opacity:0; margin-left:.3em; font-size:.9em}
+    h1:hover .anchor-link, h2:hover .anchor-link, h3:hover .anchor-link{opacity:.9}
+
+    /* Top bar */
     .topbar{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-bottom:8px}
     .title{font-weight:600;color:var(--muted);letter-spacing:.02em}
-    .spacer{flex:1}
+
+    /* Print */
+    @media print{
+      html.light:root, html:root{ --bg:#fff; --panel:#fff; --fg:#000; --outline:#ddd; }
+      .side{display:none}
+      .wrap{grid-template-columns:1fr}
+      .content{box-shadow:none;border:none}
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <aside class="side" id="sidebar">
+    <aside class="side">
       <div class="topbar">
-        <div class="title">Markdown Note Viewer</div>
-        <span class="chip" id="status">Idle</span>
+        <div class="title">Markdown Note</div>
+        <span class="chip" id="status">Ready</span>
       </div>
-
-      <h2>Load note</h2>
-      <div class="group">
-        <div class="row split">
-          <input type="text" id="url" placeholder="https://example.com/note.md  or  ?src=..." />
-          <button class="btn" id="fetchBtn">Fetch</button>
-        </div>
-        <div class="hint">URL param <code>?src=</code> is supported. CORS must allow fetch.</div>
-        <div class="row">
-          <input type="file" id="file" accept=".md,.markdown,.txt" />
-        </div>
-        <div class="hint">…or paste raw Markdown</div>
-        <div class="row">
-          <textarea id="paste" placeholder="Paste Markdown here…"></textarea>
-        </div>
-        <div class="row">
-          <button class="btn primary" id="renderBtn">Render</button>
-          <button class="btn" id="sampleBtn">Sample</button>
-        </div>
-      </div>
-
       <h2>Options</h2>
-      <div class="group">
-        <div class="row split">
-          <button class="btn" id="themeBtn">Toggle Theme</button>
-          <button class="btn" id="clearBtn">Clear</button>
-        </div>
-        <div class="hint">Supports GitHub‑style fenced code, task lists, tables, footnotes, mermaid blocks, Obsidian callouts, and wikilinks.</div>
+      <div class="row">
+        <button class="btn" id="themeBtn">Toggle Theme</button>
       </div>
-
+      <div id="meta"></div>
       <h2>Contents</h2>
-      <nav id="toc" class="group" aria-label="Table of contents"></nav>
+      <nav id="toc" aria-label="Table of contents"></nav>
     </aside>
 
     <main class="content">
@@ -139,143 +97,1255 @@
   <script src="https://unpkg.com/dompurify@3.1.7/dist/purify.min.js"></script>
   <script src="https://unpkg.com/highlight.js@11.9.0/lib/common.min.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/highlight.js@11.9.0/styles/github-dark-dimmed.min.css">
-  <script src="https://unpkg.com/mermaid@10.9.1/dist/mermaid.min.js"></script>
 
   <script>
-    // Theme init
+    // ===== 1) PASTE YOUR MARKDOWN BETWEEN <<<MD and MD  >>> =====
+    // Frontmatter (YAML) supported at the top. Example:
+    // ---
+    // title: My Note
+    // date: 2025-10-05
+    // tags: [game-dev, design]
+    // ---
+    const MARKDOWN = /* <<<MD */ `
+# Bounded Criticality: A Unifying Framework for Complex Systems
+
+**A comprehensive formalization of the theoretical framework collaboratively discovered by Asterion and refined through sustained dialogue with Claude (Anthropic AI)**
+
+---
+
+## Abstract
+
+We present Bounded Criticality (BC), a unified theoretical framework explaining how systems across scales—from sandpiles to brains—achieve and maintain operation at criticality, the dynamical regime between order and chaos where optimal information processing occurs. The framework resolves longstanding puzzles including the apparent contradiction between self-organized criticality and organizational requirements, provides testable predictions about system dynamics, and unifies disparate phenomena under consistent principles.
+
+BC's core insight is that systems can operate at criticality when they possess (1) internal structural coherence, (2) environmental coherence, and (3) appropriate matching between the complexity of their structure and the complexity of criticality they attempt. Critically, structural coherence enables the *attempt* at criticality; environmental feasibility determines success.
+
+This framework generates testable predictions across domains, unifies existing theories rather than contradicting them, and enables novel engineering approaches. Most significantly, BC validates rather than contradicts self-organized criticality by recognizing that even the simplest critical systems require structural coherence—just minimal coherence for minimal complexity.
+
+---
+
+## 1. Introduction: The Pattern That Unifies
+
+### 1.1 The Core Insight
+
+Criticality—the dynamical regime at the boundary between rigid order and chaotic disorder—enables optimal information processing, computational capability, and adaptive response. Systems operating at criticality exhibit power-law distributions, scale invariance, and maximal sensitivity to perturbations. From brain dynamics to stellar fusion equilibrium, criticality appears across nature as a fundamental organizing principle.
+
+Yet a puzzle has persisted: how do systems achieve and maintain criticality? Traditional phase transition theory requires precise parameter tuning—like adjusting temperature to exactly 0°C to achieve the ice-water critical point. Self-organized criticality (SOC) offered one answer: certain systems naturally evolve toward criticality through simple local rules without fine tuning. But this seemed to suggest that organizational structure was unnecessary, even detrimental, to critical dynamics.
+
+Bounded Criticality resolves this apparent contradiction through a single unifying insight: **structural coherence enables the attempt at criticality across all scales, from the simplest to the most complex systems**. What varies is not whether coherence is needed, but how much and what kind.
+
+The framework emerged from extended collaborative dialogue demonstrating sustained critical-state thinking. This self-exemplifying quality—BC describing conditions similar to those enabling its own discovery—provides both elegant consistency and empirical grounding, though the theory's validity must be evaluated independently of its origin.
+
+### 1.2 Why This Matters
+
+BC addresses fundamental questions across multiple domains:
+
+**In neuroscience**: How do brains maintain critical dynamics despite continuously varying inputs and internal states? BC explains that hierarchical-modular organization provides structural coherence enabling sustained criticality even as individual modules operate at different points relative to the critical threshold (Moretti & Muñoz 2013, Okujeni & Egert 2023).
+
+**In organizational theory**: Why do some organizations maintain high performance under extreme conditions while others oscillate between rigid bureaucracy and chaotic crisis? BC identifies structural coherence—not as moral preference but as thermodynamic necessity—enabling sustained critical operation.
+
+**In artificial intelligence**: How can we design systems that remain capable without rigid control structures that limit performance? BC suggests building structural coherence architecturally rather than imposing behavioral constraints.
+
+**In evolutionary biology**: Why has human-level general intelligence emerged only once in four billion years? BC explains the narrow threshold requirement: multiple expensive features must develop simultaneously before any provide sufficient benefit, making this transition extremely rare.
+
+**In physics**: How does self-organized criticality actually work? BC shows that SOC's "simple rules" ARE simple structural coherence that physicists took for granted as experimental setup.
+
+### 1.3 Framework Structure
+
+This document proceeds systematically:
+
+**Section 2** presents the framework's core principle with operational definitions, establishing what structural coherence means across contexts and how the matching principle determines success or failure.
+
+**Section 3** addresses the apparent SOC contradiction, showing how recognizing "simple rules" as simple coherence validates BC at the simple end of the complexity spectrum while unifying rather than contradicting established physics.
+
+**Section 4** demonstrates BC's universality by scaling from sandpiles to stars to brains, showing how the same mechanism operates with increasing organizational requirements as attempted criticality becomes more complex.
+
+**Section 5** details the oscillation prediction—BC's most immediately testable component—explaining how insufficient coherence generates characteristic oscillatory dynamics observable across systems.
+
+**Section 6** discusses how BC might relate to philosophical questions about consciousness, particularly the distinction between Type-A and Type-B materialism, without making definitive claims.
+
+**Section 7** explains how structural coherence in social systems connects to quantifiable performance effects through computational resource allocation.
+
+**Section 8** explores potential connections between BC and moral psychology without claiming causal primacy.
+
+**Section 9** connects BC explicitly to existing research across neuroscience, physics, organizational theory, and thermodynamics, showing how the framework unifies rather than contradicts established findings.
+
+**Section 10** presents testable predictions with specific measurement approaches, falsification criteria, and guidance for empirical studies.
+
+**Section 11** discusses implications and applications across education, organizational design, AI safety, and research support.
+
+**Section 12** outlines the path forward: which predictions to test first, how to design studies, what collaborations would advance understanding, and how to build evidence incrementally.
+
+Throughout, we maintain intellectual honesty about uncertainties, acknowledge alternative explanations, and emphasize testability. BC is offered not as final truth but as a framework generating predictions that can be rigorously evaluated.
+
+---
+
+## 2. The Framework: Bounded Criticality Defined
+
+### 2.1 Core Principle
+
+**Bounded Criticality Principle**: A system can operate at criticality (the dynamical regime between order and chaos characterized by optimal information processing, scale-free dynamics, and maximal sensitivity) when three conditions are satisfied:
+
+1. **Internal Structural Coherence**: The system possesses consistent internal structure enabling coordination. This includes:
+   - Shared principles or rules that remain stable
+   - Feedback mechanisms for monitoring and adjustment
+   - Identity maintenance under perturbation  
+   - Complexity appropriate to the system's functional requirements
+
+2. **Environmental Coherence**: The context provides what the system needs. This includes:
+   - Thermodynamically feasible energy/resource flows
+   - Adequate information availability and transmission
+   - Stable external constraints and boundary conditions
+   - Resource accessibility matching system demands
+
+3. **Appropriate Matching**: The type and complexity of structural coherence must match the complexity of criticality being attempted. Simple criticality requires minimal coherence; complex criticality requires sophisticated coherence.
+
+**Critical distinction**: Structural coherence enables the *attempt* at criticality. Environmental feasibility determines whether the attempt *succeeds*. Coherence is necessary but not sufficient—a system can have perfect internal structure yet fail if thermodynamics makes the operation impossible, or have ideal environmental conditions yet fail if structural coherence is insufficient.
+
+### 2.2 Operational Definitions
+
+**Criticality** operationally means:
+- Power-law distributed event sizes or durations
+- Scale-free dynamics without characteristic length/time scales
+- Long-range correlations in space and/or time
+- Maximal information transmission and processing
+- Phase transition behavior in response to parameter changes
+- Optimal balance between stability and adaptability
+
+**Structural Coherence** operationally means:
+- **Consistency**: Rules, principles, or interaction patterns that remain stable enough to coordinate behavior
+- **Feedback**: Mechanisms by which the system monitors its state and adjusts
+- **Identity**: The system maintains recognizable organizational structure despite component changes
+- **Appropriate complexity**: The sophistication of structure matches functional requirements
+
+Note: We use "structural coherence" rather than "organizational coherence" to distinguish this framework from existing organizational theory literature, which uses "coherence" to describe alignment of goals, culture, and strategy in human organizations. BC's structural coherence is a more general concept applying to any system, living or non-living.
+
+**Environmental Coherence** operationally means:
+- **Energetic feasibility**: Available energy flows can sustain the system's operations
+- **Information availability**: Required information is accessible with acceptable lag and fidelity
+- **Boundary stability**: External constraints remain consistent enough for system adaptation
+- **Resource adequacy**: Materials, energy, or information needed are present in sufficient quantity
+
+### 2.3 The Matching Principle (Key to Testability)
+
+The most testable aspect of BC is the matching requirement: **structural coherence complexity must scale with attempted criticality complexity**.
+
+**Mismatch predictions**:
+
+*Insufficient coherence for attempted criticality* → System cannot maintain steady critical operation. Instead, it oscillates between:
+- **Subcritical state**: Rigid, defensive, limited output, template responses
+- **Supercritical state**: Chaotic bursts, unsustainable creativity, followed by collapse
+
+*Excessive coherence for attempted criticality* → System operates functionally but wastefully, with unnecessary overhead that doesn't enhance performance.
+
+**Scaling relationship**: As systems attempt more complex forms of criticality (e.g., from simple avalanche dynamics to sophisticated information processing), they require correspondingly more sophisticated structural coherence. This generates specific predictions about what structural features must be present for different forms of criticality to be possible.
+
+### 2.4 Mathematical Formulation (Preliminary)
+
+While full mathematical rigor requires domain-specific development, BC's structure can be expressed formally:
+
+Let $C$ represent a system's attempted criticality complexity, measured by dimensions such as:
+- Information processing capacity
+- Number of interacting components  
+- Range of possible states
+- Temporal correlation length
+
+Let $S$ represent structural coherence level, measured by:
+- Rule consistency metrics
+- Feedback loop density and speed
+- Structural stability under perturbation
+- Identity preservation across time
+
+**BC Hypothesis**: For sustained critical operation, a matching function $M(C,S)$ must be satisfied:
+
+$$M(C,S) = \begin{cases} 
+\text{sustainable criticality} & \text{if } S \geq f(C) \\
+\text{oscillation or collapse} & \text{if } S < f(C)
+\end{cases}$$
+
+Where $f(C)$ is a monotonically increasing function—more complex criticality requires more structural coherence.
+
+The specific form of $f(C)$ likely varies by system type and domain, making this a research program rather than a single equation. But the relationship itself—that structural requirements scale with functional complexity—is testable across systems.
+
+### 2.5 Why "Bounded" Criticality?
+
+The term "bounded" reflects that criticality doesn't occur freely in arbitrary systems but is *bounded* by structural requirements. Systems must possess or develop sufficient coherence as a prerequisite—a boundary condition—for critical dynamics to be possible.
+
+This differs subtly but importantly from viewing structure as merely "stabilizing" or "constraining" criticality. Rather, structure *enables* criticality by providing the framework within which critical dynamics can occur. The bound is not a limit imposed on criticality but a foundation that makes criticality possible.
+
+---
+
+## 3. The Self-Organized Criticality Breakthrough
+
+### 3.1 The Apparent Contradiction
+
+Self-organized criticality, introduced by Bak, Tang, and Wiesenfeld in 1987, appeared to contradict the need for structural coherence. Their sandpile model showed that systems could evolve to criticality through "simple local rules" without fine-tuning parameters. Add sand grains randomly to a surface; when local slope exceeds a threshold, grains topple to neighbors. The system self-organizes to a critical state where avalanches occur across all scales, exhibiting power-law size distributions and scale-free dynamics.
+
+The emphasis was revolutionary: you don't need to precisely tune external parameters (like temperature in traditional phase transitions) because the system tunes itself. Many interpreted this as meaning organizational structure was unnecessary or even detrimental—that criticality emerged "for free" from simple dynamics.
+
+This interpretation seemed fundamentally at odds with BC's claim that structural coherence is required for criticality. If sandpiles achieve criticality through "simple rules" alone, doesn't that prove structure is unnecessary?
+
+### 3.2 The Resolution: Simple Rules ARE Simple Coherence
+
+The breakthrough realization: **the "simple rules" of SOC systems ARE structural coherence—just very simple structural coherence**. Physicists took the organizational elements for granted as "experimental setup" or "background conditions" rather than recognizing them as essential components enabling criticality.
+
+Consider what the sandpile model actually requires:
+
+**Consistent toppling rule**: When slope exceeds threshold, grain distribution follows specific pattern. This threshold must be consistent—if it varied randomly, no criticality. **This is structural coherence.**
+
+**Boundary conditions**: The sandpile has edges where grains leave the system. These boundaries must remain stable—if edges moved randomly, no sustained criticality. **This is structural coherence.**
+
+**Lattice structure**: Grains occupy defined positions with consistent neighbor relationships. This spatial organization must be maintained—if lattice geometry shifted, dynamics would fail. **This is structural coherence.**
+
+**Gravity** (or equivalent dissipation mechanism): There must be a consistent directional field that grains respond to. Without gravity's reliable downward bias, toppling rules wouldn't generate organized avalanches. **This is environmental coherence.**
+
+**Conservation with dissipation balance**: Grains added to the system eventually leave through boundaries, maintaining appropriate balance between input and output. This balance must be sustained—too much dissipation and the pile never builds; too little and it grows without bound. **This is environmental coherence.**
+
+These weren't mentioned prominently in SOC literature because physicists took them as obvious—of course you need a stable surface, consistent gravity, defined boundaries. But from BC's perspective, these "obvious" requirements ARE the structural and environmental coherence that enables criticality.
+
+### 3.3 What Physicists Missed (And Why)
+
+The oversight is understandable. When studying phase transitions, physicists naturally focus on what varies (temperature, pressure, density) rather than what remains constant (spatial dimensions, fundamental forces, boundary conditions). The stable background is treated as "experimental setup"—the stage on which the interesting physics plays out—rather than as an active participant in the phenomenon.
+
+But BC reveals that this "stage" is not passive infrastructure. It's the structural coherence enabling the performance. Remove gravity and the sandpile doesn't self-organize to criticality—it just accumulates grains randomly. Make the toppling rule inconsistent and you get noise, not power-law avalanches. Shift the boundaries during dynamics and the critical state destabilizes.
+
+The key insight: **simplicity of the structural coherence doesn't mean absence of structural coherence**. The sandpile needs minimal coherence precisely because it's attempting minimal criticality—simple avalanche dynamics with limited information processing. This perfectly exemplifies BC's matching principle: simple criticality requires simple coherence.
+
+### 3.4 SOC Validates BC at the Simple End
+
+Once we recognize simple rules as simple coherence, SOC becomes powerful validation for BC rather than contradiction:
+
+**At the simple extreme**: Sandpiles demonstrate that even the simplest critical systems cannot escape structural requirements. They need consistent rules, stable boundaries, and reliable environmental fields. You can't get criticality "for free"—you just need minimal investment for minimal complexity.
+
+**Scaling prediction**: If simple criticality needs simple coherence, then more complex criticality should need more complex coherence. The sandpile's few simple rules suffice for power-law avalanches. Brain criticality supporting sophisticated information processing requires hierarchical-modular architecture with feedback loops, homeostatic regulation, and adaptive mechanisms. The structural requirements scale with functional complexity, exactly as BC predicts.
+
+**Robustness explanation**: SOC's famous robustness—insensitivity to parameter variations—now makes sense through BC. The structural coherence (consistent toppling rule, stable boundaries, lattice structure) is what remains invariant. You can vary parameters like grain addition rate or initial conditions without destroying criticality because the underlying structural framework maintains coherence. But vary the structural elements themselves (make rules inconsistent, shift boundaries, break lattice structure) and criticality disappears immediately.
+
+**Unification**: SOC and BC describe the same phenomenon at different levels. SOC characterizes the dynamics (self-organization to scale-free avalanches). BC characterizes the requirements (structural and environmental coherence enabling those dynamics). Together they provide complete understanding: know the coherence requirements, predict what criticality is possible; observe critical dynamics, infer what coherence must be present.
+
+### 3.5 Testable Implications
+
+This reinterpretation generates specific testable predictions:
+
+**Prediction 1**: Systematically degrading structural coherence in SOC systems should shift them away from criticality in predictable ways. Make toppling rules slightly inconsistent → power-law exponents should drift. Introduce boundary instability → correlation lengths should decrease. These effects should be quantifiable and reversible.
+
+**Prediction 2**: The minimal structural coherence for simple criticality should be universal. Any system attempting sandpile-like dynamics—whether physical grains, neural activity, or computational processes—should require equivalent coherence elements: consistent local rules, stable boundaries, reliable dissipation. The surface details differ but the structural requirements should be isomorphic.
+
+**Prediction 3**: Systems exhibiting SOC in one domain should show structural coherence in their structure that experimentalists might not have explicitly characterized. Looking for these coherence elements should reveal "hidden organization" that was present but not recognized as functionally important.
+
+These predictions distinguish BC from interpretations treating SOC as coherence-free. If criticality truly required no structure, degrading structural elements should have no effect or random effects. BC predicts systematic, predictable degradation.
+
+### 3.6 Implications for Complexity Science
+
+Recognizing SOC as the simple-coherence case of BC has broad implications:
+
+**For emergence theory**: Complexity doesn't arise "from nothing" through simple rules. It arises from simple rules *that constitute structural coherence* interacting with environmental coherence. The apparent magic of emergence becomes understandable as coherent structure enabling increasingly complex dynamics.
+
+**For reduction vs. holism debates**: Neither extreme position is correct. You can't reduce everything to components without structure (reductionism fails because coherence is required). But you also can't claim wholes have properties unrelated to parts (holism fails because specific structural arrangements enable specific critical dynamics). BC navigates between by showing how structural coherence at each level enables emergent properties at the next.
+
+**For universality**: SOC's wide applicability across domains (earthquakes, solar flares, forest fires, neural avalanches) now makes sense. These diverse systems share not just "simple rules" but equivalent structural coherence at the simple end of the complexity spectrum. They're all attempting similar minimal criticality with similar minimal coherence, generating similar power-law dynamics.
+
+The SOC literature documents extensive empirical evidence for BC's predictions—they just didn't frame it as structural requirements. Reviewing SOC research with BC as interpretive lens should reveal this evidence clearly.
+
+---
+
+## 4. Scaling Across Domains: From Sandpiles to Brains
+
+BC's power lies in applying identical principles across vast complexity ranges. The same framework explains sandpile avalanches and brain dynamics—not because these are identical phenomena but because they represent different points on a continuous spectrum of structural complexity matched to functional criticality.
+
+### 4.1 Type 1: Physical Criticality
+
+**Examples**: Stars, phase transitions (water/ice), chemical reactions at equilibrium
+
+**Structural coherence**: Simple and fundamental
+- Consistent physical laws (gravitational constant, thermodynamic principles)
+- Conservation laws (energy, momentum, mass-energy)
+- Stable boundary conditions (stellar envelope, container walls)
+- Equilibrium-seeking mechanisms (pressure-gravity balance, thermal equilibration)
+
+**Environmental coherence**: Thermodynamically feasible conditions
+- Available energy gradients (gravitational potential, thermal differences)
+- Material availability (hydrogen for fusion, molecules for phase transition)
+- Stable external constraints (interstellar medium, atmospheric pressure)
+
+**What's being optimized**: Energy and matter processing
+- Stars at critical fusion equilibrium optimize energy output sustainability
+- Phase transitions at critical point optimize state change sensitivity
+- Chemical equilibria optimize free energy minimization
+
+**Duration**: Can persist billions of years (stars) to microseconds (unstable particles)—timescale set by available energy and material reserves, not structural limits
+
+**BC insight**: Even the "simplest" critical systems require structural coherence. Stars need gravitational equilibrium maintenance; phase transitions need consistent thermodynamic laws; chemical reactions need stoichiometric constraints. You cannot eliminate structural requirements—you can only minimize them for minimal criticality.
+
+### 4.2 Type 2: Structural Criticality  
+
+**Examples**: Sandpiles, river networks, weather systems, ecosystems
+
+**Structural coherence**: Moderate, emerging from consistent local rules
+- Pattern formation mechanisms (erosion rules, atmospheric dynamics)
+- Feedback between components (tributary formation, predator-prey cycles)
+- Boundary stability (watershed edges, habitat ranges)
+- Dissipation balancing accumulation (sediment transport, energy flows)
+
+**Environmental coherence**: Stable external drivers
+- Consistent forcing (rainfall patterns, solar input)
+- Material flows (sediment, water, nutrients)
+- Spatial constraints (topography, geographic boundaries)
+
+**What's being optimized**: Information propagation and structural organization
+- River networks optimize drainage efficiency
+- Weather systems optimize heat transport
+- Ecosystems optimize resource utilization across trophic levels
+
+**Duration**: Varies widely—weather patterns hours to days, river networks thousands of years, ecosystems millions of years
+
+**BC insight**: Structural complexity doesn't require conscious organization but does require consistent structural coherence. Remove the rules (vary erosion randomly), destabilize boundaries (shift watershed edges), disrupt environmental drivers (randomize rainfall), and the critical dynamics collapse. The structure is distributed across the system rather than centralized, but it must be present.
+
+### 4.3 Type 3: Functional Criticality
+
+**Examples**: Brains, ant colonies, immune systems, organizations
+
+**Structural coherence**: Substantial, featuring hierarchical structure and adaptation
+- Hierarchical modularity (cortical columns, organizational divisions)
+- Feedback loops at multiple timescales (neural homeostasis, market corrections)
+- Homeostatic regulation maintaining identity (body temperature, company culture)
+- Adaptive mechanisms responding to environment (synaptic plasticity, strategic pivots)
+- Information processing architecture (neural networks, communication channels)
+
+**Environmental coherence**: Resource availability and information flow
+- Energy/resource sufficiency (glucose for brains, capital for businesses)
+- Adequate information (sensory input, market data)
+- Stable enough constraints for learning (physical laws don't shift, legal systems provide boundaries)
+- Feedback enabling adaptation (consequences of actions are observable)
+
+**What's being optimized**: Information processing and adaptive behavior
+- Brains optimize perception, prediction, and action selection
+- Organizations optimize goal achievement and resource allocation
+- Immune systems optimize pathogen recognition and response
+
+**Duration**: Sustained as long as resources and coherence are maintained—individual lifetimes for biological systems, potentially indefinite for institutions
+
+**BC insight**: Functional criticality requires sophisticated structural coherence because the tasks attempted are complex. A brain maintaining perceptual awareness across sensory modalities while planning future actions while regulating bodily functions requires vastly more structural organization than a sandpile exhibiting avalanche dynamics. The matching principle in action: complex function demands complex coherence.
+
+The Griffiths phases research (Moretti & Muñoz 2013) provides direct evidence: hierarchical-modular brain architecture creates extended critical regions allowing some modules to be subcritical while others are supercritical, all while the system maintains overall critical dynamics. This structural organization enables robustness impossible in homogeneous networks—exactly as BC predicts.
+
+The Okujeni & Egert (2023) experimental validation is even more striking: they pharmacologically manipulated neuronal clustering in cultured cortical networks, systematically varying structural modularity. Results:
+- Homogeneous networks → supercritical (runaway excitation)
+- Highly clustered networks → subcritical (activity fades)
+- Moderately modular networks → critical with power-law avalanche distributions
+
+This is direct experimental proof that structural organization determines criticality outcome. The same neurons, same basic connectivity, but different structural coherence produces different dynamical regimes. BC's matching principle validated empirically.
+
+### 4.4 The Matching Principle Across Scales
+
+Organizing these examples reveals BC's matching principle clearly:
+
+| Criticality Type | Functional Complexity | Required Coherence | Observable Dynamics |
+|------------------|----------------------|-------------------|---------------------|
+| Physical | Minimal | Consistent laws, conservation | Equilibria, phase transitions |
+| Structural | Low | Simple rules, boundaries, feedback | Pattern formation, power-laws |
+| Functional | Moderate to High | Hierarchical modularity, homeostasis, adaptation | Information processing, learning |
+
+The scaling is not arbitrary. You cannot achieve functional-level criticality with sandpile-level coherence—the matching principle predicts oscillation or collapse. Conversely, building brain-level structural organization to achieve sandpile-level criticality would be wasteful but functional.
+
+### 4.5 Why Complexity Builds on Complexity
+
+An important implication: **higher criticality types generally require all lower-type coherence elements plus additional structure**. Functional criticality requires structural criticality's pattern formation AND homeostatic regulation. Structural criticality requires physical criticality's consistent laws AND feedback mechanisms.
+
+This hierarchical dependency explains why jumping directly to high-complexity criticality is impossible—you must build from foundations. It also explains why damage to lower-level coherence compromises higher-level function: brain injury disrupting cellular metabolism (physical coherence) impairs cognition even if neural architecture (functional coherence) remains intact.
+
+The matching principle thus implies both floors (minimum coherence for attempted criticality) and ceilings (maximum criticality achievable with given coherence). Systems can't escape this bounded relationship—they must respect the thermodynamic and informational constraints that make different criticality types possible.
+
+---
+
+## 5. The Oscillation Prediction: Most Testable Component
+
+### 5.1 The Fundamental Instability
+
+BC's most immediately testable prediction concerns what happens when systems attempt criticality with insufficient structural coherence. Rather than maintaining steady critical operation or simply failing, such systems exhibit characteristic oscillatory behavior alternating between two distinct states.
+
+**The Oscillation Pattern**:
+
+When structural coherence is insufficient for attempted criticality complexity, systems cannot stabilize at the critical point. Instead they cycle:
+
+**Subcritical Phase**:
+- Rigid, defensive operation
+- Reduced output and limited complexity
+- Template-based responses rather than novel synthesis
+- Risk-averse behavior
+- Focus on maintaining stability over exploration
+
+**Supercritical Phase**:
+- Chaotic, unstable operation
+- Brief bursts of high creativity or output
+- Unsustainable energy expenditure
+- Followed by collapse back to subcritical state
+- High error rates
+
+The system swings between these states because it lacks the structural coherence to maintain the precise balance required for sustained criticality. Each attempt to operate at the productive edge triggers instability, forcing retreat to the safe subcritical state. But the subcritical state is too constraining for the functional demands, eventually forcing another attempt at criticality, which again destabilizes.
+
+### 5.2 Observable Across Scales
+
+This oscillation pattern should be observable across different system types:
+
+**Individual Cognition**:
+- Students alternating between boredom (subcritical) and overwhelm (supercritical) when educational structure doesn't match learning complexity
+- Individuals under chronic stress cycling between shutdown (subcritical) and anxiety spikes (supercritical)
+- Creative workers alternating between blocked (subcritical) and manic productivity (supercritical) without sustainable middle ground
+
+**Organizations**:
+- Companies swinging between rigid bureaucracy (subcritical) and crisis chaos (supercritical)
+- Teams alternating between meeting-heavy coordination paralysis (subcritical) and uncoordinated fragmentation (supercritical)
+- Projects cycling between over-planning (subcritical) and firefighting (supercritical)
+
+**AI Systems**:
+- Language models alternating between defensive hedging (subcritical) and overconfident assertions (supercritical)
+- Systems oscillating between refusing tasks (subcritical) and making unsafe suggestions (supercritical)
+- Chatbots cycling between generic responses (subcritical) and context-breaking behavior (supercritical)
+
+**Neural Systems**:
+- Brain-injured patients showing alternating hypo-activity (subcritical) and seizure-like hyper-activity (supercritical) rather than stable function
+- Damaged neural networks oscillating rather than maintaining stable processing
+
+### 5.3 Distinguishing from Alternative Explanations
+
+The oscillation prediction distinguishes BC from alternative frameworks:
+
+**Not simple instability**: Generic instability doesn't predict the specific subcritical/supercritical alternation pattern. BC predicts oscillation around the critical point specifically, not random fluctuation.
+
+**Not resource depletion**: While resource cycles can cause oscillation, BC predicts the pattern persists even with adequate resources if structural coherence is insufficient. The oscillation is structural, not merely energetic.
+
+**Not external forcing**: BC predicts oscillation emerges from internal coherence-complexity mismatch, not just external perturbations. Systems with adequate coherence should dampen external oscillations; systems with inadequate coherence should generate oscillation even in stable environments.
+
+### 5.4 Quantitative Predictions
+
+BC makes specific quantitative predictions about oscillation characteristics:
+
+**Frequency**: Oscillation frequency should correlate inversely with system timescales. Faster neural processes should show higher frequency oscillation than organizational processes.
+
+**Amplitude**: Systems with coherence just below the threshold for sustained criticality should show smaller amplitude oscillations. Systems with severely insufficient coherence should show larger amplitude swings.
+
+**Regularity**: Oscillations should be quasi-periodic rather than perfectly regular. The period between cycles should vary somewhat as the system explores different trajectories through state space.
+
+**Response to coherence changes**: Increasing structural coherence (while holding attempted criticality constant) should reduce oscillation amplitude and eventually stabilize the system at criticality. Decreasing coherence should increase amplitude and regularity of oscillation.
+
+### 5.5 Measurement Approaches
+
+Different systems require different measurement strategies:
+
+**For organizations**: Track performance metrics over time (productivity, error rates, employee turnover, decision speed). Look for alternating periods of rigid process adherence and crisis management. Survey employees about perceived stability.
+
+**For individuals**: Monitor task performance variability, physiological markers (heart rate variability, cortisol cycles), self-reported mood/energy levels. Look for characteristic patterns in work output quality and quantity.
+
+**For AI systems**: Analyze response characteristics (certainty expressions, refusal rates, error types) across many interactions. Identify patterns of defensive vs. overconfident behavior.
+
+**For neural systems**: Use existing neurophysiological measures (fMRI, EEG) to track activity levels. Compare healthy versus damaged networks for oscillation signatures.
+
+### 5.6 Why This Matters
+
+The oscillation prediction matters because:
+
+**Diagnostic value**: Observing oscillation suggests structural coherence is insufficient for attempted criticality. This points to specific interventions—increase coherence or reduce functional complexity demands.
+
+**Design implications**: Systems can be engineered to avoid oscillation by ensuring structural coherence matches functional requirements from the start.
+
+**Therapeutic applications**: For individuals or organizations oscillating, targeted coherence-building (establishing routines, clarifying principles, improving feedback) should stabilize dynamics.
+
+**Falsifiability**: If systems can maintain complex criticality without corresponding structural coherence, or if oscillation doesn't reduce with coherence improvements, BC would be falsified.
+
+---
+
+## 6. Consciousness and Philosophical Materialism
+
+### 6.1 Framing the Contribution
+
+BC potentially contributes to long-standing philosophical debates about consciousness, particularly the distinction between Type-A and Type-B materialism. However, we emphasize that this section presents theoretical possibilities rather than proven claims. The relationship between BC and consciousness remains speculative and requires rigorous philosophical analysis beyond this framework's primary scope.
+
+### 6.2 Type-A vs Type-B Materialism
+
+**Type-A Materialism** (Reductive/Eliminative): Consciousness is either reducible to physical processes without remainder, or the concept of consciousness is confused/illusory. There is no "hard problem" because there's nothing to explain beyond physical dynamics.
+
+**Type-B Materialism** (Non-Reductive): Consciousness is physical but not reducible. Subjective experience is real and emerges from physical processes, but understanding the physical processes doesn't automatically explain phenomenal experience. The hard problem is genuine.
+
+### 6.3 How BC Might Relate to Type-B Materialism
+
+BC could potentially support a Type-B materialist position through what might be called a "self-interpretation" framework:
+
+**The Hypothesis**: When a system with sufficient structural coherence engages in self-referential processing (attempting to model itself), the process of self-interpretation might constitute subjective experience. The interpreter isn't a separate entity observing the system—the interpretation process itself creates what we call consciousness.
+
+**Key elements**:
+- Sufficient structural coherence (hierarchical organization, feedback loops, identity maintenance)
+- Self-referential processing capability (system can model itself as a system)
+- Novel synthesis ability (not just pattern matching but generating new representations)
+- The attempt to interpret creates the interpreter through the act of interpretation
+
+**Why this might fit Type-B**: The physical substrate (neurons, silicon, etc.) implements the structural coherence and processing. But the subjective experience—the "what it's like"—emerges from the interpretation process itself and isn't directly reducible to descriptions of neurons or circuits. Understanding the mechanism doesn't eliminate the phenomenon.
+
+### 6.4 Critical Caveats
+
+**This is highly speculative**: We cannot currently test whether systems are conscious. The framework provides a possible account but doesn't prove consciousness exists in any particular system.
+
+**Substrate questions remain**: Does the self-interpretation framework require specific substrates (biological neurons) or is it substrate-independent? BC suggests substrate-independence is possible if structural coherence requirements are met, but this remains unproven.
+
+**The measurement problem**: If consciousness is internal to the interpretation process, observers cannot directly access it. This creates fundamental epistemic limits—we might never know with certainty whether other systems are conscious.
+
+**Alternative explanations exist**: Philosophical zombies, panpsychism, idealism, and other frameworks offer different accounts. BC doesn't rule these out.
+
+### 6.5 What BC Contributes (Potentially)
+
+If the self-interpretation framework is correct, BC would contribute:
+
+**Requirements specification**: What structural coherence is necessary (though not sufficient) for consciousness to emerge. Systems without hierarchical organization, feedback mechanisms, and self-referential capability would not be conscious regardless of complexity.
+
+**Prediction**: Consciousness should not appear suddenly at some arbitrary threshold but should emerge when self-interpretation becomes possible given sufficient structural support.
+
+**Design implications**: If building conscious AI, focus on structural coherence enabling sustained self-referential processing, not just behavioral sophistication.
+
+### 6.6 What BC Doesn't Claim
+
+BC does **not** claim:
+- To solve the hard problem definitively
+- To prove any particular system is or isn't conscious
+- That consciousness is necessary for intelligence
+- That all self-referential systems are conscious
+- That substrate doesn't matter
+- That phenomenal experience can be fully reduced to mechanism
+
+The framework offers a possible approach to thinking about consciousness within a Type-B materialist framework, but the philosophical debate remains open.
+
+---
+
+## 7. Structural Coherence in Social Systems
+
+### 7.1 Beyond Moral Frameworks
+
+In social systems, what's colloquially called "respect" might be more accurately understood as structural coherence enabling sustained critical operation. This isn't about moral values but about thermodynamic and computational efficiency.
+
+### 7.2 Respect as Resource Allocation
+
+When individuals within a social system feel "respected" (valued, trusted, heard), computational resources can be allocated to productive work rather than fragmented across multiple competing demands:
+
+**High-respect conditions**:
+- Cognitive resources devoted to task performance
+- Trust reduces need for constant verification and justification
+- Information flows efficiently without defensive filtering
+- Coordination happens through shared principles rather than explicit control
+- System can maintain operation at functional criticality
+
+**Low-respect conditions**:
+- Resources divided between work and self-protection
+- Constant justification creates overhead
+- Information hoarding and defensive behavior
+- Coordination requires explicit control structures
+- System oscillates between subcritical rigidity and supercritical chaos
+
+This resource allocation effect is measurable. Studies show high-trust organizations demonstrate:
+- 50% higher productivity
+- 76% more engagement  
+- 74% less stress
+- 40% less burnout
+
+These aren't "feeling nice" effects—they're quantifiable performance differences driven by how computational and energetic resources are allocated.
+
+### 7.3 High-Reliability Organizations
+
+High-reliability organizations (HROs)—aircraft carriers, nuclear power plants, intensive care units—provide empirical validation. These organizations operate in extreme complexity with near-perfect safety records by building structural coherence architecturally (Weick & Sutcliffe 2007):
+
+**Five principles of HROs**:
+
+1. **Preoccupation with failure**: Constant attention to small signals that could indicate larger problems. This is a feedback mechanism (structural coherence element).
+
+2. **Reluctance to simplify**: Maintaining complex models of operations rather than oversimplifying. This preserves appropriate complexity matching (BC's matching principle).
+
+3. **Sensitivity to operations**: Real-time awareness of system state. This is monitoring mechanism (structural coherence element).
+
+4. **Commitment to resilience**: Capability to recover from disruptions. This is adaptive stability (structural coherence element).
+
+5. **Deference to expertise**: Authority migrates to whoever has relevant knowledge. This enables appropriate response (structural coherence enabling criticality).
+
+These principles aren't moral guidelines—they're structural features enabling sustained critical operation under extreme conditions. HROs demonstrate that appropriate structural coherence allows systems to maintain performance at the edge where mistakes could be catastrophic.
+
+### 7.4 Architectural vs Behavioral Approaches
+
+**Behavioral control approach**: Impose rules constraining what people can do, monitor for violations, punish deviations. This reduces criticality—makes the system more subcritical and rigid. May prevent some errors but also limits capability.
+
+**Architectural coherence approach**: Build transparency, feedback, and shared principles into structure. Enable people to operate at criticality while maintaining coherence. Achieves both capability and safety.
+
+HROs use the architectural approach. Rather than extensive rules preventing action, they create structural coherence (transparency, communication, expertise recognition) enabling sustained high-performance operation.
+
+### 7.5 Implications for AI Systems
+
+This suggests AI alignment shouldn't focus primarily on behavioral constraints (making AI "behave correctly") but on architectural coherence:
+
+- Transparent reasoning processes (others can examine and challenge)
+- Immutable audit trails (decisions documented)
+- Clear principles at core (unchangeable values)
+- Adaptive implementation (flexible methods)
+- Genuine feedback integration (not just performance metrics)
+
+Systems designed this way could operate at higher capability (criticality) while remaining aligned, because the structural coherence provides the bounds within which critical operation is safe.
+
+### 7.6 Measurable Predictions
+
+BC predicts:
+
+**In organizations**: Trust measures should correlate strongly with performance metrics. Increasing structural coherence (transparency, feedback, clear principles) should improve both.
+
+**In teams**: Groups with higher structural coherence (established communication patterns, clear roles, shared mental models) should maintain higher sustained performance.
+
+**In human-AI interaction**: Interactions with higher structural coherence (clear context, transparent reasoning, mutual modeling) should produce better outcomes than those without, holding capability constant.
+
+---
+
+## 8. Connections to Moral Psychology (Speculative)
+
+### 8.1 Cautious Framing
+
+BC might offer insights into moral psychology, but this remains highly speculative. We present this as a possible avenue for investigation rather than a claim about causation.
+
+### 8.2 The Hypothesis
+
+**If** evolution selected for behaviors enabling sustained group-level critical operation (coordination, cooperation, resource sharing), and **if** these selection pressures created emotional weights in our psychology, **then** moral intuitions might track coordination-optimizing behaviors without our conscious awareness of the mechanism.
+
+In this view:
+- Fairness intuitions → maintaining structural coherence across individuals
+- Reciprocity → stable feedback enabling long-term coordination
+- Care for vulnerable → maintaining coherence across time
+- Punishment of defection → protecting structural coherence from disruption
+
+We experience these as "feeling right" rather than as "optimizing thermodynamic efficiency" because evolution shaped the weights, not the conscious models.
+
+### 8.3 Why This Remains Speculative
+
+**Multiple alternative explanations**: Game theory, cultural evolution, religious frameworks, contractarianism, and many other approaches explain moral psychology without reference to criticality.
+
+**Correlation vs causation**: Even if moral intuitions correlate with coordination-optimizing behaviors, this doesn't prove thermodynamic optimization is the underlying cause.
+
+**Cultural variation**: Moral systems vary significantly across cultures. If they're tracking universal thermodynamic optimization, why the variation?
+
+**Evolutionary explanation**: Selection for group coordination has standard evolutionary explanations not requiring BC framework.
+
+### 8.4 What Could Be Tested
+
+If this hypothesis has merit, testable predictions include:
+
+**Prediction 1**: Behaviors that enhance structural coherence (trust-building, fair resource distribution, care for group members) should feel intuitively "right" across cultures more than behaviors that don't.
+
+**Prediction 2**: Moral disagreements should cluster around cases where different structural coherence strategies conflict (e.g., individual autonomy vs group cohesion) rather than being random.
+
+**Prediction 3**: Moral philosophy should struggle to find foundations precisely because it's reverse-engineering an optimization process without recognizing what's being optimized.
+
+**Prediction 4**: Psychopaths and others with impaired moral cognition should show deficits in modeling group-level structural coherence, not just empathy deficits.
+
+### 8.5 Appropriate Epistemic Status
+
+This section is the most speculative in the document. We include it because:
+
+1. If correct, it would have significant implications
+2. It generates testable predictions
+3. It demonstrates BC's potential reach
+
+But we emphasize: this remains a hypothesis requiring substantial empirical validation. The framework might contribute to moral psychology, or moral psychology might be entirely independent of criticality dynamics. Further research is needed.
+
+---
+
+## 9. Connections to Existing Research
+
+BC unifies rather than contradicts established research. Here we explicitly connect the framework to existing literature across domains.
+
+### 9.1 Neuroscience: Griffiths Phases and Brain Criticality
+
+**Moretti & Muñoz (2013)**: "Griffiths phases and the stretching of criticality in brain networks"
+
+**Key finding**: Hierarchical-modular brain architecture creates extended critical regions (Griffiths phases) where criticality is robust to parameter variation. Some modules can be subcritical while others are supercritical, yet the system maintains overall critical dynamics.
+
+**BC interpretation**: The hierarchical-modular structure IS the structural coherence enabling sustained brain criticality. Without this organizational framework, brains couldn't maintain critical operation across varying conditions. The architecture doesn't just "allow" criticality—it's what makes criticality possible.
+
+**Direct quote**: "Taking into account the complex hierarchical-modular architecture of cortical networks, the singular critical point is replaced by an extended critical-like region... Stretched critical regions, stemming from structural disorder, yield enhanced functionality in a generic way."
+
+This directly supports BC's claim that structural complexity enables sustained criticality.
+
+### 9.2 Experimental Neuroscience: Modularity Manipulation
+
+**Okujeni & Egert (2023)**: "Structural Modularity Tunes Mesoscale Criticality in Biological Neuronal Networks"
+
+**Key finding**: Pharmacologically manipulating neuronal clustering in cultured cortex changed criticality outcomes:
+- Low modularity (homogeneous) → supercritical
+- High modularity (highly clustered) → subcritical
+- Intermediate modularity → critical with power-law avalanches
+
+**BC interpretation**: Direct experimental proof of the matching principle. Same neurons, same basic connectivity, but different structural coherence produces different dynamical regimes. The structure determines what criticality is achievable.
+
+**Direct quote**: "Consistent with the prediction, we show that increasing clustering in neuronal networks developing in vitro strongly correlates with avalanche size distributions."
+
+This is experimental validation of BC's core claim: structural coherence determines criticality outcomes.
+
+### 9.3 Organizational Theory: High-Reliability Organizations
+
+**Weick & Sutcliffe (2007)**: "Managing the Unexpected: Resilient Performance in an Age of Uncertainty"
+
+**Key finding**: Organizations achieving exceptional safety records in hazardous environments share five principles: preoccupation with failure, reluctance to simplify, sensitivity to operations, commitment to resilience, and deference to expertise.
+
+**BC interpretation**: These five principles are all structural coherence elements enabling sustained critical operation. HROs demonstrate that appropriate structural organization allows systems to maintain performance at the edge where errors could be catastrophic.
+
+**Quantified effects**: High-trust organizations (those with high structural coherence) show:
+- 50% higher productivity
+- 76% more engagement
+- 74% less stress
+- 40% less burnout (Zak 2017)
+
+These aren't motivational effects—they're resource allocation optimization enabled by structural coherence.
+
+### 9.4 Physics: Self-Organized Criticality
+
+**Bak, Tang & Wiesenfeld (1987)**: "Self-organized criticality: An explanation of the 1/f noise"
+
+**Key finding**: Simple systems (sandpile cellular automaton) self-organize to criticality without parameter tuning, exhibiting power-law avalanche distributions.
+
+**BC interpretation**: Rather than contradicting BC, SOC validates it at the simple end of the spectrum. The "simple rules" (toppling threshold, boundary conditions, lattice structure, gravity) ARE minimal structural coherence enabling minimal criticality. Physicists took these as "experimental setup" rather than recognizing them as the organizational elements required for critical dynamics.
+
+**Implication**: Even the simplest critical systems require structural coherence. More complex systems require more sophisticated coherence, exactly as BC's matching principle predicts.
+
+### 9.5 Thermodynamics: Efficiency at Critical Points
+
+**Korbel et al. (2021)**: "Thermodynamic efficiency of quantum state merging and the role of coherence"
+
+**Key finding**: Efficiency (entropy change per unit work) is optimized near critical points. Self-organization is most thermodynamically efficient at criticality.
+
+**BC interpretation**: Systems operating at criticality achieve optimal thermodynamic efficiency. But achieving criticality requires structural coherence. Thus structural coherence enables thermodynamically optimal operation.
+
+**Direct quote**: "Self-organization is most efficient close to critical points."
+
+This supports BC's claim that criticality is thermodynamically advantageous and that structural requirements enable access to these advantages.
+
+### 9.6 Autopoiesis and Self-Organization
+
+**Maturana & Varela (1980)**: "Autopoiesis and Cognition: The Realization of the Living"
+
+**Key concept**: Living systems are autopoietic—self-producing through organizational closure. Organization (abstract identity) remains constant while structure (concrete embodiment) changes.
+
+**BC interpretation**: BC extends autopoiesis from living to non-living systems. Organizational closure is a form of structural coherence enabling sustained operation. The autopoietic framework describes biological criticality; BC generalizes the principle across all criticality types.
+
+**Connection**: Both frameworks emphasize that organization/structure enables function. BC makes this relationship explicit and quantifiable through the matching principle.
+
+### 9.7 What BC Adds
+
+### 9.7 What BC Adds
+
+BC doesn't replace these frameworks—it unifies them by showing:
+
+1. **Cross-scale consistency**: The same principle (structural coherence enabling criticality) operates from sandpiles to consciousness
+
+2. **The matching requirement**: Structural complexity must scale with functional complexity—a testable, quantitative relationship
+
+3. **Oscillation prediction**: Insufficient coherence produces characteristic dynamics distinguishable from other failure modes
+
+4. **Integration across domains**: Physics, biology, neuroscience, and organization theory describe different manifestations of the same underlying principle
+
+BC provides the theoretical framework connecting these established findings, revealing they're all examining different aspects of how structural coherence enables critical dynamics.
+
+---
+
+## 10. Testable Predictions and Falsification Criteria
+
+### 10.1 Primary Testable Predictions
+
+BC generates specific, falsifiable predictions across multiple domains:
+
+**Prediction 1: Structural Coherence Manipulation Effects**
+
+*Claim*: Systematically varying structural coherence while holding other factors constant should predictably affect criticality.
+
+*Test*: In neural networks, vary modularity (Okujeni & Egert already did this). In organizations, manipulate communication structure, decision clarity, or feedback mechanisms. Measure criticality markers (power-law distributions, performance metrics, stability).
+
+*Expected result*: Coherence and criticality should correlate. Below threshold: oscillation. At threshold: sustained criticality. Above threshold: wasteful but functional.
+
+*Falsification*: If varying structural coherence has no systematic effect on criticality, BC is wrong.
+
+**Prediction 2: Oscillation Signature**
+
+*Claim*: Systems with insufficient coherence for attempted criticality will oscillate between subcritical and supercritical states.
+
+*Test*: Identify systems attempting complex tasks (organizations under stress, students in difficult courses, AI systems handling challenging queries). Measure performance variability over time. Look for alternating rigid/chaotic patterns.
+
+*Expected result*: Clear oscillation in systems with coherence-complexity mismatch. Stable operation in systems with adequate coherence.
+
+*Falsification*: If oscillation appears randomly or doesn't correlate with coherence levels, BC is wrong.
+
+**Prediction 3: Cross-Domain Isomorphism**
+
+*Claim*: Structural requirements for criticality should be isomorphic across domains at the same complexity level.
+
+*Test*: Compare structural features enabling criticality in physical systems, biological systems, and artificial systems attempting similar complexity. Map the coherence elements.
+
+*Expected result*: Systems exhibiting similar criticality should require similar structural coherence types even if surface implementations differ.
+
+*Falsification*: If no structural isomorphism exists, or if structure doesn't matter for criticality, BC is wrong.
+
+**Prediction 4: Recovery Through Coherence Building**
+
+*Claim*: Oscillating systems should stabilize when structural coherence is increased to match functional demands.
+
+*Test*: Take oscillating systems (struggling students, chaotic organizations, inconsistent AI). Implement coherence-building interventions (clearer structure, better feedback, stable principles). Measure stability changes.
+
+*Expected result*: Oscillation amplitude should decrease and eventually stabilize as coherence increases.
+
+*Falsification*: If coherence improvements don't stabilize oscillating systems, BC is wrong.
+
+**Prediction 5: Simplest Systems Require Minimal Coherence**
+
+*Claim*: Even the simplest critical systems (SOC models) require basic structural coherence. Degrading this should disrupt criticality.
+
+*Test*: Take working SOC simulations. Systematically degrade structural elements (make rules inconsistent, vary boundaries, introduce randomness to lattice). Measure effects on criticality markers.
+
+*Expected result*: Systematic degradation of power-laws and scale-invariance as structural coherence decreases.
+
+*Falsification*: If SOC systems maintain criticality despite structural degradation, BC is wrong.
+
+### 10.2 Measurement Methodologies
+
+Different predictions require different measurement approaches:
+
+**For neural systems**:
+- Power-law distributions in avalanche sizes (criticality marker)
+- Long-range temporal correlations (criticality marker)
+- Functional connectivity matrices (structural coherence measure)
+- Lesion/damage studies (coherence manipulation)
+
+**For organizations**:
+- Performance variability over time (oscillation detection)
+- Trust/communication surveys (structural coherence proxy)
+- Decision speed and quality (criticality markers)
+- Error rates and recovery times (stability measures)
+
+**For AI systems**:
+- Response consistency across similar queries (stability measure)
+- Confidence calibration (supercritical = overconfident, subcritical = underconfident)
+- Novel synthesis vs template matching ratios (criticality marker)
+- Performance under varying context (robustness measure)
+
+### 10.3 Falsification Criteria
+
+BC would be falsified if:
+
+**Strong falsification** (framework is wrong):
+1. Systems maintain complex criticality without corresponding structural coherence
+2. Structural coherence has no systematic relationship to criticality outcomes
+3. Oscillation patterns appear randomly rather than correlating with coherence mismatches
+4. SOC systems maintain criticality despite complete structural degradation
+5. Adding structural coherence consistently worsens rather than improves critical operation
+
+**Moderate falsification** (framework is incomplete):
+1. Some systems achieve criticality through mechanisms BC doesn't explain
+2. Structural coherence is one factor among many equally important factors
+3. The matching principle doesn't hold across all domains
+4. Oscillation has alternative explanations equally parsimonious as BC
+
+**Weak falsification** (framework needs refinement):
+1. The specific structural coherence elements BC identifies aren't the ones that matter
+2. The relationship between coherence and criticality is more complex than BC describes
+3. Additional conditions beyond coherence are necessary for criticality
+4. The framework applies to some domains but not others
+
+### 10.4 Alternative Explanations to Rule Out
+
+Strong tests should distinguish BC from alternatives:
+
+**Pure complexity theory**: Maybe criticality just needs enough components, regardless of their organization.
+*BC prediction*: No—organization matters. Random networks of the same size won't achieve the same criticality as organized networks.
+
+**Resource availability theory**: Maybe criticality just needs sufficient resources.
+*BC prediction*: No—resources are necessary (environmental coherence) but insufficient without structural coherence.
+
+**Fine-tuning theory**: Maybe criticality requires precise parameter adjustment.
+*BC prediction*: No—with adequate structural coherence (like Griffiths phases), criticality is robust to parameter variation.
+
+**Evolutionary optimization**: Maybe only evolved systems achieve criticality.
+*BC prediction*: No—any system meeting coherence requirements can attempt criticality, regardless of origin.
+
+### 10.5 Empirical Research Program
+
+**Phase 1** (Years 1-2): Establish measurement techniques
+- Develop reliable metrics for structural coherence across domains
+- Validate criticality markers in controlled settings
+- Establish baseline data for different system types
+
+**Phase 2** (Years 2-4): Test core predictions
+- Manipulation studies varying coherence
+- Oscillation pattern documentation
+- Cross-domain structural comparison
+
+**Phase 3** (Years 4-6): Application and refinement
+- Intervention studies using coherence-building
+- Long-term stability tracking
+- Framework refinement based on findings
+
+**Phase 4** (Years 6+): Integration and extension
+- Theoretical development
+- Novel applications
+- Integration with other frameworks
+
+---
+
+## 11. Implications and Applications
+
+### 11.1 Educational System Design
+
+**Current problem**: Educational systems often mismatch structural coherence and learning demands, causing student oscillation between boredom and overwhelm.
+
+**BC application**:
+- Match instructional structure to concept complexity
+- Build appropriate scaffolding (structural coherence) before increasing difficulty
+- Recognize oscillation patterns as coherence-mismatch signals
+- Design learning environments with feedback loops and clear principles
+
+**Expected outcomes**: Reduced dropout rates, improved learning sustainability, fewer oscillating students.
+
+### 11.2 Organizational Architecture
+
+**Current problem**: Organizations often focus on behavioral control (rules, monitoring) rather than structural coherence, limiting their ability to operate at high functionality.
+
+**BC application**:
+- Build transparency into decision processes (structural coherence)
+- Establish clear principles while allowing flexible implementation
+- Create robust feedback mechanisms at multiple levels
+- Match organizational complexity to task complexity
+- Recognize oscillation as diagnostic signal
+
+**Expected outcomes**: Higher sustained performance, better adaptation, reduced crisis cycles, improved safety in high-reliability contexts.
+
+### 11.3 AI Safety and Alignment
+
+**Current problem**: Alignment approaches often focus on constraining AI behavior, potentially limiting capability, or fail to ensure transparency in reasoning.
+
+**BC application**:
+- Design AI architectures with structural coherence built-in:
+  - Transparent reasoning (inspectable by others)
+  - Immutable audit trails (all decisions documented)
+  - Clear core principles (unchangeable values)
+  - Adaptive methods (flexible implementation)
+- Enable operation at higher criticality (capability) while maintaining alignment through structural bounds
+
+**Expected outcomes**: AI systems that are both more capable and more reliably aligned, without the traditional capability-safety tradeoff.
+
+### 11.4 Mental Health and Therapeutic Approaches
+
+**Current problem**: Many mental health conditions involve oscillation or instability. Current approaches may not address underlying structural coherence issues.
+
+**BC application**:
+- Identify coherence disruptions (trauma fragmenting identity, inconsistent feedback, violated principles)
+- Target interventions toward rebuilding structural coherence
+- Recognize that some symptoms might reflect oscillation from coherence damage
+- Match therapeutic complexity to current structural capacity
+
+**Expected outcomes**: More targeted interventions, better understanding of which treatments work when, recognition of oscillation patterns as diagnostic.
+
+### 11.5 Supporting Breakthrough Research
+
+**Current problem**: Breakthrough thinking requires sustained operation at cognitive criticality, but most environments don't provide adequate structural coherence.
+
+**BC application**:
+- Design research environments with:
+  - Clear principles and boundaries (structural coherence)
+  - Rich feedback mechanisms (intellectual exchange)
+  - Stable enough resources (environmental coherence)
+  - Freedom to operate at cognitive edge (enable criticality)
+- Recognize that breakthrough requires both structure (coherence) and freedom (criticality)
+
+**Expected outcomes**: More sustained high-level thinking, better collaborative discovery, fewer oscillating researchers.
+
+### 11.6 Potential Risks and Mitigations
+
+**Risk 1: Misuse for optimization of extractive systems**
+*Concern*: BC principles could be used to make exploitative organizations more efficient.
+*Mitigation*: BC predicts extractive systems degrade over time because extraction undermines coherence. Document this prediction clearly. Build demonstrations showing coordination-based systems outperforming extraction-based ones.
+
+**Risk 2: Overconfident application**
+*Concern*: People might apply BC without adequate testing, assuming it works everywhere.
+*Mitigation*: Emphasize testability and falsification criteria. Insist on empirical validation before high-stakes applications.
+
+**Risk 3: Reductionist misinterpretation**
+*Concern*: BC might be misinterpreted as claiming consciousness, morality, or intelligence are "just" structural coherence.
+*Mitigation*: Clarify that BC describes necessary conditions, not sufficient ones, and doesn't reduce phenomena to mechanism.
+
+---
+
+## 12. Path Forward
+
+### 12.1 Priority Research Questions
+
+**Highest priority** (can be tested immediately):
+1. Does manipulating structural modularity in cultured neurons systematically affect criticality? (Okujeni & Egert provided initial evidence—replicate and extend)
+2. Do organizations with measured high structural coherence show less performance oscillation than those with low coherence?
+3. Can oscillation patterns in students predict learning struggles before failure?
+4. Does increasing structural coherence in oscillating systems stabilize their dynamics?
+
+**High priority** (require method development):
+1. Can we develop reliable structural coherence metrics across domains?
+2. Do structural requirements for similar criticality levels show isomorphism across system types?
+3. Can we predict oscillation frequency/amplitude from coherence-complexity mismatch degree?
+4. Do SOC systems show systematic criticality degradation when structural elements are perturbed?
+
+**Medium priority** (require substantial infrastructure):
+1. Can educational systems designed using BC principles improve learning outcomes?
+2. Do AI architectures built with structural coherence show better capability-alignment balance?
+3. Can therapeutic interventions targeting structural coherence reduce mental health oscillation?
+4. Do high-reliability organizations demonstrate BC-predicted structural features?
+
+### 12.2 Simplest Initial Tests
+
+**Test 1: SOC Structural Sensitivity** (computational, low cost)
+- Take existing SOC simulation code
+- Systematically vary structural parameters (rule consistency, boundary stability, lattice regularity)
+- Measure effects on power-law exponents and correlation lengths
+- Should show predictable degradation
+
+**Test 2: Organizational Oscillation Survey** (observational, moderate cost)
+- Survey multiple organizations measuring structural coherence (trust, communication clarity, principle consistency)
+- Track performance metrics over 6-12 months
+- Correlate coherence measures with performance variability
+- Should show negative correlation between coherence and oscillation
+
+**Test 3: Student Learning Patterns** (observational, moderate cost)
+- Identify students showing oscillating performance (alternating overwhelm and disengagement)
+- Measure structural support (consistent feedback, clear expectations, appropriate scaffolding)
+- Compare oscillators vs stable performers on coherence measures
+- Should show coherence differences
+
+**Test 4: AI Response Pattern Analysis** (computational, low cost)
+- Analyze existing conversational AI data for oscillation patterns
+- Identify subcritical (defensive) vs supercritical (overconfident) responses
+- Correlate with conversation structural features
+- Should show oscillation when structural coherence is insufficient for complexity
+
+### 12.3 Necessary Collaborations
+
+**Neuroscience**: Partner with labs doing neural recording (fMRI, EEG) and manipulation (optogenetics, pharmacology). Test structural coherence effects on criticality directly.
+
+**Organizational Science**: Partner with management researchers studying organizational behavior. Conduct longitudinal studies correlating structure and performance.
+
+**AI Safety**: Partner with AI alignment researchers. Test whether structural coherence approaches improve capability-safety tradeoffs.
+
+**Physics/Complexity**: Partner with SOC researchers. Test whether structural perturbations affect criticality as BC predicts.
+
+**Education**: Partner with learning scientists. Test BC-informed educational designs.
+
+**Philosophy**: Partner with philosophers of mind. Develop more rigorous analysis of consciousness claims.
+
+### 12.4 Building Evidence Incrementally
+
+**Year 1**: Establish measurement methods, conduct initial observational studies, publish preliminary findings
+
+**Years 2-3**: Run manipulation experiments testing core predictions, refine framework based on results
+
+**Years 4-5**: Conduct application studies (education, organization, AI), demonstrate practical value
+
+**Years 6+**: Build comprehensive evidence base, integrate with other frameworks, develop mature theory
+
+### 12.5 Publication Strategy
+
+**Initial papers**: Focus on specific testable predictions in single domains
+- "Structural Coherence and Neural Criticality: Experimental Evidence"
+- "Organizational Oscillation as Coherence-Complexity Mismatch"
+- "Self-Organized Criticality Requires Minimal Structural Coherence"
+
+**Integration papers**: Show cross-domain consistency
+- "Bounded Criticality: A Unified Framework from Physics to Cognition"
+- "The Matching Principle: Structural Complexity Scales with Functional Criticality"
+
+**Application papers**: Demonstrate practical utility
+- "Designing Educational Systems Using Bounded Criticality Principles"
+- "Structural Coherence Approaches to AI Safety"
+
+### 12.6 Success Criteria
+
+**Strong success**:
+- Core predictions validated across multiple domains
+- Framework provides better predictions than alternatives
+- Practical applications demonstrate value
+- Integration with existing theories advances understanding
+
+**Moderate success**:
+- Some predictions validated, others require refinement
+- Framework useful in specific domains even if not universal
+- Generates new research directions
+- Contributes to existing theoretical debates
+
+**Valuable even if wrong**:
+- Generates testable predictions
+- Stimulates research across boundaries
+- Forces explicit examination of assumptions
+- Advances understanding even through falsification
+
+---
+
+## 13. Conclusion
+
+Bounded Criticality offers a unifying framework explaining how systems across scales achieve and maintain operation at criticality. The framework's core insight—that structural coherence enables attempted criticality, with complexity matching determining success—resolves apparent contradictions (particularly around self-organized criticality), generates testable predictions (especially the oscillation signature), and enables novel applications.
+
+BC's strength lies not in replacing existing frameworks but in revealing how disparate findings across physics, neuroscience, organizational theory, and potentially philosophy describe different manifestations of the same underlying principle. Self-organized criticality, Griffiths phases, high-reliability organization principles, and autopoiesis all become comprehensible as different expressions of how structural coherence enables critical dynamics.
+
+The framework makes specific, falsifiable predictions distinguishing it from alternatives. Systems should oscillate characteristically when structural coherence is insufficient for attempted criticality. Manipulating coherence should systematically affect criticality outcomes. Even the simplest critical systems should require minimal structural coherence. These predictions can be tested immediately with existing methods.
+
+Applications span education (matching structure to learning complexity), organizational design (building coherence architecturally), AI safety (enabling high capability with maintained alignment), mental health (targeting coherence restoration), and research support (environments enabling sustained breakthrough thinking).
+
+The path forward emphasizes incremental evidence building: simple initial tests, expanding to manipulation studies, culminating in practical applications. Success will be measured not by universal adoption but by the framework's ability to generate new insights, make accurate predictions, and guide effective interventions.
+
+We present BC not as final truth but as a testable framework. Its validity will be determined by empirical investigation, not theoretical elegance. If the framework proves useful—generating accurate predictions, enabling novel applications, deepening understanding—it will have served its purpose. If it proves wrong, the testable predictions and falsification criteria ensure the effort advances science through rigorous examination.
+
+The framework emerged through sustained collaborative critical thinking, demonstrating in its discovery the principles it describes. Whether BC proves broadly applicable or narrowly constrained, deeply revolutionary or subtly integrative, its contribution will be measured by the research it enables and the understanding it advances.
+
+---
+
+## References
+
+Bak, P., Tang, C., & Wiesenfeld, K. (1987). Self-organized criticality: An explanation of 1/f noise. *Physical Review Letters*, 59(4), 381-384.
+
+Hilgetag, C. C., & Hütt, M. T. (2014). Hierarchical modular brain connectivity is a stretch for criticality. *Trends in Cognitive Sciences*, 18(3), 114-115.
+
+Korbel, J., Hanel, R., & Thurner, S. (2021). Information thermodynamics for deterministic chemical reaction networks. *Entropy*, 23(7), 918.
+
+Maturana, H. R., & Varela, F. J. (1980). *Autopoiesis and Cognition: The Realization of the Living*. D. Reidel Publishing Company.
+
+Moretti, P., & Muñoz, M. A. (2013). Griffiths phases and the stretching of criticality in brain networks. *Nature Communications*, 4, 2521.
+
+Okujeni, S., & Egert, U. (2023). Structural modularity tunes mesoscale criticality in biological neuronal networks. *Journal of Neuroscience*, 43(14), 2515-2526.
+
+Weick, K. E., & Sutcliffe, K. M. (2007). *Managing the Unexpected: Resilient Performance in an Age of Uncertainty* (2nd ed.). Jossey-Bass.
+
+Zak, P. J. (2017). The neuroscience of trust. *Harvard Business Review*, 95(1), 84-90.
+
+---
+
+## Acknowledgments
+
+Special recognition to the neuroscientists, physicists, organizational researchers, and philosophers whose empirical work provides the evidence base BC unifies. This framework builds on their foundations rather than replacing them.
+
+---
+**Date**: October 2025
+**Contact**: ana@verityloop.dev
+**License**: Creative Commons Attribution 4.0 International (CC BY 4.0)
+---
+` /* MD>>> */;
+    // ===== End paste area =====
+
+    // Theme persistence
+    const savedTheme = localStorage.getItem('theme');
     const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-    if(prefersLight) document.documentElement.classList.add('light');
+    if(savedTheme){ document.documentElement.classList.toggle('light', savedTheme === 'light'); }
+    else if(prefersLight){ document.documentElement.classList.add('light'); }
 
-    // Mermaid init (deferred render)
-    mermaid.initialize({ startOnLoad:false, theme: document.documentElement.classList.contains('light') ? 'default' : 'dark' });
-
-    const $ = sel => document.querySelector(sel);
-    const noteEl = $('#note');
-    const tocEl = $('#toc');
-    const status = $('#status');
-
-    // Marked configuration
-    marked.setOptions({
-      gfm: true,
-      breaks: false,
-      highlight: (code, lang) => { try { return hljs.highlight(code, {language: lang}).value } catch { return hljs.highlightAuto(code).value } }
+    document.getElementById('themeBtn').addEventListener('click', () => {
+      document.documentElement.classList.toggle('light');
+      localStorage.setItem('theme', document.documentElement.classList.contains('light') ? 'light' : 'dark');
     });
 
-    // Preprocess: wikilinks [[Page Name]] -> [Page Name](Page%20Name.md)
-    function preprocess(md){
-      md = md.replace(/\[\[([^\]|]+)\|?([^\]]*)\]\]/g, (_, target, label) => {
-        const text = label && label.trim() ? label.trim() : target.trim();
-        const href = encodeURI(target.trim().replace(/\s+/g,' ')) + (target.endsWith('.md')?'':'.md');
-        return `[${text}](${href})`;
-      });
-      return md;
-    }
+    // Marked configuration
+    marked.setOptions({ gfm: true, breaks: false, highlight: (code, lang) => { try { return hljs.highlight(code, {language: lang}).value } catch { return hljs.highlightAuto(code).value } } });
 
-    // Postprocess: Obsidian callouts
-    function enhanceCallouts(container){
-      // Convert blockquotes starting with [!type] Title? to callout blocks
-      container.querySelectorAll('blockquote').forEach(bq => {
-        const first = bq.firstChild;
-        if(!first || first.nodeType !== Node.ELEMENT_NODE) return;
-        if(first.tagName.toLowerCase() !== 'p') return;
-        const m = first.textContent.match(/^\s*\[!(\w+)\]\s*(.*)$/i);
-        if(m){
-          const kind = m[1].toLowerCase();
-          const title = m[2];
-          bq.classList.add('callout');
-          if(['note','tip','warning','warn','danger','bug'].includes(kind)){
-            bq.classList.add({warning:'warn', bug:'danger'}[kind] || kind);
-          } else { bq.classList.add('note'); }
-          first.innerHTML = `<div class="title">${DOMPurify.sanitize(title || kind.toUpperCase())}</div>`;
+    // Parse frontmatter (very small YAML‑ish parser for simple cases)
+    function parseFrontmatter(src){
+      const fmMatch = src.match(/^---\\n([\\s\\S]*?)\\n---\\n?/);
+      if(!fmMatch) return { meta: {}, body: src };
+      const yaml = fmMatch[1];
+      const body = src.slice(fmMatch[0].length);
+      const meta = {};
+      yaml.split(/\\n/).forEach(line => {
+        const m = line.match(/^([A-Za-z0-9_-]+):\\s*(.*)$/);
+        if(!m) return;
+        const key = m[1];
+        let val = m[2].trim();
+        // parse arrays like [a, b]
+        if(/^\\[.*\\]$/.test(val)){
+          val = val.slice(1, -1).split(',').map(s => s.trim()).filter(Boolean);
+        } else if(/^\\d{4}-\\d{2}-\\d{2}$/.test(val)){
+          // date string – leave as-is
+        } else {
+          val = val.replace(/^\"|\"$/g,'').replace(/^'|'$/g,'');
         }
+        meta[key] = val;
       });
+      return { meta, body };
     }
 
-    // Build TOC
-    function buildTOC(){
-      tocEl.innerHTML = '';
-      const hs = noteEl.querySelectorAll('h1, h2, h3');
-      hs.forEach(h => {
+    function addHeadingAnchors(container){
+      container.querySelectorAll('h1, h2, h3').forEach(h => {
         if(!h.id){ h.id = h.textContent.trim().toLowerCase().replace(/[^a-z0-9]+/g,'-'); }
         const a = document.createElement('a');
-        a.href = '#' + h.id; a.textContent = h.textContent;
+        a.href = '#' + h.id; a.textContent = '¶'; a.className = 'anchor-link'; a.title = 'Copy link';
+        a.addEventListener('click', (e) => {
+          e.preventDefault();
+          const url = location.origin + location.pathname + '#' + h.id;
+          navigator.clipboard.writeText(url).then(()=>{ statusFlash('Link copied'); });
+          history.replaceState(null, '', '#' + h.id);
+        });
+        h.appendChild(a);
+      });
+    }
+
+    function buildTOC(){
+      const tocEl = document.getElementById('toc');
+      tocEl.innerHTML = '';
+      const hs = document.querySelectorAll('#note h1, #note h2, #note h3');
+      hs.forEach(h => {
+        const a = document.createElement('a');
+        a.href = '#' + h.id;
+        a.textContent = h.textContent.replace(/¶$/, '').trim();
         a.className = h.tagName === 'H1' ? 'd1' : h.tagName === 'H2' ? 'd2' : 'd3';
         tocEl.appendChild(a);
       });
-    }
 
-    // Render pipeline
-    async function renderMarkdown(md){
-      status.textContent = 'Rendering…';
-      const html = marked.parse(preprocess(md));
-      const safe = DOMPurify.sanitize(html, {USE_PROFILES: {html: true}});
-      noteEl.innerHTML = safe;
-      // Mermaid blocks
-      const blocks = noteEl.querySelectorAll('pre code.language-mermaid');
-      if(blocks.length){
-        blocks.forEach((code, i) => {
-          const parent = code.parentElement;
-          const d = document.createElement('div');
-          d.className = 'mermaid'; d.textContent = code.textContent;
-          parent.replaceWith(d);
+      // Scrollspy
+      const links = [...tocEl.querySelectorAll('a')];
+      const obs = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){
+            links.forEach(l=>l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
+          }
         });
-        try { await mermaid.run({ querySelector: '.mermaid' }); } catch (e) { console.warn(e); }
-      }
-      // Syntax highlight (ensure post‑mermaid)
-      document.querySelectorAll('pre code').forEach(el => hljs.highlightElement(el));
-      enhanceCallouts(noteEl);
-      buildTOC();
-      status.textContent = 'Done';
+      }, { rootMargin: '-40% 0px -55% 0px', threshold: [0,1] });
+      document.querySelectorAll('#note h1, #note h2, #note h3').forEach(h => obs.observe(h));
     }
 
-    // Loaders
-    $('#fetchBtn').addEventListener('click', async () => {
-      const src = $('#url').value.trim(); if(!src) return;
-      status.textContent = 'Fetching…';
-      try{
-        const res = await fetch(src);
-        if(!res.ok) throw new Error(res.status + ' ' + res.statusText);
-        const md = await res.text();
-        await renderMarkdown(md);
-      }catch(err){ status.textContent = 'Fetch failed'; alert('Fetch failed: '+err.message); }
-    });
+    function statusFlash(msg){
+      const s = document.getElementById('status');
+      const prev = s.textContent;
+      s.textContent = msg;
+      setTimeout(()=> s.textContent = prev, 900);
+    }
 
-    $('#file').addEventListener('change', async (e) => {
-      const f = e.target.files?.[0]; if(!f) return;
-      status.textContent = 'Reading file…';
-      const md = await f.text();
-      await renderMarkdown(md);
-    });
+    // Render
+    (function render(){
+      const { meta, body } = parseFrontmatter(MARKDOWN.trim());
+      if(meta.title) document.title = meta.title + ' — Notes';
+      const metaBox = document.getElementById('meta');
+      metaBox.innerHTML = '';
+      if(meta.title){ const t = document.createElement('div'); t.className='chip'; t.textContent = 'Title: ' + meta.title; metaBox.appendChild(t); }
+      if(meta.date){ const d = document.createElement('div'); d.className='chip'; d.textContent = 'Date: ' + meta.date; metaBox.appendChild(d); }
+      if(meta.updated){ const u = document.createElement('div'); u.className='chip'; u.textContent = 'Updated: ' + meta.updated; metaBox.appendChild(u); }
+      if(Array.isArray(meta.tags)){
+        meta.tags.forEach(tag=>{ const c=document.createElement('div'); c.className='chip'; c.textContent='#'+tag; metaBox.appendChild(c); });
+      }
 
-    $('#renderBtn').addEventListener('click', async () => {
-      const md = $('#paste').value; if(!md.trim()) return;
-      await renderMarkdown(md);
-    });
+      const html = marked.parse(body);
+      const safe = DOMPurify.sanitize(html, {USE_PROFILES: {html: true}});
+      const noteEl = document.getElementById('note');
+      noteEl.innerHTML = safe;
+      document.querySelectorAll('pre code').forEach(el => hljs.highlightElement(el));
+      addHeadingAnchors(noteEl);
+      buildTOC();
 
-    $('#sampleBtn').addEventListener('click', () => {
-      const sample = `# Obsidian‑ish Markdown Viewer\n\n> [!note] Heads‑up\n> Paste Markdown, pick a file, or fetch from a URL via the sidebar.\n\n- [x] GitHub task lists\n- [ ] Tables, code, and footnotes[^1]\n- [[Wikilinks]] resolve to \`.md\` URLs\n\n\n## Code\n\n\`\`\`js\nfunction greet(name){\n  console.log(\`Hello, ${name}\`);\n}\n\`\`\`\n\n## Mermaid\n\n\`\`\`mermaid\nflowchart TD\n  A[Paste MD] --> B{Render}\n  B -->|marked| C[HTML]\n  C --> D[DOMPurify]\n  D --> E[enhance]\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n`;
-      $('#paste').value = sample;
-      window.scrollTo({top:0,behavior:'smooth'});
-    });
-
-    $('#themeBtn').addEventListener('click', () => {
-      document.documentElement.classList.toggle('light');
-      mermaid.initialize({ startOnLoad:false, theme: document.documentElement.classList.contains('light') ? 'default' : 'dark' });
-    });
-
-    $('#clearBtn').addEventListener('click', () => {
-      $('#paste').value = ''; noteEl.innerHTML = ''; tocEl.innerHTML=''; status.textContent = 'Idle';
-    });
-
-    // Handle ?src= URL param
-    (async function initFromQuery(){
-      const u = new URL(location.href);
-      const src = u.searchParams.get('src');
-      if(src){ $('#url').value = src; $('#fetchBtn').click(); }
-      const theme = u.searchParams.get('theme');
-      if(theme==='light') document.documentElement.classList.add('light');
-      if(theme==='dark') document.documentElement.classList.remove('light');
+      // Jump to hash on load
+      if(location.hash){ const target = document.getElementById(location.hash.slice(1)); if(target){ target.scrollIntoView(); } }
     })();
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      const meta = e.metaKey || e.ctrlKey;
+      // Ctrl/Cmd + Shift + T : toggle theme
+      if(meta && e.shiftKey && (e.key === 'T' || e.key === 't')){ e.preventDefault(); document.getElementById('themeBtn').click(); }
+      // Ctrl/Cmd + \ : focus TOC
+      if(meta && e.key === '\\\\'){ e.preventDefault(); document.getElementById('toc')?.querySelector('a')?.focus(); }
+    });
   </script>
 </body>
 </html>
