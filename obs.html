@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Markdown Note Viewer — Obsidian‑ish</title>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <style>
+    :root{
+      --bg:#0f1115;           /* near‑obsidian dark */
+      --panel:#161a22;        /* card/bg */
+      --muted:#8b90a1;        /* muted text */
+      --fg:#e6e9ef;           /* main text */
+      --accent:#7aa2f7;       /* accent (links) */
+      --outline:#2a3140;      /* borders */
+      --code-bg:#0b0d12;
+      --callout-note:#1c2333;
+      --callout-tip:#0f2a1d;
+      --callout-warn:#2c1e10;
+      --callout-danger:#31151c;
+      --shadow: 0 8px 30px rgba(0,0,0,.35);
+      --radius: 16px;
+      --content-w: 860px;
+    }
+    html.light{
+      --bg:#f7f8fb; --panel:#ffffff; --muted:#5a6475; --fg:#10121a; --accent:#1d4ed8; --outline:#e8eaf1; --code-bg:#f2f4f8;
+      --callout-note:#eef2ff; --callout-tip:#e6fff3; --callout-warn:#fff6e5; --callout-danger:#ffeef0;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{display:grid;grid-template-columns:320px 1fr;gap:16px;max-width:1400px;margin:auto;padding:16px}
+    @media (max-width: 1024px){.wrap{grid-template-columns:1fr}}
+
+    /* Sidebar */
+    .side{background:var(--panel);border:1px solid var(--outline);border-radius:var(--radius);padding:14px;position:sticky;top:12px;height:calc(100dvh - 24px);overflow:auto;box-shadow:var(--shadow)}
+    .side h2{margin:2px 0 10px 0;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+    .group{border-top:1px dashed var(--outline);padding-top:10px;margin-top:10px}
+    .row{display:flex;gap:8px;align-items:center;margin:6px 0}
+    .row input[type="text"], .row textarea{width:100%;background:var(--bg);border:1px solid var(--outline);border-radius:10px;color:var(--fg);padding:10px}
+    .row textarea{min-height:120px;resize:vertical}
+    .btn{appearance:none;border:1px solid var(--outline);background:transparent;color:var(--fg);padding:8px 10px;border-radius:10px;cursor:pointer}
+    .btn:hover{border-color:var(--accent)}
+    .btn.primary{background:var(--accent);border-color:var(--accent);color:white}
+    .hint{color:var(--muted);font-size:12px;margin:6px 0}
+    .split{display:grid;grid-template-columns:1fr auto;gap:8px}
+    .chip{font-size:12px;border:1px solid var(--outline);padding:4px 8px;border-radius:999px;color:var(--muted)}
+
+    /* Content */
+    .content{background:var(--panel);border:1px solid var(--outline);border-radius:var(--radius);box-shadow:var(--shadow);padding:8px}
+    .note{max-width:var(--content-w);margin:auto;padding:24px}
+
+    /* Markdown (Obsidian‑ish) */
+    .note h1,.note h2,.note h3,.note h4,.note h5{line-height:1.25}
+    .note h1{font-size:2rem;margin:0 0 1rem}
+    .note h2{font-size:1.5rem;margin:1.5rem 0 .75rem;border-bottom:1px solid var(--outline);padding-bottom:.35rem}
+    .note h3{font-size:1.25rem;margin:1.25rem 0 .5rem}
+    .note p{margin:.7rem 0}
+    .note blockquote{margin:.9rem 0;padding:.6rem .9rem;border-left:3px solid var(--outline);background:rgba(255,255,255,.02);border-radius:8px}
+    .note code{background:var(--code-bg);padding:.15em .4em;border-radius:6px;border:1px solid var(--outline);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.95em}
+    .note pre{background:var(--code-bg);border:1px solid var(--outline);border-radius:12px;overflow:auto;padding:14px}
+    .note pre code{border:none;padding:0;background:transparent}
+    .note table{border-collapse:collapse;width:100%;margin:1rem 0}
+    .note th,.note td{border:1px solid var(--outline);padding:.5rem;text-align:left}
+    .note hr{border:none;border-top:1px solid var(--outline);margin:1.5rem 0}
+    .note img{max-width:100%;border-radius:12px;border:1px solid var(--outline)}
+    .note .task-list-item input{transform:translateY(2px)}
+
+    /* Callouts */
+    .callout{border:1px solid var(--outline);border-left-width:6px;border-radius:12px;padding:10px 12px;margin:1rem 0}
+    .callout.note{background:var(--callout-note);border-left-color:#7aa2f7}
+    .callout.tip{background:var(--callout-tip);border-left-color:#22c55e}
+    .callout.warn{background:var(--callout-warn);border-left-color:#f59e0b}
+    .callout.danger{background:var(--callout-danger);border-left-color:#ef4444}
+    .callout .title{font-weight:600;margin-bottom:.25rem}
+
+    /* TOC */
+    #toc{font-size:14px}
+    #toc a{display:block;padding:6px 8px;border-radius:8px;color:var(--muted)}
+    #toc a:hover{background:var(--bg);color:var(--fg)}
+    #toc .d2{padding-left:12px}
+    #toc .d3{padding-left:24px}
+
+    /* Header bar */
+    .topbar{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-bottom:8px}
+    .title{font-weight:600;color:var(--muted);letter-spacing:.02em}
+    .spacer{flex:1}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <aside class="side" id="sidebar">
+      <div class="topbar">
+        <div class="title">Markdown Note Viewer</div>
+        <span class="chip" id="status">Idle</span>
+      </div>
+
+      <h2>Load note</h2>
+      <div class="group">
+        <div class="row split">
+          <input type="text" id="url" placeholder="https://example.com/note.md  or  ?src=..." />
+          <button class="btn" id="fetchBtn">Fetch</button>
+        </div>
+        <div class="hint">URL param <code>?src=</code> is supported. CORS must allow fetch.</div>
+        <div class="row">
+          <input type="file" id="file" accept=".md,.markdown,.txt" />
+        </div>
+        <div class="hint">…or paste raw Markdown</div>
+        <div class="row">
+          <textarea id="paste" placeholder="Paste Markdown here…"></textarea>
+        </div>
+        <div class="row">
+          <button class="btn primary" id="renderBtn">Render</button>
+          <button class="btn" id="sampleBtn">Sample</button>
+        </div>
+      </div>
+
+      <h2>Options</h2>
+      <div class="group">
+        <div class="row split">
+          <button class="btn" id="themeBtn">Toggle Theme</button>
+          <button class="btn" id="clearBtn">Clear</button>
+        </div>
+        <div class="hint">Supports GitHub‑style fenced code, task lists, tables, footnotes, mermaid blocks, Obsidian callouts, and wikilinks.</div>
+      </div>
+
+      <h2>Contents</h2>
+      <nav id="toc" class="group" aria-label="Table of contents"></nav>
+    </aside>
+
+    <main class="content">
+      <article id="note" class="note" aria-live="polite"></article>
+    </main>
+  </div>
+
+  <!-- Libraries -->
+  <script src="https://unpkg.com/marked@12.0.2/marked.min.js"></script>
+  <script src="https://unpkg.com/dompurify@3.1.7/dist/purify.min.js"></script>
+  <script src="https://unpkg.com/highlight.js@11.9.0/lib/common.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/highlight.js@11.9.0/styles/github-dark-dimmed.min.css">
+  <script src="https://unpkg.com/mermaid@10.9.1/dist/mermaid.min.js"></script>
+
+  <script>
+    // Theme init
+    const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+    if(prefersLight) document.documentElement.classList.add('light');
+
+    // Mermaid init (deferred render)
+    mermaid.initialize({ startOnLoad:false, theme: document.documentElement.classList.contains('light') ? 'default' : 'dark' });
+
+    const $ = sel => document.querySelector(sel);
+    const noteEl = $('#note');
+    const tocEl = $('#toc');
+    const status = $('#status');
+
+    // Marked configuration
+    marked.setOptions({
+      gfm: true,
+      breaks: false,
+      highlight: (code, lang) => { try { return hljs.highlight(code, {language: lang}).value } catch { return hljs.highlightAuto(code).value } }
+    });
+
+    // Preprocess: wikilinks [[Page Name]] -> [Page Name](Page%20Name.md)
+    function preprocess(md){
+      md = md.replace(/\[\[([^\]|]+)\|?([^\]]*)\]\]/g, (_, target, label) => {
+        const text = label && label.trim() ? label.trim() : target.trim();
+        const href = encodeURI(target.trim().replace(/\s+/g,' ')) + (target.endsWith('.md')?'':'.md');
+        return `[${text}](${href})`;
+      });
+      return md;
+    }
+
+    // Postprocess: Obsidian callouts
+    function enhanceCallouts(container){
+      // Convert blockquotes starting with [!type] Title? to callout blocks
+      container.querySelectorAll('blockquote').forEach(bq => {
+        const first = bq.firstChild;
+        if(!first || first.nodeType !== Node.ELEMENT_NODE) return;
+        if(first.tagName.toLowerCase() !== 'p') return;
+        const m = first.textContent.match(/^\s*\[!(\w+)\]\s*(.*)$/i);
+        if(m){
+          const kind = m[1].toLowerCase();
+          const title = m[2];
+          bq.classList.add('callout');
+          if(['note','tip','warning','warn','danger','bug'].includes(kind)){
+            bq.classList.add({warning:'warn', bug:'danger'}[kind] || kind);
+          } else { bq.classList.add('note'); }
+          first.innerHTML = `<div class="title">${DOMPurify.sanitize(title || kind.toUpperCase())}</div>`;
+        }
+      });
+    }
+
+    // Build TOC
+    function buildTOC(){
+      tocEl.innerHTML = '';
+      const hs = noteEl.querySelectorAll('h1, h2, h3');
+      hs.forEach(h => {
+        if(!h.id){ h.id = h.textContent.trim().toLowerCase().replace(/[^a-z0-9]+/g,'-'); }
+        const a = document.createElement('a');
+        a.href = '#' + h.id; a.textContent = h.textContent;
+        a.className = h.tagName === 'H1' ? 'd1' : h.tagName === 'H2' ? 'd2' : 'd3';
+        tocEl.appendChild(a);
+      });
+    }
+
+    // Render pipeline
+    async function renderMarkdown(md){
+      status.textContent = 'Rendering…';
+      const html = marked.parse(preprocess(md));
+      const safe = DOMPurify.sanitize(html, {USE_PROFILES: {html: true}});
+      noteEl.innerHTML = safe;
+      // Mermaid blocks
+      const blocks = noteEl.querySelectorAll('pre code.language-mermaid');
+      if(blocks.length){
+        blocks.forEach((code, i) => {
+          const parent = code.parentElement;
+          const d = document.createElement('div');
+          d.className = 'mermaid'; d.textContent = code.textContent;
+          parent.replaceWith(d);
+        });
+        try { await mermaid.run({ querySelector: '.mermaid' }); } catch (e) { console.warn(e); }
+      }
+      // Syntax highlight (ensure post‑mermaid)
+      document.querySelectorAll('pre code').forEach(el => hljs.highlightElement(el));
+      enhanceCallouts(noteEl);
+      buildTOC();
+      status.textContent = 'Done';
+    }
+
+    // Loaders
+    $('#fetchBtn').addEventListener('click', async () => {
+      const src = $('#url').value.trim(); if(!src) return;
+      status.textContent = 'Fetching…';
+      try{
+        const res = await fetch(src);
+        if(!res.ok) throw new Error(res.status + ' ' + res.statusText);
+        const md = await res.text();
+        await renderMarkdown(md);
+      }catch(err){ status.textContent = 'Fetch failed'; alert('Fetch failed: '+err.message); }
+    });
+
+    $('#file').addEventListener('change', async (e) => {
+      const f = e.target.files?.[0]; if(!f) return;
+      status.textContent = 'Reading file…';
+      const md = await f.text();
+      await renderMarkdown(md);
+    });
+
+    $('#renderBtn').addEventListener('click', async () => {
+      const md = $('#paste').value; if(!md.trim()) return;
+      await renderMarkdown(md);
+    });
+
+    $('#sampleBtn').addEventListener('click', () => {
+      const sample = `# Obsidian‑ish Markdown Viewer\n\n> [!note] Heads‑up\n> Paste Markdown, pick a file, or fetch from a URL via the sidebar.\n\n- [x] GitHub task lists\n- [ ] Tables, code, and footnotes[^1]\n- [[Wikilinks]] resolve to \`.md\` URLs\n\n\n## Code\n\n\`\`\`js\nfunction greet(name){\n  console.log(\`Hello, ${name}\`);\n}\n\`\`\`\n\n## Mermaid\n\n\`\`\`mermaid\nflowchart TD\n  A[Paste MD] --> B{Render}\n  B -->|marked| C[HTML]\n  C --> D[DOMPurify]\n  D --> E[enhance]\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n`;
+      $('#paste').value = sample;
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+
+    $('#themeBtn').addEventListener('click', () => {
+      document.documentElement.classList.toggle('light');
+      mermaid.initialize({ startOnLoad:false, theme: document.documentElement.classList.contains('light') ? 'default' : 'dark' });
+    });
+
+    $('#clearBtn').addEventListener('click', () => {
+      $('#paste').value = ''; noteEl.innerHTML = ''; tocEl.innerHTML=''; status.textContent = 'Idle';
+    });
+
+    // Handle ?src= URL param
+    (async function initFromQuery(){
+      const u = new URL(location.href);
+      const src = u.searchParams.get('src');
+      if(src){ $('#url').value = src; $('#fetchBtn').click(); }
+      const theme = u.searchParams.get('theme');
+      if(theme==='light') document.documentElement.classList.add('light');
+      if(theme==='dark') document.documentElement.classList.remove('light');
+    })();
+  </script>
+</body>
+</html>
