@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Bounded Criticality</title>
+  <title>Notes — Obsidian-ish (Read-Only)</title>
   <link rel="preconnect" href="https://unpkg.com" crossorigin>
   <style>
     :root{
@@ -69,13 +69,35 @@
       .wrap{grid-template-columns:1fr}
       .content{box-shadow:none;border:none}
     }
+
+    /* MathJax tweaks */
+    .note mjx-container[jax="SVG"] { line-height: 0; }
+    .note mjx-container { margin: .6em 0; }
   </style>
+
+  <!-- MathJax for LaTeX math rendering -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$','$$'], ['\\[','\\]']],
+        tags: 'ams',
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script','noscript','style','textarea','pre','code'],
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 </head>
 <body>
   <div class="wrap">
     <aside class="side">
       <div class="topbar">
-        <div class="title"></div>
+        <div class="title">Markdown Note</div>
         <span class="chip" id="status">Ready</span>
       </div>
       <h2>Options</h2>
@@ -1246,25 +1268,25 @@ Special recognition to the neuroscientists, physicists, organizational researche
     // Marked configuration
     marked.setOptions({ gfm: true, breaks: false, highlight: (code, lang) => { try { return hljs.highlight(code, {language: lang}).value } catch { return hljs.highlightAuto(code).value } } });
 
-    // Parse frontmatter (very small YAML‑ish parser for simple cases)
+    // Parse frontmatter (very small YAML-ish parser for simple cases)
     function parseFrontmatter(src){
-      const fmMatch = src.match(/^---\\n([\\s\\S]*?)\\n---\\n?/);
+      const fmMatch = src.match(/^---\n([\s\S]*?)\n---\n?/);
       if(!fmMatch) return { meta: {}, body: src };
       const yaml = fmMatch[1];
       const body = src.slice(fmMatch[0].length);
       const meta = {};
-      yaml.split(/\\n/).forEach(line => {
-        const m = line.match(/^([A-Za-z0-9_-]+):\\s*(.*)$/);
+      yaml.split(/\n/).forEach(line => {
+        const m = line.match(/^([A-Za-z0-9_-]+):\s*(.*)$/);
         if(!m) return;
         const key = m[1];
         let val = m[2].trim();
         // parse arrays like [a, b]
-        if(/^\\[.*\\]$/.test(val)){
+        if(/^\[.*\]$/.test(val)){
           val = val.slice(1, -1).split(',').map(s => s.trim()).filter(Boolean);
-        } else if(/^\\d{4}-\\d{2}-\\d{2}$/.test(val)){
-          // date string – leave as-is
+        } else if(/^\d{4}-\d{2}-\d{2}$/.test(val)){
+          // date string
         } else {
-          val = val.replace(/^\"|\"$/g,'').replace(/^'|'$/g,'');
+          val = val.replace(/^"|"$/g,'').replace(/^'|'$/g,'');
         }
         meta[key] = val;
       });
@@ -1334,6 +1356,13 @@ Special recognition to the neuroscientists, physicists, organizational researche
       const safe = DOMPurify.sanitize(html, {USE_PROFILES: {html: true}});
       const noteEl = document.getElementById('note');
       noteEl.innerHTML = safe;
+
+      // Typeset math (MathJax)
+      if (window.MathJax && MathJax.typesetPromise) {
+        MathJax.typesetPromise([noteEl]).catch(() => {});
+      }
+
+      // Syntax highlight after math
       document.querySelectorAll('pre code').forEach(el => hljs.highlightElement(el));
       addHeadingAnchors(noteEl);
       buildTOC();
@@ -1348,7 +1377,7 @@ Special recognition to the neuroscientists, physicists, organizational researche
       // Ctrl/Cmd + Shift + T : toggle theme
       if(meta && e.shiftKey && (e.key === 'T' || e.key === 't')){ e.preventDefault(); document.getElementById('themeBtn').click(); }
       // Ctrl/Cmd + \ : focus TOC
-      if(meta && e.key === '\\\\'){ e.preventDefault(); document.getElementById('toc')?.querySelector('a')?.focus(); }
+      if(meta && e.key === '\\'){ e.preventDefault(); document.getElementById('toc')?.querySelector('a')?.focus(); }
     });
   </script>
 </body>
