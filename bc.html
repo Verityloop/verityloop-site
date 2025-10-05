@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Notes — Obsidian-ish (Read-Only)</title>
+  <title>Bounded Criticality</title>
   <link rel="preconnect" href="https://unpkg.com" crossorigin>
   <style>
     :root{
@@ -129,8 +129,7 @@
   <div class="wrap">
     <aside class="side">
       <div class="topbar">
-        <div class="title">Markdown Note</div>
-        <span class="chip" id="status">Ready</span>
+        <div class="title">Bounded Criticality</div>
       </div>
       <h2>Options</h2>
       <div class="row">
@@ -1375,7 +1374,7 @@ Special recognition to the neuroscientists, physicists, organizational researche
     // Render
     (function render(){
       const { meta, body } = parseFrontmatter(MARKDOWN.trim());
-      if(meta.title) document.title = meta.title + ' — Notes';
+      if(meta.title) document.title = meta.title + ' — Index';
       const metaBox = document.getElementById('meta');
       metaBox.innerHTML = '';
       if(meta.title){ const t = document.createElement('div'); t.className='chip'; t.textContent = 'Title: ' + meta.title; metaBox.appendChild(t); }
