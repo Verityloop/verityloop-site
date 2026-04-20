@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Distinguishability-First Relational Cosmology</title>
+  <link id="dynamic-favicon" rel="icon" type="image/svg+xml" href="">
+  <style>
+    @import url('https://fonts.googleapis.com/css?family=JetBrains+Mono:400,700|Inter:400,500,600,700&display=swap');
+
+    :root{
+      --bg:#0f141a;
+      --bg2:#131b24;
+      --panel:rgba(22,30,40,.82);
+      --panel2:rgba(28,37,50,.92);
+      --line:rgba(96,181,255,.14);
+      --line-strong:rgba(96,181,255,.30);
+      --text:#f5f8fc;
+      --muted:#a9b8c8;
+      --heading:#ffffff;
+      --accent:#56ffe0;
+      --accent2:#4fc3f7;
+      --accent3:#1976d2;
+      --callout:#d4a574;
+      --good:#89e59b;
+      --warn:#f2cd79;
+      --bad:#ff9b96;
+      --emph:#e6c08a;
+      --subemph:#9fd7ff;
+      --sidebar-w:292px;
+      --content-w:1040px;
+      --hero-w:760px;
+      --radius-xl:22px;
+      --radius-lg:16px;
+      --radius-md:12px;
+      --shadow:0 18px 42px rgba(0,0,0,.28);
+      --glyph-ring-1:#4fc3f7;
+      --glyph-ring-2:#1976d2;
+      --glyph-triangle:#4fc3f7;
+      --glyph-iris-fill:#0d1b2a;
+      --glyph-iris-stroke:#1976d2;
+      --glyph-pulse:#d8ab73;
+      --glyph-filter:drop-shadow(0 0 28px rgba(79,195,247,.33)) drop-shadow(0 0 8px rgba(129,212,250,.20));
+      --bg-radial-1:rgba(73,255,245,.30);
+      --bg-radial-2:rgba(0,102,255,.18);
+    }
+
+    body.reader-theme{
+      --bg:#17130f;
+      --bg2:#1e1812;
+      --panel:rgba(36,28,20,.82);
+      --panel2:rgba(44,34,24,.92);
+      --line:rgba(227,176,111,.12);
+      --line-strong:rgba(227,176,111,.28);
+      --text:#f9f3e8;
+      --muted:#d2c1ab;
+      --heading:#fffaf0;
+      --accent:#f0c57e;
+      --accent2:#d8ab73;
+      --accent3:#8c5c45;
+      --callout:#9fd7ff;
+      --good:#a6dfa1;
+      --warn:#ffd88f;
+      --bad:#ffb29d;
+      --emph:#8fdcff;
+      --subemph:#8fdcff;
+      --glyph-ring-1:#d8ab73;
+      --glyph-ring-2:#8c5c45;
+      --glyph-triangle:#e0b07a;
+      --glyph-iris-fill:#1b140f;
+      --glyph-iris-stroke:#8c5c45;
+      --glyph-pulse:#4fc3f7;
+      --glyph-filter:drop-shadow(0 0 28px rgba(216,171,115,.22)) drop-shadow(0 0 8px rgba(140,92,69,.18));
+      --bg-radial-1:rgba(216,171,115,.20);
+      --bg-radial-2:rgba(140,92,69,.16);
+    }
+
+    *{box-sizing:border-box}
+    html,body{
+      margin:0;
+      min-height:100%;
+      background:var(--bg);
+      color:var(--text);
+      font-family:'Inter','JetBrains Mono',system-ui,sans-serif;
+      scroll-behavior:smooth;
+    }
+    body{
+      background:
+        radial-gradient(circle at 18% 28%, var(--bg-radial-1) 0%, transparent 33%),
+        radial-gradient(circle at 82% 82%, var(--bg-radial-2) 0%, transparent 28%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+      overflow-x:hidden;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.02), transparent 22%),
+        radial-gradient(1200px 520px at 50% -10%, rgba(255,255,255,.02), transparent 50%);
+      z-index:0;
+    }
+
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .app{
+      position:relative;
+      z-index:1;
+      display:grid;
+      grid-template-columns:minmax(250px,var(--sidebar-w)) minmax(0,1fr);
+      min-height:100vh;
+    }
+
+    .sidebar{
+      position:sticky;
+      top:0;
+      height:100vh;
+      overflow:auto;
+      padding:20px 14px 28px;
+      border-right:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(10,14,20,.72) 0%, rgba(10,14,20,.45) 100%);
+      backdrop-filter:blur(12px);
+    }
+    body.reader-theme .sidebar{
+      background:linear-gradient(180deg, rgba(21,16,12,.76) 0%, rgba(21,16,12,.48) 100%);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color:var(--heading);
+      font:700 1rem 'JetBrains Mono',monospace;
+      margin-bottom:14px;
+    }
+    .tiny{width:22px;height:22px;display:block}
+
+    .toggle-wrap{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+    .toggle{
+      appearance:none;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.02);
+      color:var(--text);
+      border-radius:999px;
+      padding:8px 12px;
+      font:600 .92rem 'Inter',sans-serif;
+      cursor:pointer;
+      transition:transform .16s ease, border-color .16s ease, background .16s ease;
+    }
+    .toggle:hover{
+      transform:translateY(-1px);
+      border-color:var(--line-strong);
+    }
+    .toggle.active{
+      background:linear-gradient(93deg, var(--accent) 0%, var(--accent2) 100%);
+      border-color:transparent;
+      color:#10141a;
+      box-shadow:0 6px 20px rgba(0,0,0,.14);
+    }
+
+    .toc-title{
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      font:700 .72rem 'JetBrains Mono',monospace;
+      margin:14px 0 8px;
+    }
+    .toc{list-style:none;padding:0;margin:0}
+    .toc li{margin:0 0 2px}
+    .toc a{
+      display:block;
+      padding:8px 10px;
+      border-radius:12px;
+      color:var(--text);
+      font-size:.92rem;
+      line-height:1.35;
+    }
+    .toc a:hover{
+      text-decoration:none;
+      background:rgba(255,255,255,.035);
+    }
+    .toc a.active{
+      background:rgba(255,255,255,.05);
+      outline:1px solid var(--line);
+    }
+
+    .main{min-width:0;padding:22px 18px 56px}
+    .shell{max-width:var(--content-w);margin:0 auto}
+
+    .hero{
+      max-width:var(--hero-w);
+      margin:0 auto 22px;
+      text-align:center;
+      padding:8px 0 0;
+    }
+
+    .glyph{
+      width:156px; height:156px;
+      margin:0 auto 1.4em;
+      animation: floatGlyph 6s ease-in-out infinite alternate;
+      filter: var(--glyph-filter);
+      display: block;
+      user-select:none;
+      -webkit-user-select:none;
+      -webkit-touch-callout:none;
+    }
+    @keyframes floatGlyph { from {transform: translateY(0);} to {transform: translateY(-14px);} }
+
+    h1,h2,h3,h4{
+      font-family:'JetBrains Mono','Inter',monospace,sans-serif;
+      color:var(--heading);
+      letter-spacing:-.03em;
+      line-height:1.14;
+      margin:0 0 .6em;
+    }
+    h1{font-size:clamp(2.2rem, 4vw, 3.2rem)}
+    h2{font-size:clamp(1.42rem, 2vw, 1.92rem);scroll-margin-top:16px}
+    h3{font-size:1.06rem;color:var(--accent);margin-top:1.35rem}
+    p, li{max-width:86ch; line-height:1.74}
+
+    .subtitle{
+      font:500 1.05rem 'JetBrains Mono',monospace;
+      color:var(--accent2);
+      letter-spacing:.08em;
+      text-transform:lowercase;
+      margin-bottom:10px;
+    }
+    .motto{
+      max-width:72ch;
+      margin:0 auto 10px;
+      color:var(--callout);
+      font-size:1.04rem;
+    }
+
+    .mode-panel{display:none}
+    .mode-panel.active{display:block}
+
+    .panel{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius-xl);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(10px) saturate(1.06);
+      padding:26px 26px 22px;
+      margin:0 auto 16px;
+    }
+    .section{scroll-margin-top:16px}
+    .section-intro{
+      color:var(--muted);
+      margin-bottom:14px;
+      max-width:86ch;
+    }
+
+    .block{
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.04);
+      border-radius:var(--radius-lg);
+      padding:16px 18px 14px;
+      margin:14px 0;
+    }
+    .def{border-left:4px solid var(--accent)}
+    .axiom{border-left:4px solid #99afff}
+    .prop{border-left:4px solid var(--good)}
+    .cor{border-left:4px solid var(--warn)}
+    .remark{border-left:4px solid var(--accent2)}
+    .target{border-left:4px solid var(--bad)}
+    .label{
+      display:inline-block;
+      font:700 .78rem 'JetBrains Mono',monospace;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      color:#fff;
+      margin-bottom:8px;
+    }
+
+    .equation{
+      display:block;
+      overflow:auto hidden;
+      margin:12px 0;
+      padding:12px 14px;
+      border-radius:var(--radius-md);
+      background:rgba(8,12,18,.82);
+      border:1px solid rgba(255,255,255,.04);
+    }
+    body.reader-theme .equation{
+      background:rgba(16,13,10,.72);
+    }
+
+    .reader-flow{
+      display:grid;
+      gap:16px;
+    }
+    .reader-section{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius-xl);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(10px) saturate(1.06);
+      padding:26px 26px 22px;
+      transition:border-color .24s ease, transform .24s ease;
+    }
+    .reader-section:hover{
+      border-color:var(--line-strong);
+      transform:translateY(-1px);
+    }
+    .reader-lede{
+      color:var(--callout);
+      font-size:1.04rem;
+    }
+
+    .glossary{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:12px;
+      margin-top:12px;
+    }
+    .term{
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.045);
+      border-radius:16px;
+      padding:14px;
+    }
+    .term strong{
+      display:block;
+      margin-bottom:4px;
+      color:var(--heading);
+      font-family:'JetBrains Mono',monospace;
+      font-size:.92rem;
+    }
+
+    .table-wrap{overflow:auto; margin:10px 0 4px}
+    table{
+      width:100%;
+      border-collapse:collapse;
+      background:rgba(8,12,18,.82);
+      border:1px solid rgba(255,255,255,.04);
+      border-radius:16px;
+      overflow:hidden;
+    }
+    body.reader-theme table{
+      background:rgba(16,13,10,.72);
+    }
+    th,td{
+      text-align:left;
+      vertical-align:top;
+      padding:11px 12px;
+      border-bottom:1px solid rgba(255,255,255,.05);
+    }
+    th{
+      font-family:'JetBrains Mono',monospace;
+      color:#fff;
+      background:rgba(255,255,255,.03);
+    }
+    tr:last-child td{border-bottom:none}
+
+    .foot{
+      max-width:var(--hero-w);
+      margin:10px auto 0;
+      color:var(--muted);
+      text-align:center;
+      font-size:.92rem;
+    }
+
+    mjx-container[jax="CHTML"][display="true"]{
+      margin:.95rem 0 !important;
+      overflow-x:auto;
+      overflow-y:hidden;
+      padding:.1rem 0;
+    }
+
+    @media (max-width: 1040px){
+      .app{grid-template-columns:1fr}
+      .sidebar{
+        position:relative;
+        height:auto;
+        border-right:none;
+        border-bottom:1px solid var(--line);
+      }
+    }
+    @media (max-width: 760px){
+      .main{padding:18px 12px 40px}
+      .panel,.reader-section{padding:20px 18px 18px}
+      .glyph{width:112px;height:112px}
+    }
+  
+    .section h2, .reader-section h2{
+      position:relative;
+      padding-bottom:.2rem;
+    }
+    .section h2::after, .reader-section h2::after{
+      content:"";
+      display:block;
+      width:72px;
+      height:2px;
+      margin-top:.45rem;
+      border-radius:999px;
+      background:linear-gradient(90deg, var(--accent) 0%, var(--accent2) 100%);
+      opacity:.75;
+    }
+
+    .section-intro, .reader-lede{
+      border-left:3px solid var(--line-strong);
+      padding-left:12px;
+    }
+
+    .reader-section:nth-child(odd){
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)),
+        var(--panel);
+    }
+
+    
+    .tooltip {
+      border-bottom: 1px dotted var(--tooltip-color);
+      cursor: help;
+      position: relative;
+      color: var(--tooltip-color);
+      outline: none;
+    }
+
+    .tooltip-text {
+      visibility: hidden;
+      background: var(--tooltip-bg);
+      color: var(--tooltip-color);
+      text-align: left;
+      border-radius: 6px;
+      padding: 0.75em 1.12em;
+      position: absolute;
+      z-index: 100;
+      bottom: 130%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1rem;
+      min-width: 210px;
+      max-width: 310px;
+      box-shadow: 0 4px 18px rgba(90, 60, 10, 0.15);
+      opacity: 0;
+      transition: opacity 0.22s;
+      pointer-events: none;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    .tooltip:focus .tooltip-text,
+    .tooltip:hover .tooltip-text,
+    .tooltip:focus-within .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    body:not(.reader-theme) {
+      --tooltip-color: #8fdcff;
+      --tooltip-bg: #1d2633;
+    }
+
+    body.reader-theme {
+      --tooltip-color: #c29a68;
+      --tooltip-bg: #312b1b;
+    }
+
+.lead-note{
+      color:var(--muted);
+      font-size:.98rem;
+    }
+
+  
+.emph{
+  color:var(--emph);
+  font-weight:600;
+}
+.subemph{
+  color:var(--subemph);
+  font-weight:600;
+}
+.call{
+  color:var(--callout);
+  font-weight:600;
+}
+
+
+.hero .subtitle{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:.55rem;
+  flex-wrap:wrap;
+}
+.hero-mode{
+  appearance:none;
+  border:none;
+  background:none;
+  color:var(--accent2);
+  padding:0;
+  margin:0;
+  font:500 1.05rem 'JetBrains Mono',monospace;
+  letter-spacing:.08em;
+  text-transform:lowercase;
+  cursor:pointer;
+  transition:color .18s ease, opacity .18s ease, transform .18s ease;
+  opacity:.7;
+}
+.hero-mode:hover,
+.hero-mode:focus{
+  color:var(--heading);
+  opacity:1;
+  outline:none;
+  text-decoration:none;
+  transform:translateY(-1px);
+}
+.hero-mode.active{
+  color:var(--heading);
+  opacity:1;
+  text-shadow:0 0 14px rgba(255,255,255,.08);
+}
+.hero-divider{
+  color:var(--muted);
+  opacity:.7;
+  user-select:none;
+}
+
+.brand{
+  letter-spacing:.02em;
+}
+
+.motto{
+  line-height:1.65;
+}
+
+.panel, .reader-section{
+  scroll-margin-top:24px;
+}
+
+@media (max-width: 760px){
+  .hero-mode{
+    font-size:.98rem;
+  }
+}
+
+</style>
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(','\\)'], ['$','$']],
+        displayMath: [['\\[','\\]'], ['$$','$$']]
+      },
+      chtml: { scale: 1.02, mtextInheritFont: true }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <svg class="tiny" viewBox="0 0 120 120" aria-hidden="true">
+          <path d="M60 14 Q83 50 106 60 Q83 70 60 106 Q37 70 14 60 Q37 50 60 14Z" fill="none" stroke="currentColor" stroke-width="7"/>
+          <circle cx="60" cy="60" r="11" fill="none" stroke="currentColor" stroke-width="6"/>
+        </svg>
+        <span>DFRC</span>
+      </div>
+
+      <div class="toggle-wrap" role="tablist" aria-label="Mode toggle">
+        <button class="toggle active" data-mode="paper" aria-selected="true">Paper</button>
+        <button class="toggle" data-mode="reader" aria-selected="false">Reader</button>
+      </div>
+
+      <div class="toc-title">Contents</div>
+      <ul class="toc" id="toc">
+        <li><a href="#" data-key="overview">Overview</a></li>
+        <li><a href="#" data-key="intro">Introduction</a></li>
+        <li><a href="#" data-key="primitive">Primitive layer</a></li>
+        <li><a href="#" data-key="budget">Budgeted admissibility</a></li>
+        <li><a href="#" data-key="qubit">Worked qubit example</a></li>
+        <li><a href="#" data-key="homogeneous">Homogeneous Darwinism model</a></li>
+        <li><a href="#" data-key="branch">Branching locus</a></li>
+        <li><a href="#" data-key="hetero">Heterogeneous environments</a></li>
+        <li><a href="#" data-key="commuting">Commuting bottleneck flow</a></li>
+        <li><a href="#" data-key="noncommuting">Modular noncommuting sector</a></li>
+        <li><a href="#" data-key="intrinsic">Intrinsic admissibility</a></li>
+        <li><a href="#" data-key="q">Record-rank</a></li>
+        <li><a href="#" data-key="heat">Heat death</a></li>
+        <li><a href="#" data-key="bigbang">Big Bang-side vanishing</a></li>
+        <li><a href="#" data-key="locality">Emergent locality</a></li>
+        <li><a href="#" data-key="regimes">Cosmological regimes</a></li>
+        <li><a href="#" data-key="cross">Cross-aeon compression</a></li>
+        <li><a href="#" data-key="fals">Falsification</a></li>
+        <li><a href="#" data-key="status">Status</a></li>
+        <li><a href="#" data-key="close">Closing</a></li>
+      </ul>
+    </aside>
+
+    <main class="main">
+      <div class="shell">
+        <section class="hero">
+          <svg class="glyph" viewBox="0 0 120 120" aria-label="Ana's symbolic glyph" role="img" tabindex="0">
+            <title>Ana's symbolic glyph: triangle, echoes, and iris</title>
+            <circle cx="60" cy="60" r="48" fill="none" stroke="var(--glyph-ring-1)" stroke-width="2.2" opacity="0.19"></circle>
+            <circle cx="60" cy="60" r="28" fill="none" stroke="var(--glyph-ring-2)" stroke-width="2.1" opacity="0.30"></circle>
+            <path d="M60 14 Q83 50 106 60 Q83 70 60 106 Q37 70 14 60 Q37 50 60 14Z" fill="none" stroke="var(--glyph-triangle)" stroke-width="2"></path>
+            <circle cx="60" cy="60" r="11" fill="var(--glyph-iris-fill)" stroke="var(--glyph-iris-stroke)" stroke-width="1.6"></circle>
+            <circle cx="60" cy="60" r="17" fill="none" stroke="var(--glyph-pulse)" stroke-width="1.2">
+              <animate attributeName="r" values="17;20;17" dur="2.7s" repeatCount="indefinite"></animate>
+              <animate attributeName="stroke-opacity" values="0.6;0.2;0.6" dur="2.7s" repeatCount="indefinite"></animate>
+            </circle>
+          </svg>
+
+          <h1>Distinguishability-First Relational Cosmology</h1>
+          <div class="subtitle">
+            <button class="hero-mode active" data-mode="paper" aria-pressed="true">paper mode</button>
+            <span class="hero-divider">/</span>
+            <button class="hero-mode" data-mode="reader" aria-pressed="false">reader mode</button>
+          </div>
+          <p class="motto">A theory note built around the claim that physically admissible distinguishability is more primitive than the classical structures that emerge from it.</p>
+        </section>
+
+        <section id="paper" class="mode-panel active">
+          <div id="paper-overview" class="panel section">
+            <h2>Abstract</h2>
+            <p>We formulate a distinguishability-first framework in which the primitive physical structure is not spacetime geometry, observer-tagged measurement, or exact branch ontology, but <strong>covariant admissible distinguishability</strong>: the extent to which states can be discriminated by bounded local interactions. On that basis we define branch structure, record redundancy, recursive record closure, relevance-preserving compression, and a cosmological record-rank order parameter. We prove a budgeted data-processing theorem, construct an explicit qubit admissibility class, compute the associated distinguishability functional in closed form, derive exact fragment-level accessible information in a Quantum Darwinism toy model, prove an exact finite-\(N\) threshold for redundant record formation, extract its strong- and weak-imprinting asymptotics, derive admissibility-sensitive branch distances, formulate a heterogeneous extension with distinct best-fragment and worst-fragment thresholds together with a heterogeneous order parameter, prove a nontrivial fixed-point theorem for an admissibility-coupled bottleneck flow in the commuting sector, extend that fixed-point structure to a modularly admissible noncommuting sector via conditional expectations, and prove vanishing of record-rank at heat death under explicit finite-dimensional hypotheses.</p>
+          </div>
+
+          <div id="paper-intro" class="panel section">
+            <h2>1. Introduction</h2>
+            <p>The guiding claim of this framework is that the physically load-bearing primitive is not geometry, not exact branching, and not observer-relative measurement, but the structure of which distinctions are physically realizable under bounded interactions. Spacetime locality, classical branches, stable identities, and cosmological cycle structure are then treated as downstream emergent organizations of admissible distinguishability.</p>
+          </div>
+
+          <div id="paper-primitive" class="panel section">
+            <h2>2. Primitive layer</h2>
+            <div class="block def"><div class="label">Definition 2.1</div><p>A resource profile is \(\epsilon=(R,\tau,E,\nu,\delta)\), where \(R\) is a spacetime region, \(\tau\) is a proper-time budget, \(E\) is an interaction-energy or action budget, \(\nu\) is a bandwidth/resolution scale, and \(\delta\) is an allowed readout infidelity.</p></div>
+            <div class="block def"><div class="label">Definition 2.2</div><p>\(\mathcal M_\epsilon(R)\) is the set of instruments physically realizable in \(R\) under those bounds.</p></div>
+            <div class="block def"><div class="label">Definition 2.3</div><div class="equation">\[\mathcal D_\epsilon^{(R)}(\rho,\sigma):=\sup_{M\in\mathcal M_\epsilon(R)}D_{\rm KL}(p_\rho^M\|p_\sigma^M).\]</div></div>
+            <div class="block axiom"><div class="label">Axiom 2.4</div><p><strong>Covariant admissibility.</strong> \(\mathcal M_\epsilon(R)\) is determined by interaction structure and causal support rather than observer tags.</p></div>
+            <div class="block def"><div class="label">Definition 2.5</div><p>\(\rho\sim_\epsilon \sigma\) iff \(\mathcal D_\epsilon^{(R)}(\rho,\sigma)=0\) for all admissible \(R\).</p></div>
+          </div>
+
+          <div id="paper-budget" class="panel section">
+            <h2>3. Budgeted admissibility and composability</h2>
+            <div class="block def"><div class="label">Definition 3.1</div><p>Write the total budget as \(\bar\epsilon=\epsilon_c\oplus \epsilon_m\), where \(\epsilon_c\) is the channel budget and \(\epsilon_m\) is the measurement budget.</p></div>
+            <div class="block def"><div class="label">Definition 3.2</div><p>For the finite-dimensional qubit model, the channel budget is naturally expressed by the action \(K:=\int_0^\tau \|H(t)\|_\infty\,dt\).</p></div>
+            <div class="block def"><div class="label">Definition 3.3</div><div class="equation">\[\mathcal C_{\epsilon_c}=\left\{\Phi(\rho)=\operatorname{Tr}_A\!\big[U(\rho\otimes|0\rangle\!\langle0|_A)U^\dagger\big]:U=\mathcal T e^{-i\int_0^{\tau_c}H(t)dt},\int_0^{\tau_c}\|H(t)\|dt\le K_c\right\}.\]</div></div>
+            <div class="block def"><div class="label">Definition 3.4</div><div class="equation">\[\mathcal D_{\le \bar\epsilon}(\rho,\sigma):=\sup_{\epsilon_c\oplus\epsilon_m\preceq \bar\epsilon}\sup_{\Phi\in\mathcal C_{\epsilon_c}}\sup_{M\in\mathcal M_{\epsilon_m}}D_{\rm KL}(p_{\Phi(\rho)}^M\|p_{\Phi(\sigma)}^M).\]</div></div>
+            <div class="block prop"><div class="label">Proposition 3.5</div><div class="equation">\[\mathcal D_{\le \bar\epsilon}(\Psi(\rho),\Psi(\sigma))\le\mathcal D_{\le \eta\oplus\bar\epsilon}(\rho,\sigma).\]</div><p>for every \(\Psi\in\mathcal C_\eta\).</p></div>
+          </div>
+
+          <div id="paper-qubit" class="panel section">
+            <h2>4. Worked admissibility example: bounded-action qubit measurement</h2>
+            <div class="block def"><div class="label">Definition 4.1</div><div class="equation">\[M_0=(1-\delta_m)|0\rangle\!\langle0|+\delta_m|1\rangle\!\langle1|,\qquad M_1=\delta_m|0\rangle\!\langle0|+(1-\delta_m)|1\rangle\!\langle1|,\qquad \eta:=1-2\delta_m.\]</div></div>
+            <div class="block prop"><div class="label">Proposition 4.2</div><div class="equation">\[\mathcal D_{\epsilon_m}(\rho_z,\sigma_{z'})=d_{\rm bin}\!\left(\frac{1+\eta z}{2}\,\middle\|\,\frac{1+\eta z'}{2}\right),\qquad \mathcal D_{\epsilon_m}(|0\rangle\!\langle0|,|1\rangle\!\langle1|)=\eta\ln\frac{1+\eta}{1-\eta}.\]</div></div>
+            <div class="block cor"><div class="label">Corollary 4.3</div><div class="equation">\[\mathcal D_{\epsilon_m}(|0\rangle\!\langle0|,|1\rangle\!\langle1|)=2\eta^2+O(\eta^4)\qquad (\eta\to0).\]</div></div>
+          </div>
+
+          <div id="paper-homogeneous" class="panel section">
+            <h2>5. Homogeneous Darwinism model</h2>
+            <div class="block def"><div class="label">Definition 5.1</div><div class="equation">\[|\Psi\rangle=\alpha |0\rangle |0\rangle^{\otimes N}+\beta |1\rangle |\phi_\theta\rangle^{\otimes N},\qquad \langle0|\phi_\theta\rangle = c=\cos\theta\in(0,1).\]</div></div>
+            <div class="block prop"><div class="label">Proposition 5.2</div><div class="equation">\[I_{\rm acc}(m)=1-h_2\!\left(\frac12\Big(1-\sqrt{1-c^{2m}}\Big)\right).\]</div></div>
+            <div class="block def"><div class="label">Definition 5.3</div><div class="equation">\[u_\delta:=h_2^{-1}(\delta),\qquad A_\delta:=4u_\delta(1-u_\delta).\]</div></div>
+            <div class="block prop"><div class="label">Proposition 5.5</div><div class="equation">\[m_\delta=\left\lceil\frac{\ln A_\delta}{2\ln c}\right\rceil=\left\lceil\frac{|\ln A_\delta|}{2|\ln c|}\right\rceil.\]</div></div>
+            <div class="block def"><div class="label">Definition 5.6</div><div class="equation">\[\bar R_\delta \approx \frac{N}{m_\delta},\qquad Q_{\epsilon,\delta}^{(N)}=\frac1N\sum_{m=1}^N\Theta\!\big(I_{\rm acc}(m)-(1-\delta)\big).\]</div></div>
+            <div class="block prop"><div class="label">Proposition 5.7</div><div class="equation">\[Q_{\epsilon,\delta}^{(N)}=\frac{N-m_\delta+1}{N}\quad\text{if }m_\delta\le N,\qquad Q_{\epsilon,\delta}^{(N)}=0\quad\text{if }m_\delta>N,\]</div><div class="equation">\[m_\delta\le N\iff c^{2N}\le A_\delta.\]</div></div>
+            <div class="block cor"><div class="label">Corollary 5.8</div><div class="equation">\[c^2\le A_\delta \Rightarrow m_\delta=1,\quad \bar R_\delta\approx N,\quad Q_{\epsilon,\delta}^{(N)}=1.\]</div></div>
+            <div class="block cor"><div class="label">Corollary 5.9</div><div class="equation">\[m_\delta=\frac{|\ln A_\delta|}{1-c^2}+O(1),\qquad \bar R_\delta\sim\frac{N(1-c^2)}{|\ln A_\delta|}.\]</div></div>
+            <div class="block cor"><div class="label">Corollary 5.10</div><div class="equation">\[1-c^2 \gtrsim \frac{|\ln A_\delta|}{N}\]</div><p>is the weak-imprinting envelope of the exact threshold.</p></div>
+            <div class="block cor"><div class="label">Corollary 5.11</div><div class="equation">\[F(\Psi_0,\Psi_1)=|\langle\Psi_0|\Psi_1\rangle|^2=c^{2N},\qquad F(\Psi_0,\Psi_1)\le A_\delta.\]</div></div>
+            <div class="block cor"><div class="label">Corollary 5.12</div><div class="equation">\[D_B^2(\Psi_0,\Psi_1)=2(1-c^N),\qquad D_B^2(\Psi_0,\Psi_1)\ge 2(1-\sqrt{A_\delta}).\]</div></div>
+          </div>
+
+          <div id="paper-branch" class="panel section">
+            <h2>6. Branching locus and admissibility-sensitive branch distance</h2>
+            <div class="block def"><div class="label">Definition 6.1</div><p>The branching locus \(\mathfrak B_{\epsilon,\delta,\kappa}^{(N)}\) consists of effectively classical-branching states whose fragment records exceed threshold and whose variance across relevant fragments is bounded.</p></div>
+            <div class="block def"><div class="label">Definition 6.2</div><div class="equation">\[d_{\rm br}^\epsilon(\rho):=\inf_{\omega\in\mathfrak B_{\epsilon,\delta,\kappa}^{(N)}}\mathcal D_\epsilon(\rho,\omega).\]</div></div>
+            <div class="block prop"><div class="label">Proposition 6.3</div><div class="equation">\[d_{\rm br}^{\epsilon,\mathrm{joint}}(m)=\frac12 c^{2(N-m)}+O(c^{4(N-m)}).\]</div></div>
+            <div class="block prop"><div class="label">Proposition 6.4</div><div class="equation">\[d_{\rm br}^{\epsilon,S\text{-only}}=\frac12 c^{2N}+O(c^{4N}).\]</div></div>
+          </div>
+
+          <div id="paper-hetero" class="panel section">
+            <h2>7. Heterogeneous environments</h2>
+            <div class="block def"><div class="label">Definition 7.1</div><div class="equation">\[C_F:=\prod_{i\in F} c_i\]</div></div>
+            <div class="block prop"><div class="label">Proposition 7.2</div><div class="equation">\[I_{\rm acc}(F)\ge 1-\delta\iff C_F^2\le A_\delta.\]</div></div>
+            <div class="block def"><div class="label">Definition 7.3</div><div class="equation">\[c_{(1)}\le c_{(2)}\le \cdots \le c_{(N)}.\]</div></div>
+            <div class="block prop"><div class="label">Proposition 7.4</div><div class="equation">\[m_\delta^{\rm best}:=\min\left\{k:\ \prod_{i=1}^k c_{(i)}^2\le A_\delta\right\}.\]</div><p>This is the smallest size for which <em>some</em> fragment works.</p></div>
+            <div class="block prop"><div class="label">Proposition 7.5</div><div class="equation">\[m_\delta^{\rm worst}:=\min\left\{k:\ \prod_{i=N-k+1}^{N} c_{(i)}^2\le A_\delta\right\}.\]</div><p>This is the smallest size for which <em>every</em> fragment works.</p></div>
+            <div class="block cor"><div class="label">Corollary 7.6</div><div class="equation">\[m_\delta^{\rm best}\le m_\delta^{\rm worst}.\]</div><p>The interval between them is the partial-consensus window.</p></div>
+            <div class="block def"><div class="label">Definition 7.7</div><div class="equation">\[C_\delta^{\rm het}(m):=1-\frac{\operatorname{Var}_{|F|=m} I_{\rm acc}(F)}{H(X)^2}.\]</div></div>
+            <div class="block def"><div class="label">Definition 7.8</div><div class="equation">\[Q_{\epsilon,\delta}^{\rm frac,(N)}:=\frac1N\sum_{m=1}^N q_m,\qquad q_m:=\frac{1}{\binom{N}{m}}\sum_{|F|=m}\Theta\!\big(I_{\rm acc}(F)-(1-\delta)\big).\]</div></div>
+            <div class="block cor"><div class="label">Corollary 7.9</div><div class="equation">\[Q_{\epsilon,\delta}^{\rm worst,(N)}\le Q_{\epsilon,\delta}^{\rm frac,(N)}\le Q_{\epsilon,\delta}^{\rm best,(N)}.\]</div></div>
+            <div class="block cor"><div class="label">Corollary 7.10</div><p>In the homogeneous limit, all three heterogeneous order parameters collapse to the original homogeneous \(Q_{\epsilon,\delta}^{(N)}\).</p></div>
+          </div>
+
+          <div id="paper-commuting" class="panel section">
+            <h2>8. Admissibility-coupled bottleneck flow: commuting sector</h2>
+            <div class="block def"><div class="label">Definition 8.1</div><div class="equation">\[X=(S,R),\qquad Y=f(S).\]</div></div>
+            <div class="block axiom"><div class="label">Convention 8.2</div><p>\(f\) acts as the identity on its image, so \(\Pi_Y^2=\Pi_Y\).</p></div>
+            <div class="block def"><div class="label">Definition 8.3</div><div class="equation">\[(\Pi)_*\mathfrak C:=\left\{\Psi\ \middle|\ \exists \Phi\in\mathfrak C\text{ such that }\Pi\circ\Phi=\Psi\circ\Pi\right\}.\]</div></div>
+            <div class="block prop"><div class="label">Proposition 8.4</div><p>Under the iterated flow \(X\to S\to Y\to Y\cdots\), the minimal sufficient statistic \(Y\) is a nontrivial absorbing fixed point.</p></div>
+          </div>
+
+          <div id="paper-noncommuting" class="panel section">
+            <h2>9. Noncommuting extension in the <span class="tooltip" tabindex="0">modularly admissible sector<span class="tooltip-text" role="tooltip">The restricted noncommuting regime where the relevant operator-algebraic conditional expectations actually exist and can be used safely.</span></span></h2>
+            <div class="block def"><div class="label">Definition 9.1</div><p>Let \(\mathcal A\) be a finite-dimensional von Neumann algebra with faithful state \(\omega\), and let \(\mathcal B_1\supseteq \mathcal B_2\supseteq\cdots\) be a descending chain of \(\sigma_t^\omega\)-invariant subalgebras.</p></div>
+            <div class="block prop"><div class="label">Proposition 9.2</div><p>In finite dimension, the chain stabilizes after finitely many steps at \(\mathcal B_\infty\), and the associated \(\omega\)-preserving conditional expectations converge to an idempotent \(E_\infty\) with fixed-point algebra \(\mathcal B_\infty\).</p></div>
+            <div class="block prop"><div class="label">Proposition 9.3</div><div class="equation">\[X=E_\infty(X)+\sum_{n\ge1}(E_n-E_{n+1})(X)+(X-E_1(X)).\]</div></div>
+          </div>
+
+          <div id="paper-intrinsic" class="panel section">
+            <h2>10. Intrinsic admissibility and the embedded observer principle</h2>
+            <div class="block axiom"><div class="label">Axiom 10.1</div><p>Each macrostate \(\rho\) comes with an intrinsic admissibility profile \(\epsilon_{\rm int}(\rho)\) whose instruments must be buildable from the same macrostate family.</p></div>
+            <div class="block axiom"><div class="label">Axiom 10.2</div><p>\(\epsilon_{\rm int}\) measures counterfactual admissibility: what the state could support as measurement structure, not only what is actually performed.</p></div>
+            <div class="block axiom"><div class="label">Axiom 10.3</div><p>Intrinsic admissibility evolves component-wise continuously:</p><div class="equation">\[|R_{\rm int}(\Lambda\rho)-R_{\rm int}(\rho)|\le L_R\|\Lambda\rho-\rho\|_1,\]</div><div class="equation">\[|\tau_{\rm int}(\Lambda\rho)-\tau_{\rm int}(\rho)|\le L_\tau\|\Lambda\rho-\rho\|_1,\]</div><div class="equation">\[|K_{\rm int}(\Lambda\rho)-K_{\rm int}(\rho)|\le L_K\|\Lambda\rho-\rho\|_1,\]</div><div class="equation">\[|\nu_{\rm int}(\Lambda\rho)-\nu_{\rm int}(\rho)|\le L_\nu\|\Lambda\rho-\rho\|_1,\]</div><div class="equation">\[|\delta_{\rm int}(\Lambda\rho)-\delta_{\rm int}(\rho)|\le L_\delta\|\Lambda\rho-\rho\|_1.\]</div></div>
+          </div>
+
+          <div id="paper-q" class="panel section">
+            <h2>11. Cosmological record-rank</h2>
+            <div class="block def"><div class="label">Definition 11.1</div><div class="equation">\[Q_{\epsilon,\delta}(\rho):=\sup_{X\in\mathsf O_\epsilon}\int_0^1 df\,\Theta\!\Big(\bar I_{\rm acc}^\epsilon(X:F_f)-(1-\delta)H(X)\Big).\]</div></div>
+          </div>
+
+          <div id="paper-heat" class="panel section">
+            <h2>12. Heat death</h2>
+            <div class="block prop"><div class="label">Proposition 12.1</div><p>If a finite-dimensional CPTP semigroup relaxes to a unique product fixed point, then \(Q_{\epsilon,\delta}(\Lambda_t(\rho))\to0\).</p></div>
+            <div class="block cor"><div class="label">Corollary 12.2</div><p>If additionally \(K_{\rm int}\to0\) and \(\delta_{\rm int}\to\frac12\), then \(Q_\delta^{\rm int}\to0\).</p></div>
+          </div>
+
+          <div id="paper-bigbang" class="panel section">
+            <h2>13. Big Bang-side vanishing through factorization collapse</h2>
+            <div class="block def"><div class="label">Definition 13.1</div><p>The intrinsic split scale \(\lambda_{\rm split}(\rho)\) is the minimal thickening scale needed for type-I interpolation between local algebras.</p></div>
+            <div class="block def"><div class="label">Definition 13.2</div><div class="equation">\[\Xi(\rho):=\frac{R_{\rm int}(\rho)}{\lambda_{\rm split}(\rho)}.\]</div></div>
+            <div class="block prop"><div class="label">Proposition 13.3</div><p>If \(\Xi(\rho_t)\to0\) as \(t\to0^+\), then no admissible fragment family exists within the intrinsic budget and therefore \(Q_\delta^{\rm int}(\rho_t)\to0\).</p></div>
+          </div>
+
+          <div id="paper-locality" class="panel section">
+            <h2>14. Emergent locality from admissible distinguishability neighborhoods</h2>
+            <div class="block def"><div class="label">Definition 14.1</div><div class="equation">\[w_{ij}^{(\epsilon)}:=\sup_{M_i\in\mathcal M_{\epsilon,i},\,M_j\in\mathcal M_{\epsilon,j}}I(M_i:M_j).\]</div></div>
+            <div class="block def"><div class="label">Definition 14.2</div><div class="equation">\[d_{ij}^{(\epsilon)}:=-\xi \log\frac{w_{ij}^{(\epsilon)}}{w_*}.\]</div></div>
+            <div class="block def"><div class="label">Definition 14.3</div><p>Locality emerges at scale \(\epsilon\) if the weighted graph of admissible edge weights admits a low-distortion embedding into a low-dimensional metric manifold and admissible dynamics are approximately banded in that induced metric.</p></div>
+          </div>
+
+          <div id="paper-regimes" class="panel section">
+            <h2>15. Intrinsic admissibility in cosmological regimes</h2>
+            <div class="block def"><div class="label">Definition 15.1</div><div class="equation">\[\epsilon_{\rm int}(\rho)=(R_{\rm int},\tau_{\rm int},K_{\rm int},\nu_{\rm int},\delta_{\rm int}).\]</div></div>
+            <div class="block remark"><div class="label">Remark 15.2</div><p>Reheating is the first natural epoch where ordinary detector-supporting matter sectors become broadly available, making it the first clear record-bearing regime in ordinary cosmological terms.</p></div>
+            <div class="block remark"><div class="label">Remark 15.3</div><p>In a late de Sitter-like regime, usable non-equilibrium budgets are expected to shrink while intrinsic readout infidelity rises.</p></div>
+          </div>
+
+          <div id="paper-cross" class="panel section">
+            <h2>16. Cross-aeon compression and structural inheritance</h2>
+            <div class="block def"><div class="label">Definition 16.1</div><div class="equation">\[\mathcal T_B(U):=\{\,U(p)\ :\ |p|\le B\,\}.\]</div></div>
+            <div class="block def"><div class="label">Definition 16.2</div><div class="equation">\[\mathcal E_{\beta,\epsilon}^{\star,\mathcal T_B}=\arg\min_{\mathcal E\in\mathfrak C_\epsilon,\ \mathrm{codom}(\mathcal E)\subseteq\mathcal T_B}\Big[I(X;Z)-\beta I(Z;Y)\Big],\qquad Z^*=\mathcal E_{\beta,\epsilon}^{\star,\mathcal T_B}(X).\]</div></div>
+            <div class="block def"><div class="label">Definition 16.3</div><p>Reconstruction requires three distinct objects: \(\mathcal F\), \(Z^*\), and \(\mathcal I\).</p></div>
+            <div class="block def"><div class="label">Definition 16.4</div><div class="equation">\[\mathrm{Score}=L(\mathcal F)+L(\mathcal I)+L(Z^*)+L(\Delta c\mid\mathcal N).\]</div></div>
+          </div>
+
+          <div id="paper-fals" class="panel section">
+            <h2>17. Falsification criteria</h2>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Criterion</th><th>Failure condition</th></tr></thead>
+                <tbody>
+                  <tr><td>Primitive failure</td><td>\(\mathcal M_\epsilon\) cannot be built from interaction bounds without observer dependence.</td></tr>
+                  <tr><td>No branching locus</td><td>No stable \(\mathfrak B_{\epsilon,\delta,\kappa}\) exists.</td></tr>
+                  <tr><td>No nontrivial seed</td><td>Compression yields only trivial fixed points or unbounded cost.</td></tr>
+                  <tr><td>Boundary failure</td><td>Neither late-time relaxation nor early-time factorization collapse drives \(Q^{\rm int}\to0\).</td></tr>
+                  <tr><td>Residual non-identifiability</td><td>The residual vector is indistinguishable from preregistered noise models.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="paper-status" class="panel section">
+            <h2>18. Proven results, constructed objects, and open targets</h2>
+            <ul>
+              <li>Budgeted data processing.</li>
+              <li>Explicit qubit distinguishability.</li>
+              <li>Exact homogeneous fragment threshold and finite-\(N\) phase boundary.</li>
+              <li>Fidelity/Bures reformulation in the pure-state toy setting.</li>
+              <li>Admissibility-sensitive branch-distance split.</li>
+              <li>Heterogeneous best/worst thresholds and fractional order parameter.</li>
+              <li>Commuting-sector bottleneck fixed point.</li>
+              <li>Finite-dimensional modular fixed point.</li>
+              <li>Finite-dimensional heat-death result.</li>
+              <li>Criterion for Big-Bang-side vanishing via factorization collapse.</li>
+            </ul>
+          </div>
+
+          <div id="paper-close" class="panel section">
+            <h2>19. Closing</h2>
+            <p>This draft now has the shape of a real theory paper. The primitive is explicit, composability is repaired, the toy model yields exact thresholds and a finite-\(N\) phase diagram, the heterogeneous section now includes a corresponding order parameter, the noncommuting sector is narrowed to the modular domain where honest theorems exist, the intrinsic-admissibility self-reference loop is controlled by component-wise transport, and the cross-aeon seed formalism matches the narrowed claim of structural inheritance.</p>
+          </div>
+        </section>
+
+        
+
+<section id="reader" class="mode-panel">
+  <div class="reader-flow">
+    <div id="reader-overview" class="reader-section section">
+      <h2>Overview</h2>
+      <p class="reader-lede">This theory starts from a different place than most cosmology. Instead of asking first what the universe is made of, it asks what differences the universe can physically detect, preserve, and pass along. The proposal is that this is not a side issue. It is the layer that classical reality is built from.</p>
+      <p>
+        That matters because many of the hardest problems in physics appear exactly where ordinary classical description stops working:
+        measurement, branching, objectivity, the role of observers, and the relation between the beginning and end of cosmic history.
+        The framework says these may become easier to organize if we stop treating the familiar world as basic and instead ask how it is produced from
+        <span class="tooltip" tabindex="0">distinguishability<span class="tooltip-text" role="tooltip">How well two physical situations can actually be told apart by the interactions and measurement resources available in that setting.</span></span>.
+      </p>
+      <p>
+        The core picture is simple enough to say in everyday language:
+        a fact becomes <span class="call">real in the strong practical sense</span> when many parts of the world can independently carry and stabilize that fact.
+        If that copying process is weak, the world stays more quantum and less classically definite.
+        If that copying process collapses, then the ordinary world of stable shared facts dissolves with it.
+      </p>
+      <div class="glossary">
+        <div class="term"><strong>Distinguishability</strong>How well two physical situations can actually be told apart under real physical limits.</div>
+        <div class="term"><strong>Admissibility</strong>Which measurements and interventions count because they can actually be carried out in the regime being studied.</div>
+        <div class="term"><strong>Branching</strong>The growth of many stable records of the same coarse information, rather than a mysterious exact split.</div>
+        <div class="term"><strong>Record-rank \(Q\)</strong>A measure of how much of the environment supports redundant, accessible records of a fact.</div>
+      </div>
+    </div>
+
+    <div id="reader-intro" class="reader-section section">
+      <h2>1. Introduction</h2>
+      <p>
+        Most theories begin by choosing some basic furniture of reality: particles, fields, wavefunctions, spacetime, or something like them.
+        This framework does not deny those things matter. What it questions is whether they are the best <span class="subemph">starting point</span>
+        for understanding why the universe appears classical, local, and history-bearing from the inside.
+      </p>
+      <p>
+        The theory instead begins with a practical physical question:
+        when can one state of the world be told apart from another by processes the universe itself can support?
+        That is why <span class="tooltip" tabindex="0">admissibility<span class="tooltip-text" role="tooltip">The rule that only physically realizable measurements and interventions count, not every measurement that is mathematically imaginable.</span></span> comes before branches,
+        before identity, and before cycle structure in the architecture of the paper.
+      </p>
+      <p>
+        This is not a claim about human knowledge in particular. A detector, a crystal defect, a biological memory, a radiation imprint, or a field fragment
+        can all count as carriers of physical difference if they preserve and transmit it. The framework is therefore about what the world can do with distinctions,
+        not about what people happen to know.
+      </p>
+    </div>
+
+    <div id="reader-primitive" class="reader-section section">
+      <h2>2. Primitive layer</h2>
+      <p>
+        In paper mode, the primitive object is written as \(\mathcal D_\epsilon\). The notation is technical, but the idea is straightforward.
+        Take two possible states of a system. Then ask: under the actual constraints of the situation — finite time, finite control strength, finite resolution,
+        finite readout reliability, finite causal access — how distinguishable are they?
+      </p>
+      <p>
+        The resource profile \(\epsilon\) is there to block a very common mistake. If we allow every measurement that is mathematically definable,
+        then distinguishability becomes an abstract ideal detached from physics. The point of the framework is the opposite:
+        only distinctions that can be realized by physically allowed couplings are allowed to count.
+      </p>
+      <p>
+        That is why the primitive is not just “distance between states.” It is
+        <span class="call">distinguishability under physical access conditions</span>.
+        This is one of the most important philosophical and mathematical moves in the theory.
+      </p>
+    </div>
+
+    <div id="reader-budget" class="reader-section section">
+      <h2>3. Budgeted admissibility</h2>
+      <p>
+        Real measurements cost something. They use time, interaction strength, apparatus complexity, and readout quality.
+        Once that is admitted, another fact follows: preprocessing a state and then measuring it cannot be treated as free extra power.
+      </p>
+      <p>
+        The budgeted formalism is how the draft makes this explicit. It says:
+        split the available resources into what is spent on dynamics and what is spent on measurement, then ask how distinguishability behaves under that split.
+        This is less flashy than the cosmological claims, but it is one of the things that makes the framework more serious.
+      </p>
+      <p>
+        For a non-specialist, the takeaway is simple:
+        the theory is trying to stay <span class="emph">honest about physical cost</span>.
+        A distinction that only appears if one grants an impossible measuring setup does not count as fundamental here.
+      </p>
+    </div>
+
+    <div id="reader-qubit" class="reader-section section">
+      <h2>4. Worked qubit example</h2>
+      <p>
+        The qubit example is the first anchor. A qubit is the simplest nontrivial quantum system, so it is the natural place to show that the framework’s primitive
+        object can actually be computed and is not just philosophical language.
+      </p>
+      <p>
+        The specific example uses a noisy pointer-basis measurement. The result is exactly what one hopes for:
+        better readout means stronger distinguishability, worse readout means weaker distinguishability. In other words, the primitive behaves like a genuinely physical quantity.
+      </p>
+      <p>
+        This matters because the framework does not postpone all substance to the cosmology.
+        It already has a calculable core at the smallest worked level.
+      </p>
+    </div>
+
+    <div id="reader-homogeneous" class="reader-section section">
+      <h2>5. Homogeneous Darwinism model</h2>
+      <p>
+        This is where the framework becomes easiest to visualize. A small system interacts with many parts of its environment.
+        If the interaction leaves strong enough imprints, then many different fragments of the environment each end up carrying information about the same coarse property of the system.
+      </p>
+      <p>
+        That is the basic insight of <span class="tooltip" tabindex="0">Quantum Darwinism<span class="tooltip-text" role="tooltip">A framework in which classical-looking facts emerge when many different fragments of the environment redundantly encode the same information about a system.</span></span>,
+        and the theory uses it directly:
+        <span class="call">classicality is not assumed — it is produced by redundant record structure</span>.
+      </p>
+      <p>
+        In the toy model, the strength of imprinting is controlled by a single overlap parameter \(c\).
+        If \(c\) is small, the two environment records are easy to tell apart.
+        If \(c\) is close to 1, they overlap heavily and are hard to separate.
+      </p>
+      <div class="equation">\[
+        c^{2N}\le A_\delta
+      \]</div>
+      <p>
+        This is the first result that should stick in the mind. It says there is an exact finite-\(N\) threshold for redundant record formation.
+        In ordinary language: before fragments can act like many independent witnesses of the same fact, the environment as a whole must already separate the alternatives strongly enough.
+      </p>
+      <p>
+        That gives the theory a true phase picture. Strong imprinting gives trivial classicality. Intermediate imprinting gives a meaningful redundancy regime.
+        Weak imprinting means the environment never becomes a good witness, so operational classicality does not really switch on.
+      </p>
+    </div>
+
+    <div id="reader-branch" class="reader-section section">
+      <h2>6. Branching locus</h2>
+      <p>
+        A distinctive choice in the framework is that it does not treat branches as perfectly sharp pre-existing slices of reality.
+        Instead, it defines a <span class="tooltip" tabindex="0">branching locus<span class="tooltip-text" role="tooltip">The family of states close to stable, redundant record structure. In this theory, branching is proximity to that family rather than an exact split.</span></span>.
+      </p>
+      <p>
+        This matters because actual physical systems are messy. Record quality is finite, consensus can be partial, and classical structure often sharpens gradually rather than appearing all at once.
+        The branching-locus picture captures that better than the image of a single exact split into worlds.
+      </p>
+      <p>
+        So branching becomes a gradient. The more redundancy there is and the more stable the records are, the more branch-like the state becomes.
+      </p>
+    </div>
+
+    <div id="reader-hetero" class="reader-section section">
+      <h2>7. Heterogeneous environments</h2>
+      <p>
+        Real environments are not uniform. Some parts interact strongly, some weakly, some store records well, some badly.
+        That means the homogeneous toy model is useful but idealized.
+      </p>
+      <p>
+        The revised draft improves this by defining two thresholds instead of one.
+        One threshold marks the first fragment size for which <span class="subemph">some</span> fragments work.
+        The other marks the first size for which <span class="subemph">all</span> fragments work.
+        Between them lies a partial-consensus region where some environmental pieces are reliable witnesses and others are not.
+      </p>
+      <p>
+        This is why the heterogeneous version of \(Q\) matters so much.
+        It does not merely ask yes or no. It asks what fraction of fragments of a given size exceed the record threshold:
+      </p>
+      <div class="equation">\[
+        Q_{\epsilon,\delta}^{\rm frac,(N)}
+        :=
+        \frac1N\sum_{m=1}^N q_m
+      \]</div>
+      <p>
+        Conceptually, this is a major gain. It means the theory can talk about imperfect and uneven environments without pretending classicality appears everywhere at once.
+      </p>
+    </div>
+
+    <div id="reader-commuting" class="reader-section section">
+      <h2>8. Commuting bottleneck flow</h2>
+      <p>
+        The compression story asks a natural question: if some information about the late state of the universe matters for what comes next and some does not,
+        can the relevant part be compressed while the irrelevant part is discarded?
+      </p>
+      <p>
+        In the commuting case, the answer is yes in a mathematically clean way.
+        Repeated relevance-preserving compression flows toward a nontrivial fixed point:
+        the part of the description that survives once irrelevant detail has been stripped away.
+      </p>
+      <p>
+        This is important because it turns the seed from a loose metaphor into a formal structure with a real mathematical prototype.
+      </p>
+    </div>
+
+    <div id="reader-noncommuting" class="reader-section section">
+      <h2>9. Modular noncommuting sector</h2>
+      <p>
+        The noncommuting case is much harder because quantum observables do not generally behave like simultaneously readable classical variables.
+        Earlier versions of the framework risked sounding too broad here.
+      </p>
+      <p>
+        The current draft is more disciplined. It proves a fixed-point structure only in the <span class="tooltip" tabindex="0">modularly admissible sector<span class="tooltip-text" role="tooltip">The restricted noncommuting regime where the relevant operator-algebraic conditional expectations actually exist and can be used safely.</span></span>.
+        That is the regime where the relevant operator-algebraic tools actually exist and can be trusted.
+      </p>
+      <p>
+        This should be seen as a strength. The theory is now careful about where it has real mathematics and where it still has an open target.
+      </p>
+    </div>
+
+    <div id="reader-intrinsic" class="reader-section section">
+      <h2>10. Intrinsic admissibility</h2>
+      <p>
+        One of the theory’s most important physical constraints is the <span class="tooltip" tabindex="0">Embedded Observer Principle<span class="tooltip-text" role="tooltip">The rule that observers and measuring devices must be built from the same universe they are measuring, rather than borrowed from outside it.</span></span>.
+        That means you do not get to import a perfect clock or detector from outside the universe whenever it is convenient.
+      </p>
+      <p>
+        The intrinsic admissibility profile \(\epsilon_{\rm int}\) is the formal way of describing what kinds of measurements a given cosmological regime can support from within itself.
+        This is why the framework can talk seriously about access, screening, and observational limitations without falling back into vague mysticism.
+      </p>
+      <p>
+        The component-wise transport law matters because it keeps that internal measurement capacity from fluctuating arbitrarily under the very dynamics it is meant to describe.
+      </p>
+    </div>
+
+    <div id="reader-q" class="reader-section section">
+      <h2>11. Record-rank</h2>
+      <p>
+        The quantity \(Q\) is one of the most intuitive pieces of the theory. It measures how much of the environment is acting as a stable witness to some coarse fact.
+      </p>
+      <p>
+        A high \(Q\) means the world is rich in redundant accessible records. A low \(Q\) means those records are sparse or absent.
+        That is why <span class="tooltip" tabindex="0">record-rank<span class="tooltip-text" role="tooltip">A quantity that measures how much of the environment supports redundant, accessible records of a coarse fact.</span></span> becomes the natural order parameter for discussing when the universe is classically organized in the sense that matters for embedded observers.
+      </p>
+    </div>
+
+    <div id="reader-heat" class="reader-section section">
+      <h2>12. Heat death</h2>
+      <p>
+        In ordinary thermodynamic language, heat death means exhausted gradients. In this framework, the sharper statement is that the universe loses the ability to sustain redundant accessible records of the kinds of observables that make classical structure possible.
+      </p>
+      <p>
+        The finite-dimensional theorem proves that if the late-time dynamics relax to a product fixed point, then \(Q\) goes to zero.
+        The world does not merely become boring. It loses the record architecture that supports a stable shared classical description.
+      </p>
+      <p>
+        That gives heat death an informational meaning in addition to a thermodynamic one.
+      </p>
+    </div>
+
+    <div id="reader-bigbang" class="reader-section section">
+      <h2>13. Big Bang-side vanishing</h2>
+      <p>
+        The early-boundary claim is subtler than the late one. The theory does not say the Big Bang is simply the same as heat death.
+        It says that near the early boundary, the subsystem structure needed to define fragments may fail altogether.
+      </p>
+      <p>
+        If fragments cannot be meaningfully separated, then the setup required for record redundancy never comes online.
+        In that sense, \(Q\) can vanish at the beginning for a different reason than it vanishes at the end.
+      </p>
+      <p>
+        This is the heart of the framework’s phase-equivalence idea:
+        beginning and end may converge as limits of vanishing record structure without becoming the same geometric state.
+      </p>
+    </div>
+
+    <div id="reader-locality" class="reader-section section">
+      <h2>14. Emergent locality</h2>
+      <p>
+        If distinguishability is fundamental, locality does not need to be primitive. It can emerge from the pattern of admissible correlations:
+        what can reliably exchange records with what, what can stabilize what, and how influence organizes itself under physical access conditions.
+      </p>
+      <p>
+        This links the framework to existing entanglement-to-geometry programs, but with a strong extra filter:
+        only physically admissible correlations should count.
+      </p>
+      <p>
+        If that works, locality stops being something merely assumed and becomes something reconstructed from distinguishability neighborhoods.
+      </p>
+    </div>
+
+    <div id="reader-regimes" class="reader-section section">
+      <h2>15. Cosmological regimes</h2>
+      <p>
+        The theory does not assume one single measurement capacity across all of cosmic history.
+        Different eras should have different intrinsic admissibility profiles.
+      </p>
+      <p>
+        Reheating matters because it is the first obvious regime in which ordinary matter sectors, scattering, and record-bearing interactions become broadly available.
+        A late de Sitter-like regime matters because it is the natural place where usable non-equilibrium budgets and readout fidelity may collapse.
+      </p>
+      <p>
+        So the cosmological story here is not one universal bridge. It is a family of bridges, each tied to a specific regime and its own measurement structure.
+      </p>
+    </div>
+
+    <div id="reader-cross" class="reader-section section">
+      <h2>16. Cross-aeon compression</h2>
+      <p>
+        One of the most important corrections in the draft is that the seed is no longer treated as an unconstrained archive of everything that happened.
+        That would demand implausible channel capacity and blur the framework into fantasy.
+      </p>
+      <p>
+        The seed is now restricted to a bounded space of effective-theory structures \(\mathcal T_B(U)\).
+        In ordinary language: what carries across aeons is not a complete diary. It is a compressed inheritance object describing what kind of universe can be rebuilt.
+      </p>
+      <p>
+        This narrowing is essential. It makes the seed concept smaller, but far more defensible.
+      </p>
+    </div>
+
+    <div id="reader-fals" class="reader-section section">
+      <h2>17. Falsification</h2>
+      <p>
+        A serious theory must be able to lose. This framework can fail in clear ways:
+        if admissibility secretly depends on observers, if no stable branching locus exists, if compression only yields trivial fixed points,
+        if cosmological boundaries do not actually drive record-rank to zero, or if the supposed residual channel cannot be distinguished from noise.
+      </p>
+      <p>
+        In other words, the theory is trying to move out of the realm of suggestive language and into the realm of breakable claims.
+      </p>
+    </div>
+
+    <div id="reader-status" class="reader-section section">
+      <h2>18. Status</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Already established in the draft</th><th>Still open</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Exact toy-model threshold, asymptotics, heterogeneous \(Q\), commuting fixed point, finite-dimensional modular fixed point, finite-dimensional heat-death result</td>
+              <td>General noncommuting qIB convergence, realistic early-universe factorization collapse, infinite-dimensional cosmological heat-death theorem, emergent-locality reconstruction, concrete cosmological \(\epsilon_{\rm int}\)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        The important point is that the framework is no longer just a conceptual manifesto. It now contains exact results, explicit formal structures, and a clearly marked frontier between what is proved and what remains open.
+      </p>
+    </div>
+
+    <div id="reader-close" class="reader-section section">
+      <h2>19. Closing</h2>
+      <p>
+        The shortest statement of the proposal is this:
+        <span class="call">reality becomes classical where differences can be copied into many stable records, and it loses classical structure where that record-making capacity disappears.</span>
+      </p>
+      <p>
+        What makes the framework promising is not that it is already complete. It is that it now says enough clearly enough to be criticized, extended, tested, and perhaps eventually falsified.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+        <div class="foot">Distinguishability-First Relational Cosmology</div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const modeButtons = Array.from(document.querySelectorAll('.toggle'));
+    const heroModeButtons = Array.from(document.querySelectorAll('.hero-mode'));
+    const faviconEl = document.getElementById('dynamic-favicon');
+    const panels = {
+      paper: document.getElementById('paper'),
+      reader: document.getElementById('reader')
+    };
+
+    function makeFavicon(mode){
+      const paper = {
+        ring1:'#4fc3f7',
+        ring2:'#1976d2',
+        tri:'#4fc3f7',
+        irisFill:'#0d1b2a',
+        irisStroke:'#1976d2',
+        pulse:'#d8ab73'
+      };
+      const reader = {
+        ring1:'#d8ab73',
+        ring2:'#8c5c45',
+        tri:'#e0b07a',
+        irisFill:'#1b140f',
+        irisStroke:'#8c5c45',
+        pulse:'#4fc3f7'
+      };
+      const c = mode === 'reader' ? reader : paper;
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+        <circle cx="60" cy="60" r="48" fill="none" stroke="${c.ring1}" stroke-width="2.2" opacity="0.19"/>
+        <circle cx="60" cy="60" r="28" fill="none" stroke="${c.ring2}" stroke-width="2.1" opacity="0.30"/>
+        <path d="M60 14 Q83 50 106 60 Q83 70 60 106 Q37 70 14 60 Q37 50 60 14Z" fill="none" stroke="${c.tri}" stroke-width="2"/>
+        <circle cx="60" cy="60" r="11" fill="${c.irisFill}" stroke="${c.irisStroke}" stroke-width="1.6"/>
+        <circle cx="60" cy="60" r="17" fill="none" stroke="${c.pulse}" stroke-width="1.2"/>
+      </svg>`;
+      return 'data:image/svg+xml,' + encodeURIComponent(svg);
+    }
+
+    const sectionMap = {
+      paper: {
+        overview:'paper-overview',
+        intro:'paper-intro',
+        primitive:'paper-primitive',
+        budget:'paper-budget',
+        qubit:'paper-qubit',
+        homogeneous:'paper-homogeneous',
+        branch:'paper-branch',
+        hetero:'paper-hetero',
+        commuting:'paper-commuting',
+        noncommuting:'paper-noncommuting',
+        intrinsic:'paper-intrinsic',
+        q:'paper-q',
+        heat:'paper-heat',
+        bigbang:'paper-bigbang',
+        locality:'paper-locality',
+        regimes:'paper-regimes',
+        cross:'paper-cross',
+        fals:'paper-fals',
+        status:'paper-status',
+        close:'paper-close'
+      },
+      reader: {
+        overview:'reader-overview',
+        intro:'reader-intro',
+        primitive:'reader-primitive',
+        budget:'reader-budget',
+        qubit:'reader-qubit',
+        homogeneous:'reader-homogeneous',
+        branch:'reader-branch',
+        hetero:'reader-hetero',
+        commuting:'reader-commuting',
+        noncommuting:'reader-noncommuting',
+        intrinsic:'reader-intrinsic',
+        q:'reader-q',
+        heat:'reader-heat',
+        bigbang:'reader-bigbang',
+        locality:'reader-locality',
+        regimes:'reader-regimes',
+        cross:'reader-cross',
+        fals:'reader-fals',
+        status:'reader-status',
+        close:'reader-close'
+      }
+    };
+
+    let activeMode = localStorage.getItem('dfrc-mode-v6') || 'paper';
+
+    function setMode(mode){
+      activeMode = mode;
+      modeButtons.forEach(btn=>{
+        const on = btn.dataset.mode === mode;
+        btn.classList.toggle('active', on);
+        btn.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      heroModeButtons.forEach(btn=>{
+        const on = btn.dataset.mode === mode;
+        btn.classList.toggle('active', on);
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      Object.entries(panels).forEach(([k,p]) => {
+        p.classList.toggle('active', k === mode);
+      });
+      document.body.classList.toggle('reader-theme', mode === 'reader');
+      if (faviconEl) faviconEl.href = makeFavicon(mode);
+      document.title = mode === 'reader' ? 'DFRC — Reader Mode' : 'DFRC — Paper Mode';
+      localStorage.setItem('dfrc-mode-v6', mode);
+      setTimeout(refreshActiveToc, 20);
+    }
+
+    modeButtons.forEach(btn => btn.addEventListener('click', () => setMode(btn.dataset.mode)));
+    heroModeButtons.forEach(btn => btn.addEventListener('click', () => setMode(btn.dataset.mode)));
+
+    function gotoKey(key){
+      const id = sectionMap[activeMode][key];
+      const el = document.getElementById(id);
+      if(el){
+        el.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+    }
+
+    document.querySelectorAll('[data-key]').forEach(link=>{
+      link.addEventListener('click', e=>{
+        e.preventDefault();
+        e.stopPropagation();
+        gotoKey(link.dataset.key);
+      });
+    });
+
+    const tocLinks = Array.from(document.querySelectorAll('.toc a'));
+
+    function refreshActiveToc(){
+      const visiblePanel = panels[activeMode];
+      if(!visiblePanel) return;
+      const sections = Array.from(visiblePanel.querySelectorAll('.section'));
+      if(!sections.length) return;
+
+      let currentId = sections[0].id;
+      const probe = window.scrollY + 140;
+      for(const sec of sections){
+        if(sec.offsetTop <= probe) currentId = sec.id;
+      }
+
+      const reverse = {};
+      Object.entries(sectionMap[activeMode]).forEach(([key,id]) => reverse[id] = key);
+      const currentKey = reverse[currentId];
+
+      tocLinks.forEach(link => {
+        link.classList.toggle('active', link.dataset.key === currentKey);
+      });
+    }
+
+    window.addEventListener('scroll', refreshActiveToc, {passive:true});
+    window.addEventListener('resize', refreshActiveToc);
+    setMode(activeMode);
+  </script>
+</body>
+</html>
