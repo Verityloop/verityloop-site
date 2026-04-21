@@ -545,6 +545,102 @@
   }
 }
 
+
+.mobile-sidebar-toggle{
+  display:none;
+}
+.mobile-sidebar-backdrop{
+  display:none;
+}
+
+@media (max-width: 1040px){
+  .app{
+    grid-template-columns:1fr;
+  }
+  .sidebar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:min(84vw, 320px);
+    height:100vh;
+    z-index:60;
+    border-right:1px solid var(--line);
+    border-bottom:none;
+    transform:translateX(-104%);
+    transition:transform .22s ease, box-shadow .22s ease;
+    box-shadow:none;
+  }
+  .sidebar.open{
+    transform:translateX(0);
+    box-shadow:0 18px 42px rgba(0,0,0,.34);
+  }
+  .mobile-sidebar-toggle{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    position:fixed;
+    top:14px;
+    left:14px;
+    z-index:70;
+    width:42px;
+    height:42px;
+    border:none;
+    border-radius:999px;
+    background:rgba(19,27,36,.78);
+    color:var(--heading);
+    border:1px solid var(--line);
+    backdrop-filter:blur(10px);
+    box-shadow:0 8px 24px rgba(0,0,0,.22);
+    cursor:pointer;
+    transition:transform .16s ease, background .16s ease, border-color .16s ease;
+  }
+  body.reader-theme .mobile-sidebar-toggle{
+    background:rgba(30,24,18,.82);
+  }
+  .mobile-sidebar-toggle:hover,
+  .mobile-sidebar-toggle:focus{
+    transform:translateY(-1px);
+    border-color:var(--line-strong);
+    outline:none;
+  }
+  .mobile-sidebar-toggle svg{
+    width:18px;
+    height:18px;
+    display:block;
+  }
+  .mobile-sidebar-backdrop{
+    display:block;
+    position:fixed;
+    inset:0;
+    z-index:55;
+    background:rgba(7,10,14,.42);
+    backdrop-filter:blur(2px);
+    opacity:0;
+    visibility:hidden;
+    transition:opacity .2s ease, visibility .2s ease;
+  }
+  .mobile-sidebar-backdrop.open{
+    opacity:1;
+    visibility:visible;
+  }
+  .main{
+    padding-top:68px;
+  }
+}
+
+@media (max-width: 760px){
+  .tooltip .tooltip-text{
+    max-width:min(80vw, 310px);
+    min-width:180px;
+    font-size:.94rem;
+  }
+  .tooltip.mobile-open .tooltip-text{
+    visibility:visible;
+    opacity:1;
+    pointer-events:auto;
+  }
+}
+
 </style>
 
   <script>
@@ -559,8 +655,15 @@
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
+
+<button class="mobile-sidebar-toggle" id="mobileSidebarToggle" aria-label="Open section menu" aria-controls="pageSidebar" aria-expanded="false">
+  <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <path d="M4 7h16M4 12h16M4 17h16"/>
+  </svg>
+</button>
+<div class="mobile-sidebar-backdrop" id="mobileSidebarBackdrop" hidden></div>
   <div class="app">
-    <aside class="sidebar">
+    <aside class="sidebar" id="pageSidebar">
       <div class="brand">
         <svg class="tiny" viewBox="0 0 120 120" aria-hidden="true">
           <path d="M60 14 Q83 50 106 60 Q83 70 60 106 Q37 70 14 60 Q37 50 60 14Z" fill="none" stroke="currentColor" stroke-width="7"/>
@@ -1271,6 +1374,7 @@
         e.preventDefault();
         e.stopPropagation();
         gotoKey(link.dataset.key);
+        if (isMobileView()) closeSidebar();
       });
     });
 
@@ -1298,8 +1402,84 @@
     }
 
     window.addEventListener('scroll', refreshActiveToc, {passive:true});
-    window.addEventListener('resize', refreshActiveToc);
+    window.addEventListener('resize', () => {
+      refreshActiveToc();
+      if (!isMobileView()) closeSidebar();
+      if (!window.matchMedia('(hover: none)').matches) closeAllTooltips();
+    });
     setMode(activeMode);
+
+
+const sidebarEl = document.getElementById('pageSidebar');
+const mobileSidebarToggle = document.getElementById('mobileSidebarToggle');
+const mobileSidebarBackdrop = document.getElementById('mobileSidebarBackdrop');
+const tooltipEls = Array.from(document.querySelectorAll('.tooltip'));
+
+function isMobileView(){
+  return window.matchMedia('(max-width: 1040px)').matches;
+}
+
+function closeSidebar(){
+  if (!sidebarEl || !mobileSidebarBackdrop || !mobileSidebarToggle) return;
+  sidebarEl.classList.remove('open');
+  mobileSidebarBackdrop.classList.remove('open');
+  mobileSidebarBackdrop.hidden = true;
+  mobileSidebarToggle.setAttribute('aria-expanded', 'false');
+}
+
+function openSidebar(){
+  if (!sidebarEl || !mobileSidebarBackdrop || !mobileSidebarToggle) return;
+  sidebarEl.classList.add('open');
+  mobileSidebarBackdrop.hidden = false;
+  requestAnimationFrame(() => mobileSidebarBackdrop.classList.add('open'));
+  mobileSidebarToggle.setAttribute('aria-expanded', 'true');
+}
+
+function closeAllTooltips(){
+  tooltipEls.forEach(el => el.classList.remove('mobile-open'));
+}
+
+if (mobileSidebarToggle) {
+  mobileSidebarToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const willOpen = !sidebarEl.classList.contains('open');
+    closeAllTooltips();
+    if (willOpen) openSidebar(); else closeSidebar();
+  });
+}
+
+if (mobileSidebarBackdrop) {
+  mobileSidebarBackdrop.addEventListener('click', () => closeSidebar());
+}
+
+tooltipEls.forEach(el => {
+  el.addEventListener('click', (e) => {
+    if (!window.matchMedia('(hover: none)').matches) return;
+    e.stopPropagation();
+    const isOpen = el.classList.contains('mobile-open');
+    closeAllTooltips();
+    if (!isOpen) el.classList.add('mobile-open');
+  });
+});
+
+document.addEventListener('click', (e) => {
+  if (window.matchMedia('(hover: none)').matches) {
+    if (!e.target.closest('.tooltip')) closeAllTooltips();
+  }
+  if (isMobileView()) {
+    if (!e.target.closest('.sidebar') && !e.target.closest('.mobile-sidebar-toggle')) {
+      closeSidebar();
+    }
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeAllTooltips();
+    closeSidebar();
+  }
+});
+
   </script>
 </body>
 </html>
