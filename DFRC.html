@@ -755,6 +755,83 @@
   }
 }
 
+
+/* Reader-mode graphics pass: copper-toned, transparent, scalable SVG, and annotation-safe. */
+body.reader-theme{
+  --bg:#101112;
+  --bg2:#171513;
+  --panel:rgba(28,27,25,.88);
+  --panel2:rgba(35,32,28,.94);
+  --line:rgba(226,139,63,.18);
+  --line-strong:rgba(242,166,90,.42);
+  --text:#fff5ea;
+  --muted:#dbc7ad;
+  --heading:#fff8ef;
+  --accent:#f2a65a;
+  --accent2:#ffc777;
+  --accent3:#bd6d35;
+  --callout:#6fd9ff;
+  --good:#9be09a;
+  --warn:#ffd166;
+  --bad:#ff9a76;
+  --emph:#f2a65a;
+  --subemph:#8fdcff;
+  --glyph-ring-1:#f2a65a;
+  --glyph-ring-2:#bd6d35;
+  --glyph-triangle:#ffc777;
+  --glyph-iris-fill:#15110e;
+  --glyph-iris-stroke:#bd6d35;
+  --glyph-pulse:#69d8ff;
+  --glyph-filter:drop-shadow(0 0 28px rgba(242,166,90,.30)) drop-shadow(0 0 8px rgba(255,199,119,.20));
+  --bg-radial-1:rgba(242,166,90,.16);
+  --bg-radial-2:rgba(189,109,53,.12);
+}
+.viz-grid{
+  grid-template-columns:1fr;
+  gap:20px;
+}
+.viz-card{
+  overflow:visible;
+  border-color:var(--line-strong);
+  background:
+    radial-gradient(circle at 16% 0%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 36%),
+    linear-gradient(180deg, rgba(255,255,255,.052), rgba(255,255,255,.018));
+}
+.viz-title{
+  color:var(--heading);
+  text-transform:uppercase;
+  letter-spacing:.055em;
+}
+.viz-caption{
+  max-width:100ch;
+  font-size:.94rem;
+}
+.viz-note{
+  max-width:100ch;
+  font-size:.9rem;
+}
+.viz-note strong,
+.viz-caption strong{
+  color:var(--accent2);
+  font-weight:700;
+}
+.viz-plot{
+  min-height:430px;
+  background:transparent;
+  border:1px solid rgba(255,255,255,.055);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.018), 0 10px 24px rgba(0,0,0,.12);
+}
+body.reader-theme .viz-plot{
+  background:transparent;
+}
+.viz-plot svg{
+  min-height:430px;
+  overflow:visible;
+}
+@media (max-width: 760px){
+  .viz-plot, .viz-plot svg{min-height:330px}
+}
+
 </style>
 
   <script>
@@ -1079,6 +1156,14 @@
         <span class="call">distinguishability under physical access conditions</span>.
         This is one of the most important philosophical and mathematical moves in the theory.
       </p>
+      <div class="viz-grid" aria-label="Generated visualization of the resource profile">
+        <div class="viz-card">
+          <h3 class="viz-title">Resource profile ε</h3>
+          <p class="viz-caption">Each spoke is one component of \(\epsilon=(R,\tau,E,\nu,\delta)\), but the fifth spoke is plotted as \(1-\delta\) so that every spoke grows outward on the same 0–1 scale. The separate scale guide shows how to read the 0.25, 0.50, 0.75, and 1.00 levels.</p>
+          <div class="viz-plot" data-viz="resource-radar"></div>
+          <p class="viz-note">Read it as a budget summary: the larger copper polygon represents a regime with more reach, time, energy, complexity, and fidelity available for measurement; the smaller red polygon represents a regime where those budgets are tighter. The axis key and radial scale are included so the diagram can be read without guessing.</p>
+        </div>
+      </div>
     </div>
 
     <div id="reader-budget" class="reader-section section">
@@ -1115,9 +1200,9 @@
       <div class="viz-grid" aria-label="Generated visualizations for the qubit example">
         <div class="viz-card">
           <h3 class="viz-title">Noisy readout curve</h3>
-          <p class="viz-caption">As readout reliability \(\eta\) improves, admissible distinguishability rises nonlinearly. The dashed curve shows the weak-contrast approximation.</p>
+          <p class="viz-caption">The solid curve is the exact distinguishability of a noisy readout. The dashed curve is the weak-\(\eta\) approximation, which is accurate only when the readout is poor enough that \(\eta\) is small.</p>
           <div class="viz-plot" data-viz="qubit-kl"></div>
-          <p class="viz-note">Generated from \(D=\eta\log((1+\eta)/(1-\eta))\) and its small-\(\eta\) approximation \(2\eta^2\).</p>
+          <p class="viz-note">Interpretation: moving right means a more reliable detector; moving up means the two qubit alternatives become easier to distinguish. The exact curve and weak-η approximation are labeled in a separate reading lane so the data remains visible.</p>
         </div>
       </div>
     </div>
@@ -1143,7 +1228,7 @@
       \]</div>
       <p>
         This is the first result that should stick in the mind. It says there is an exact finite-\(N\) threshold for redundant record formation.
-        In ordinary language: before fragments can act like many independent witnesses of the same fact, the environment as a whole must already separate the alternatives strongly enough.
+        In ordinary language: before fragments can act like many independent witnesses of the same fact, the environment as a whole must already separate the alternatives strongly enough. For the plots below, read the first graphic horizontally as “how much information do I get if I collect a fragment of size \(m\)?” and the second as “for a given overlap \(c\) and environment size \(N\), am I above or below the redundancy threshold?”
       </p>
       <p>
         That gives the theory a true phase picture. Strong imprinting gives trivial classicality. Intermediate imprinting gives a meaningful redundancy regime.
@@ -1151,16 +1236,16 @@
       </p>
       <div class="viz-grid" aria-label="Generated visualizations for homogeneous record formation">
         <div class="viz-card">
-          <h3 class="viz-title">Fragment threshold</h3>
-          <p class="viz-caption">Accessible information rises as larger fragments are gathered. The vertical marker is the first fragment size that clears the threshold.</p>
+          <<h3 class="viz-title">Fragment threshold</h3>
+          <p class="viz-caption">Each bar is the accessible information \(I_{\rm acc}(m)\) carried by a fragment of size \(m\). The dashed horizontal line is the acceptance threshold \(1-\delta\), and the vertical marker \(m_\delta\) is the smallest fragment size that counts as a reliable witness.</p>
           <div class="viz-plot" data-viz="fragment-threshold"></div>
-          <p class="viz-note">Generated from the test-suite threshold formula for a representative overlap and error tolerance.</p>
+          <p class="viz-note">How to read it: bars left of \(m_\delta\) are too small to support a stable shared record. Bars at and to the right of \(m_\delta\) are large enough to witness the system under the chosen tolerance.</p>
         </div>
         <div class="viz-card">
           <h3 class="viz-title">Finite-\(N\) phase boundary</h3>
-          <p class="viz-caption">The bright region marks parameter pairs where redundant records switch on: \(c^{2N}\le A_\delta\).</p>
+          <p class="viz-caption">The curve separates two regimes. Above and to the left, the total imprinting is strong enough for redundant records to switch on; below and to the right, it is not.</p>
           <div class="viz-plot" data-viz="phase-boundary"></div>
-          <p class="viz-note">This is not a cosmological fit; it is a generated map of the toy-model criterion.</p>
+          <p class="viz-note">Read the axes carefully: moving right increases the overlap \(c\), so record states become harder to distinguish; moving upward increases the environment size \(N\), so more fragments are available. The plotted boundary is the exact finite-\(N\) threshold from the toy model.</p>
         </div>
       </div>
     </div>
@@ -1183,33 +1268,29 @@
     <div id="reader-hetero" class="reader-section section">
       <h2>7. Heterogeneous environments</h2>
       <p>
-        Real environments are not uniform. Some parts interact strongly, some weakly, some store records well, some badly.
-        That means the homogeneous toy model is useful but idealized.
+        Real environments are not uniform. Some pieces interact strongly with the system, some weakly, and some store cleaner records than others.
+        The homogeneous model is therefore a useful baseline, but it is not the realistic case.
       </p>
       <p>
-        The framework therefore uses two thresholds instead of one.
-        One threshold marks the first fragment size for which <span class="subemph">some</span> fragments work.
-        The other marks the first size for which <span class="subemph">all</span> fragments work.
-        Between them lies a partial-consensus region where some environmental pieces are reliable witnesses and others are not.
-      </p>
-      <p>
-        This is why the heterogeneous version of \(Q\) matters so much.
-        It does not merely ask yes or no. It asks what fraction of fragments of a given size exceed the record threshold:
+        DFRC handles that by asking a more careful question. Instead of asking only whether a fragment of size \(m\) works, it asks what fraction of all size-\(m\) fragments work.
+        That fraction is \(q_m\). If \(q_m=0\), none of those fragments are good witnesses. If \(0<q_m<1\), the environment has partial consensus: some fragments tell the story clearly while others do not. If \(q_m=1\), every fragment of that size passes the record threshold.
       </p>
       <div class="equation">\[
-        Q_{\epsilon,\delta}^{\rm frac,(N)}
-        :=
-        \frac1N\sum_{m=1}^N q_m
+        q_m:=\frac{1}{\binom{N}{m}}\sum_{|F|=m}\Theta\!\big(I_{\rm acc}(F)-(1-\delta)\big),
+        \qquad
+        Q_{\epsilon,\delta}^{\rm frac,(N)}:=\frac1N\sum_{m=1}^N q_m
       \]</div>
       <p>
-        Conceptually, this is a major gain. It means the theory can talk about imperfect and uneven environments without pretending classicality appears everywhere at once.
+        This is the important conceptual move: classical-looking record structure need not appear everywhere at once.
+        In a heterogeneous environment, objectivity can grow gradually from no reliable witnesses, to partial agreement, to universal agreement across all fragments of a given size.
+        That is exactly what the graph is designed to show.
       </p>
       <div class="viz-grid" aria-label="Generated visualization for heterogeneous environments">
         <div class="viz-card">
           <h3 class="viz-title">Partial consensus window</h3>
-          <p class="viz-caption">In an uneven environment, some fragments cross the record threshold before all fragments do. The shaded middle zone is partial consensus.</p>
+          <p class="viz-caption"><strong>What this graph measures:</strong> each bar is \(q_m\), the fraction of size-\(m\) environment fragments that clear the record threshold. The shaded band marks the region between the first size where at least one fragment works and the first size where every fragment works.</p>
           <div class="viz-plot" data-viz="heterogeneous-window"></div>
-          <p class="viz-note">Generated by brute-force fragment counting over a representative heterogeneous overlap profile.</p>
+          <p class="viz-note"><strong>How to read it:</strong> low bars mean few fragments can act as witnesses; middle-height bars mean uneven or partial consensus; bars at 1 mean every fragment of that size carries enough accessible information to count as a reliable witness.</p>
         </div>
       </div>
     </div>
@@ -1274,17 +1355,26 @@
     <div id="reader-q" class="reader-section section">
       <h2>11. Record-rank</h2>
       <p>
-        The quantity \(Q\) is one of the most intuitive pieces of the theory, but it has to be read carefully. It is not simply “the number of worlds,” and it is not identical to standard Quantum Darwinism redundancy. It is better understood as a DFRC record-rank diagnostic: how much accessible record structure a regime supports under its own physical limits.
+        The quantity \(Q\) is not a count of worlds, and it is not identical to standard Quantum Darwinism redundancy.
+        In this framework it is a witness-capacity diagnostic: it asks how much above-threshold record structure remains accessible under the chosen physical limits.
       </p>
       <p>
-        A high \(Q\) means the world is rich in accessible records. A low \(Q\) means those records are sparse, fragile, or absent. As a cosmological order parameter, \(Q\) depends on specifying the observable class, fragment family, entropy floor, and consensus criterion in realistic settings.
+        In the homogeneous toy model, \(Q\) can be read very concretely. Once the threshold fragment size \(m_\delta\) is known, every fragment size \(m\ge m_\delta\) counts as above threshold, while smaller fragments do not. For finite \(N\), that gives the stepwise expression
+      </p>
+      <div class="equation">\[
+        Q_{\epsilon,\delta}^{(N)}=\frac{N-m_\delta+1}{N}\quad (m_\delta\le N),
+        \qquad
+        Q_{\epsilon,\delta}^{(N)}=0\quad (m_\delta>N).
+      \]</div>
+      <p>
+        A high \(Q\) means the environment has many usable witness sizes; a low \(Q\) means the records are sparse or require nearly the whole environment to recover. The graph keeps the staircase form because \(m_\delta\) is an integer threshold.
       </p>
       <div class="viz-grid" aria-label="Generated visualization for record-rank">
         <div class="viz-card">
           <h3 class="viz-title">Record-rank as witness capacity</h3>
-          <p class="viz-caption">For a fixed tolerance, stronger imprinting yields smaller threshold fragments and therefore higher record-rank.</p>
+          <p class="viz-caption"><strong>What this graph measures:</strong> as the overlap \(c\) increases, environment records become less distinguishable, so the threshold fragment size grows and the record-rank \(Q\) falls.</p>
           <div class="viz-plot" data-viz="record-rank"></div>
-          <p class="viz-note">Generated from \(Q=(N-m_\delta+1)/N\), clipped to zero when the threshold exceeds the environment size.</p>
+          <p class="viz-note"><strong>Why it is stepped:</strong> the curve changes only when the integer threshold \(m_\delta\) changes. The staircase is therefore part of the finite-\(N\) mathematics, not a visual artifact.</p>
         </div>
       </div>
     </div>
@@ -1292,23 +1382,20 @@
     <div id="reader-heat" class="reader-section section">
       <h2>12. Heat death</h2>
       <p>
-        In ordinary thermodynamic language, heat death means exhausted gradients. In this framework, the sharper statement is that the universe loses the ability to sustain redundant accessible records of the kinds of observables that make classical structure possible.
+        In ordinary thermodynamic language, heat death means exhausted gradients. DFRC adds an informational reading: the universe can lose the physical conditions needed to maintain redundant accessible records of the observables that make a shared classical description possible.
       </p>
       <p>
-        The finite-dimensional theorem proves a narrower statement: under product relaxation, and with nontrivial observables separated from zero-entropy edge cases, \(Q\) goes to zero. The cosmological version requires energy-constrained continuity and a precise causal-patch or local-algebra formulation.
+        The controlled theorem is narrower than the cosmological story. In a finite-dimensional relaxation setting, with trivial zero-entropy observables excluded, \(Q_{\epsilon,\delta}\) tends to zero. The cosmological version still needs energy-constrained continuity and a precise causal-patch or local-algebra formulation.
       </p>
       <p>
-        The interesting idea survives that caution. Heat death need not mean microscopic sameness. It can mean that usable gradients and admissible detectors disappear, so the universe loses the record architecture that supports a stable shared classical description.
-      </p>
-      <p>
-        That gives heat death an informational meaning in addition to a thermodynamic one.
+        The schematic below should therefore be read as an explanation of the logic, not as observational data. If usable measurement budgets collapse and readout infidelity rises, then reliable fragments stop being recoverable. In that situation, record-rank goes to zero because the environment no longer functions as a stable witness architecture.
       </p>
       <div class="viz-grid" aria-label="Generated visualization for heat death as record collapse">
         <div class="viz-card">
           <h3 class="viz-title">Record collapse schematic</h3>
-          <p class="viz-caption">A conceptual generated plot: usable budget falls, readout infidelity rises, and record-rank tends toward zero.</p>
+          <p class="viz-caption"><strong>What the schematic means:</strong> the budget curve represents usable resources for maintaining records; infidelity represents rising readout error; \(Q\) represents remaining accessible witness structure.</p>
           <div class="viz-plot" data-viz="heat-collapse"></div>
-          <p class="viz-note">This is a qualitative visual aid, not an observational fit.</p>
+          <p class="viz-note"><strong>Status:</strong> this is a conceptual visual aid, not a fitted cosmological dataset. Its role is to show the dependency chain behind record collapse: falling budget plus rising error makes redundant records inaccessible, so \(Q\to0\).</p>
         </div>
       </div>
     </div>
@@ -1455,16 +1542,18 @@
         good: cs.getPropertyValue('--good').trim() || '#89e59b',
         warn: cs.getPropertyValue('--warn').trim() || '#f2cd79',
         bad: cs.getPropertyValue('--bad').trim() || '#ff9b96',
-        line: cs.getPropertyValue('--line-strong').trim() || 'rgba(96,181,255,.30)'
+        line: cs.getPropertyValue('--line-strong').trim() || 'rgba(96,181,255,.30)',
+        bg: cs.getPropertyValue('--bg').trim() || '#0f141a',
+        bg2: cs.getPropertyValue('--bg2').trim() || '#131b24'
       };
     }
     function binaryEntropy(p){
       if(p <= 0 || p >= 1) return 0;
-      return -(p*Math.log(p) + (1-p)*Math.log(1-p));
+      return -(p*Math.log2(p) + (1-p)*Math.log2(1-p));
     }
     function inverseBinaryEntropy(target){
       if(target <= 0) return 0;
-      if(target >= Math.log(2)) return .5;
+      if(target >= 1) return .5;
       let lo = 1e-12, hi = .5;
       for(let i=0;i<70;i++){
         const mid = (lo+hi)/2;
@@ -1485,40 +1574,148 @@
       Object.entries(attrs).forEach(([k,v]) => el.setAttribute(k, v));
       return el;
     }
+    function addText(svg, txt, x, y, opts={}){
+      const C = dfrcVizColors();
+      const lines = Array.isArray(txt) ? txt : String(txt).split('\n');
+      const size = opts.size || 12;
+      const lineStep = opts.lineStep || size * 1.20;
+      const anchor = opts.anchor || 'middle';
+      // Baselines are centered by line count, not by the bounding-box estimate.
+      // This removes the visual bottom-heavy padding seen in multi-line bubbles.
+      const startY = opts.valign === 'top' ? y : y - ((lines.length - 1) * lineStep) / 2 + size * .35;
+      const t = svgEl('text',{
+        x, y:startY, 'text-anchor':anchor,
+        fill: opts.fill || C.text,
+        'font-size':size,
+        'font-family':opts.family || 'JetBrains Mono, monospace',
+        'font-weight':opts.weight || 600,
+        'paint-order':'stroke fill',
+        stroke: opts.stroke || 'rgba(5,8,10,.82)',
+        'stroke-width': opts.strokeWidth == null ? 2.8 : opts.strokeWidth,
+        'stroke-linejoin':'round'
+      });
+      lines.forEach((line, idx)=>{
+        const span = svgEl('tspan',{x, dy: idx===0 ? 0 : lineStep});
+        span.textContent = line;
+        t.append(span);
+      });
+      svg.append(t);
+      return t;
+    }
+
+    function addCallout(svg, lines, x, y, color, opts={}){
+      const C = dfrcVizColors();
+      const normalized = Array.isArray(lines) ? lines.map(String) : String(lines).split('\n');
+      const size = opts.size || 11.5;
+      const padX = opts.padX == null ? 13 : opts.padX;
+      const padY = opts.padY == null ? 7 : opts.padY;
+      const lineStep = opts.lineStep || size * 1.18;
+      const maxChars = Math.max(1, ...normalized.map(line => line.length));
+      const textW = Math.max(opts.minW || 0, maxChars * size * 0.60);
+      const textH = size + (normalized.length - 1) * lineStep;
+      const boxW = textW + padX * 2;
+      const boxH = textH + padY * 2;
+      let cx = x, cy = y;
+      if(opts.anchor === 'start') cx = x + boxW/2;
+      if(opts.anchor === 'end') cx = x - boxW/2;
+      const boxX = cx - boxW/2;
+      const boxY = cy - boxH/2;
+      if(opts.leaderTo){
+        const [lx, ly] = opts.leaderTo;
+        const tx = Math.max(boxX, Math.min(lx, boxX + boxW));
+        const ty = Math.max(boxY, Math.min(ly, boxY + boxH));
+        svg.append(svgEl('line',{
+          x1:lx, y1:ly, x2:tx, y2:ty,
+          stroke:color, 'stroke-width':opts.leaderWidth || 1.25,
+          'stroke-opacity': opts.leaderOpacity == null ? .75 : opts.leaderOpacity,
+          'stroke-dasharray': opts.dashed ? '4 4' : 'none'
+        }));
+        svg.append(svgEl('circle',{cx:lx,cy:ly,r:opts.dotR || 3.2,fill:color,'fill-opacity':.95,stroke:'rgba(5,8,10,.72)','stroke-width':.75}));
+      }
+      svg.append(svgEl('rect',{
+        x:boxX, y:boxY, width:boxW, height:boxH,
+        rx:opts.rx || 10, ry:opts.ry || 10,
+        fill: opts.fill || 'rgba(7,10,12,.84)',
+        stroke: color,
+        'stroke-opacity': opts.strokeOpacity == null ? .78 : opts.strokeOpacity,
+        'stroke-width': opts.strokeWidth || 1.05
+      }));
+      return addText(svg, normalized, cx, cy, {
+        fill: opts.textFill || color,
+        size, weight: opts.weight || 700,
+        strokeWidth: opts.textStrokeWidth == null ? 2.6 : opts.textStrokeWidth,
+        lineStep
+      });
+    }
+
     function drawPlot(target, cfg){
       const C = dfrcVizColors();
-      const W=720, H=320, m={l:54,r:24,t:26,b:44};
+      const W = cfg.W || 920, H = cfg.H || 470;
+      const m = cfg.margin || {l:88,r:52,t:56,b:86};
       target.innerHTML = '';
-      const svg = svgEl('svg', {viewBox:`0 0 ${W} ${H}`, role:'img', 'aria-label':cfg.label || 'DFRC generated graph'});
+      const titleId = `${cfg.id}-title`, descId = `${cfg.id}-desc`;
+      const svg = svgEl('svg', {viewBox:`0 0 ${W} ${H}`, role:'img', 'aria-labelledby':`${titleId} ${descId}`});
+      const title = svgEl('title', {id:titleId});
+      title.textContent = cfg.title || cfg.label || 'DFRC generated graph';
+      const desc = svgEl('desc', {id:descId});
+      desc.textContent = cfg.desc || 'Data-driven SVG visualization with transparent background and readable callouts.';
+      svg.append(title, desc);
       const defs = svgEl('defs');
       const grad = svgEl('linearGradient', {id:`grad-${cfg.id}`, x1:'0%', x2:'100%', y1:'0%', y2:'0%'});
-      grad.append(svgEl('stop', {offset:'0%', 'stop-color':C.accent, 'stop-opacity':.95}));
-      grad.append(svgEl('stop', {offset:'100%', 'stop-color':C.accent2, 'stop-opacity':.95}));
-      defs.append(grad); svg.append(defs);
+      grad.append(svgEl('stop', {offset:'0%', 'stop-color':C.accent, 'stop-opacity':.98}));
+      grad.append(svgEl('stop', {offset:'100%', 'stop-color':C.callout, 'stop-opacity':.98}));
+      defs.append(grad);
+      const warmGrad = svgEl('linearGradient', {id:`warm-${cfg.id}`, x1:'0%', x2:'100%', y1:'0%', y2:'0%'});
+      warmGrad.append(svgEl('stop', {offset:'0%', 'stop-color':C.accent2, 'stop-opacity':.95}));
+      warmGrad.append(svgEl('stop', {offset:'100%', 'stop-color':C.warn, 'stop-opacity':.95}));
+      defs.append(warmGrad);
+      const clip = svgEl('clipPath', {id:`clip-${cfg.id}`});
+      clip.append(svgEl('rect',{x:m.l,y:m.t,width:W-m.l-m.r,height:H-m.t-m.b}));
+      defs.append(clip);
+      svg.append(defs);
       const xmin=cfg.xmin, xmax=cfg.xmax, ymin=cfg.ymin, ymax=cfg.ymax;
       const X=x=>m.l+(x-xmin)/(xmax-xmin)*(W-m.l-m.r);
       const Y=y=>H-m.b-(y-ymin)/(ymax-ymin)*(H-m.t-m.b);
-      const grid = svgEl('g', {'stroke':C.line, 'stroke-opacity':.35, 'stroke-width':1});
-      for(let i=0;i<=4;i++){
-        const x=m.l+i*(W-m.l-m.r)/4;
-        const y=m.t+i*(H-m.t-m.b)/4;
-        grid.append(svgEl('line',{x1:x,y1:m.t,x2:x,y2:H-m.b}));
-        grid.append(svgEl('line',{x1:m.l,y1:y,x2:W-m.r,y2:y}));
+      const plotW = W-m.l-m.r, plotH = H-m.t-m.b;
+      if(!cfg.skipAxes){
+        svg.append(svgEl('rect',{x:m.l,y:m.t,width:plotW,height:plotH,rx:12,ry:12,fill:'rgba(4,7,9,.18)',stroke:'rgba(255,255,255,.055)','stroke-width':1}));
+        const grid = svgEl('g', {'stroke':C.line, 'stroke-opacity':.30, 'stroke-width':1});
+        const xGrid = cfg.xGrid || 4, yGrid = cfg.yGrid || 4;
+        for(let i=0;i<=xGrid;i++) grid.append(svgEl('line',{x1:m.l+i*plotW/xGrid,y1:m.t,x2:m.l+i*plotW/xGrid,y2:H-m.b}));
+        for(let i=0;i<=yGrid;i++) grid.append(svgEl('line',{x1:m.l,y1:m.t+i*plotH/yGrid,x2:W-m.r,y2:m.t+i*plotH/yGrid}));
+        svg.append(grid);
+        const axis = svgEl('g', {'stroke':C.muted, 'stroke-width':1.25, 'stroke-opacity':.85});
+        axis.append(svgEl('line',{x1:m.l,y1:H-m.b,x2:W-m.r,y2:H-m.b}));
+        axis.append(svgEl('line',{x1:m.l,y1:m.t,x2:m.l,y2:H-m.b}));
+        svg.append(axis);
+        addText(svg, cfg.xlabel || '', (m.l+W-m.r)/2, H-24, {fill:C.text,size:13.5,weight:700,strokeWidth:2.6});
+        const ylab = addText(svg, cfg.ylabel || '', 24, (m.t+H-m.b)/2, {fill:C.text,size:13.5,weight:700,strokeWidth:2.6});
+        ylab.setAttribute('transform',`rotate(-90 24 ${(m.t+H-m.b)/2})`);
+        if(cfg.xTicks){ cfg.xTicks.forEach(([v,txt])=>addText(svg, txt, X(v), H-m.b+24, {fill:C.muted,size:12,weight:700,strokeWidth:2.2})); }
+        if(cfg.yTicks){ cfg.yTicks.forEach(([v,txt])=>addText(svg, txt, m.l-10, Y(v)+4, {anchor:'end',fill:C.muted,size:12,weight:700,strokeWidth:2.2})); }
       }
-      svg.append(grid);
-      const axis = svgEl('g', {'stroke':C.muted, 'stroke-width':1.2, 'stroke-opacity':.75});
-      axis.append(svgEl('line',{x1:m.l,y1:H-m.b,x2:W-m.r,y2:H-m.b}));
-      axis.append(svgEl('line',{x1:m.l,y1:m.t,x2:m.l,y2:H-m.b}));
-      svg.append(axis);
       function label(txt,x,y,anchor='middle',size=13,fill=C.muted){
-        const t=svgEl('text',{x,y,'text-anchor':anchor,fill,'font-size':size,'font-family':'JetBrains Mono, monospace'});
-        t.textContent=txt; svg.append(t); return t;
+        return addText(svg, txt, x, y, {anchor, size, fill, weight:600});
       }
-      label(cfg.xlabel || '', (m.l+W-m.r)/2, H-12, 'middle');
-      label(cfg.ylabel || '', 14, (m.t+H-m.b)/2, 'middle').setAttribute('transform',`rotate(-90 14 ${(m.t+H-m.b)/2})`);
-      if(cfg.xTicks){ cfg.xTicks.forEach(([v,txt])=>label(txt, X(v), H-m.b+18)); }
-      if(cfg.yTicks){ cfg.yTicks.forEach(([v,txt])=>label(txt, m.l-8, Y(v)+4, 'end')); }
-      (cfg.layers||[]).forEach(layer=>layer(svg,{X,Y,W,H,m,C,label}));
+      function dataCallout(lines, x, y, color, opts={}){
+        const cx = X(x) + (opts.dx || 0);
+        const cy = Y(y) + (opts.dy || 0);
+        const leaderTo = opts.leaderTo ? [X(opts.leaderTo[0]), Y(opts.leaderTo[1])] : null;
+        return addCallout(svg, lines, cx, cy, color, {...opts, leaderTo});
+      }
+      function dataLabel(txt, dataX, dataY, color, opts={}){
+        const px = X(dataX) + (opts.dx == null ? 8 : opts.dx);
+        const py = Y(dataY) + (opts.dy == null ? -8 : opts.dy);
+        const leaderTo = opts.leader ? [X(dataX), Y(dataY)] : (opts.leaderTo ? [X(opts.leaderTo[0]), Y(opts.leaderTo[1])] : null);
+        return addCallout(svg, String(txt).split('\n'), px, py, color, {
+          ...opts,
+          anchor: opts.anchor || 'start',
+          leaderTo,
+          size: opts.size || 12,
+          minW: opts.minW || 0
+        });
+      }
+      (cfg.layers||[]).forEach(layer=>layer(svg,{X,Y,W,H,m,C,label,dataLabel,dataCallout,addCallout,addText,clipId:`clip-${cfg.id}`}));
       target.appendChild(svg);
     }
     function pathFrom(points, X, Y){
@@ -1526,16 +1723,46 @@
     }
     function renderQubitKL(el){
       const pts=[], asym=[];
-      for(let i=0;i<=120;i++){
-        const eta=.01+i*.97/120;
+      for(let i=0;i<=260;i++){
+        const eta=.005+i*.99/260;
         pts.push([eta, eta*Math.log((1+eta)/(1-eta))]);
         asym.push([eta, 2*eta*eta]);
       }
-      drawPlot(el,{id:'kl', xmin:0, xmax:1, ymin:0, ymax:4.6, xlabel:'readout reliability η', ylabel:'distinguishability D', xTicks:[[0,'0'],[.5,'.5'],[1,'1']], yTicks:[[0,'0'],[2,'2'],[4,'4']], layers:[
-        (svg,{X,Y,C})=>{ svg.append(svgEl('path',{d:pathFrom(asym,X,Y),fill:'none',stroke:C.warn,'stroke-width':3,'stroke-dasharray':'7 7','stroke-linecap':'round'})); },
-        (svg,{X,Y,C})=>{ svg.append(svgEl('path',{d:pathFrom(pts,X,Y),fill:'none',stroke:'url(#grad-kl)','stroke-width':4,'stroke-linecap':'round'})); },
-        (svg,{C,label})=>{ label('exact D',590,54,'start',13,C.accent); label('2η²',590,78,'start',13,C.warn); }
-      ]});
+      drawPlot(el,{
+        id:'kl', W:920, H:510,
+        title:'Noisy readout curve',
+        desc:'Exact distinguishability for a noisy qubit readout compared with the weak-eta approximation.',
+        xmin:0, xmax:1, ymin:0, ymax:5,
+        xlabel:'readout reliability η',
+        ylabel:'distinguishability D (nats)',
+        xTicks:[[0,'0'],[.5,'.5'],[1,'1']],
+        yTicks:[[0,'0'],[2,'2'],[4,'4']],
+        margin:{l:88,r:62,t:70,b:96},
+        layers:[
+          (svg,{X,Y,C,clipId})=>{
+            const g=svgEl('g',{'clip-path':`url(#${clipId})`});
+            g.append(svgEl('path',{d:pathFrom(asym.filter(p=>p[1]<=5),X,Y),fill:'none',stroke:C.warn,'stroke-width':3,'stroke-dasharray':'7 7','stroke-linecap':'round'}));
+            g.append(svgEl('path',{d:pathFrom(pts.filter(p=>p[1]<=5),X,Y),fill:'none',stroke:'url(#grad-kl)','stroke-width':4.2,'stroke-linecap':'round'}));
+            g.append(svgEl('line',{x1:X(1),y1:Y(0),x2:X(1),y2:Y(5),stroke:C.muted,'stroke-width':1,'stroke-dasharray':'3 4','stroke-opacity':.5}));
+            svg.append(g);
+          },
+          (svg,{C,dataCallout})=>{
+            const exactEta = 0.62;
+            const exactY = exactEta*Math.log((1+exactEta)/(1-exactEta));
+            const weakEta = 0.38;
+            const weakY = 2*weakEta*weakEta;
+            dataCallout(['exact noisy-readout curve', 'D = η ln((1+η)/(1−η))'], .49, 1.65, C.accent, {
+              leaderTo:[exactEta, exactY], size:11.4, minW:238, padY:6, lineStep:13.2
+            });
+            dataCallout(['weak-η approximation', '2η²'], .35, .72, C.warn, {
+              leaderTo:[weakEta, weakY], size:11.4, minW:178, padY:6, lineStep:13.2
+            });
+            dataCallout(['D grows steeply', 'as η → 1'], .84, 4.72, C.warn, {
+              size:11.4, minW:160, padY:6, lineStep:13.2
+            });
+          }
+        ]
+      });
     }
     function renderFragmentThreshold(el){
       const c=.82, delta=.1, N=24, thresh=1-delta;
@@ -1545,68 +1772,481 @@
         const s=Math.pow(c,m), pe=.5*(1-Math.sqrt(1-s*s));
         bars.push([m,1-binaryEntropy(pe)]);
       }
-      drawPlot(el,{id:'frag', xmin:.5, xmax:N+.5, ymin:0, ymax:1.02, xlabel:'fragment size m', ylabel:'I_acc', xTicks:[[1,'1'],[md,String(md)],[N,String(N)]], yTicks:[[0,'0'],[.5,'.5'],[.9,'.9'],[1,'1']], layers:[
-        (svg,{X,Y,C})=>{ bars.forEach(([m,v])=>svg.append(svgEl('rect',{x:X(m)-7,y:Y(v),width:14,height:Y(0)-Y(v),rx:4,fill:v>=thresh?C.accent:C.accent2,'fill-opacity':v>=thresh?.9:.38}))); },
-        (svg,{X,Y,W,m,C,label})=>{ svg.append(svgEl('line',{x1:m.l,y1:Y(thresh),x2:W-m.r,y2:Y(thresh),stroke:C.warn,'stroke-width':2,'stroke-dasharray':'6 6'})); svg.append(svgEl('line',{x1:X(md),y1:26,x2:X(md),y2:276,stroke:C.callout,'stroke-width':2})); label('threshold',575,Y(thresh)-8,'start',13,C.warn); label('mδ='+md,X(md)+8,44,'start',13,C.callout); }
+      drawPlot(el,{id:'frag', xmin:.5, xmax:N+.5, ymin:0, ymax:1.02, xlabel:'fragment size m', ylabel:'I_acc (bits)', xTicks:[[1,'1'],[md,'mδ='+String(md)],[N,String(N)]], yTicks:[[0,'0'],[.5,'.5'],[.9,'.9'],[1,'1']], layers:[
+        (svg,{X,Y,C,W,H,m})=>{
+          if(md>1){
+            svg.append(svgEl('rect',{x:X(0.5),y:m.t,width:X(md-0.5)-X(0.5),height:H-m.t-m.b,fill:C.bad,'fill-opacity':.06}));
+          }
+          svg.append(svgEl('rect',{x:X(md-0.5),y:m.t,width:X(N+0.5)-X(md-0.5),height:H-m.t-m.b,fill:C.accent,'fill-opacity':.05}));
+          const bw = Math.min(20, Math.max(12, (X(2)-X(1))*.62));
+          bars.forEach(([m,v])=>svg.append(svgEl('rect',{x:X(m)-bw/2,y:Y(v),width:bw,height:Y(0)-Y(v),rx:4,fill:v>=thresh?C.accent:C.accent2,'fill-opacity':v>=thresh?.9:.40,stroke:C.text,'stroke-width':.5,'stroke-opacity':.22})));
+        },
+        (svg,{X,Y,W,m,C,dataLabel})=>{
+          svg.append(svgEl('line',{x1:m.l,y1:Y(thresh),x2:W-m.r,y2:Y(thresh),stroke:C.warn,'stroke-width':2,'stroke-dasharray':'6 6'}));
+          svg.append(svgEl('line',{x1:X(md),y1:m.t,x2:X(md),y2:Y(0),stroke:C.callout,'stroke-width':2,'stroke-opacity':.7}));
+          dataLabel('δ-tolerance line = 1−δ', N-0.5, thresh, C.warn, {dx:-8, dy:-16, anchor:'end', leader:true});
+          dataLabel('mδ = first reliable fragment', md, thresh, C.callout, {dx:16, dy:-28, leader:true});
+          dataLabel('too small to witness', Math.max(1.8, md/2), 0.14, C.bad, {dx:0, dy:0, anchor:'middle', size:12});
+          dataLabel('witness region', (md+N)/2, 0.14, C.accent, {dx:0, dy:0, anchor:'middle', size:12});
+        }
       ]});
     }
     function renderPhaseBoundary(el){
       const delta=.1, A=thresholdConstants(delta).A;
-      drawPlot(el,{id:'phase', xmin:.42, xmax:.98, ymin:4, ymax:60, xlabel:'overlap c', ylabel:'environment size N', xTicks:[[.5,'.5'],[.7,'.7'],[.9,'.9']], yTicks:[[10,'10'],[30,'30'],[50,'50']], layers:[
-        (svg,{X,Y,C})=>{
-          const nx=28, ny=22;
-          for(let i=0;i<nx;i++) for(let j=0;j<ny;j++){
-            const c=.42+(i+.5)*(.98-.42)/nx, N=4+(j+.5)*(60-4)/ny;
-            const on=Math.pow(c,2*N)<=A;
-            svg.append(svgEl('rect',{x:X(.42+i*(.98-.42)/nx),y:Y(4+(j+1)*(60-4)/ny),width:(X(.42+(i+1)*(.98-.42)/nx)-X(.42+i*(.98-.42)/nx)+.8),height:(Y(4+j*(60-4)/ny)-Y(4+(j+1)*(60-4)/ny)+.8),fill:on?C.accent:C.bad,'fill-opacity':on?.72:.18}));
+      drawPlot(el,{id:'phase', xmin:.42, xmax:.98, ymin:4, ymax:60, xlabel:'overlap c', ylabel:'environment size N', xTicks:[[.5,'.5'],[.7,'.7'],[.9,'.9']], yTicks:[[10,'10'],[30,'30'],[50,'50'],[60,'60']], layers:[
+        (svg,{X,Y,W,H,m,C})=>{
+          svg.append(svgEl('rect',{x:m.l,y:m.t,width:W-m.l-m.r,height:H-m.t-m.b,fill:C.warn,'fill-opacity':.14}));
+          const pts=[];
+          const xmin=.42, xmax=.98, ymin=4, ymax=60;
+          pts.push([X(xmin),Y(ymin)]);
+          for(let i=0;i<=260;i++){
+            const c=xmin+i*(xmax-xmin)/260;
+            const n=Math.log(A)/(2*Math.log(c));
+            const nc=Math.max(ymin, Math.min(ymax, n));
+            pts.push([X(c),Y(nc)]);
           }
+          pts.push([X(xmax),Y(ymin)]);
+          const d=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(2)+' '+p[1].toFixed(2)).join(' ')+' Z';
+          svg.append(svgEl('path',{d,fill:C.bad,'fill-opacity':.22}));
         },
-        (svg,{X,Y,C,label})=>{
-          const pts=[]; for(let i=0;i<=100;i++){ const c=.43+i*(.97-.43)/100; pts.push([c, Math.log(A)/(2*Math.log(c))]); }
-          svg.append(svgEl('path',{d:pathFrom(pts,X,Y),fill:'none',stroke:C.callout,'stroke-width':3,'stroke-linecap':'round'}));
-          label('records on',145,68,'start',13,C.accent); label('no threshold',505,230,'start',13,C.bad);
+        (svg,{X,Y,C,dataLabel})=>{
+          const pts=[];
+          for(let i=0;i<=260;i++){
+            const c=.43+i*(.97-.43)/260;
+            const n=Math.log(A)/(2*Math.log(c));
+            if(n>=4 && n<=60) pts.push([c, n]);
+          }
+          svg.append(svgEl('path',{d:pathFrom(pts,X,Y),fill:'none',stroke:C.callout,'stroke-width':4,'stroke-linecap':'round'}));
+          svg.append(svgEl('path',{d:pathFrom(pts,X,Y),fill:'none',stroke:C.accent2,'stroke-width':1.5,'stroke-linecap':'round','stroke-opacity':.85}));
+          dataLabel('records can switch on here\nfull environment already separates\nthe alternatives well enough', 0.58, 51, C.warn, {dx:0, dy:0, anchor:'middle', size:11});
+          dataLabel('no threshold yet\nimprinting too weak or\nenvironment too small', 0.935, 16, C.bad, {dx:0, dy:0, anchor:'middle', size:11});
+          const cLbl = 0.95;
+          const nLbl = Math.log(A)/(2*Math.log(cLbl));
+          dataLabel('switch-on boundary\nc²ᴺ = A_δ', cLbl, nLbl, C.callout, {dx:-110, dy:-46, anchor:'middle', leader:true, size:11});
         }
       ]});
     }
     function renderHeterogeneous(el){
       const overlaps=[.62,.66,.71,.75,.78,.83,.87,.90,.93,.95], delta=.1, A=thresholdConstants(delta).A;
       const N=overlaps.length, qs=[]; let best=N+1,worst=N+1;
-      function combos(arr,k,start=0,prefix=[],out=[]){ if(prefix.length===k){out.push(prefix.slice()); return out;} for(let i=start;i<arr.length;i++){prefix.push(arr[i]); combos(arr,k,i+1,prefix,out); prefix.pop();} return out; }
-      for(let m=1;m<=N;m++){
-        const all=combos([...Array(N).keys()],m); let ok=0;
-        all.forEach(f=>{ let prod=1; f.forEach(i=>prod*=overlaps[i]*overlaps[i]); if(prod<=A) ok++; });
-        if(ok>0 && best===N+1) best=m; if(ok===all.length && worst===N+1) worst=m;
-        qs.push([m,ok/all.length]);
+      function combos(arr,k,start=0,prefix=[],out=[]){
+        if(prefix.length===k){out.push(prefix.slice()); return out;}
+        for(let i=start;i<arr.length;i++){prefix.push(arr[i]); combos(arr,k,i+1,prefix,out); prefix.pop();}
+        return out;
       }
-      drawPlot(el,{id:'het', xmin:.5, xmax:N+.5, ymin:0, ymax:1.02, xlabel:'fragment size m', ylabel:'fraction working', xTicks:[[1,'1'],[best,'best'],[worst,'worst'],[N,String(N)]], yTicks:[[0,'0'],[.5,'.5'],[1,'1']], layers:[
-        (svg,{X,Y,C})=>{ svg.append(svgEl('rect',{x:X(best)-9,y:Y(1),width:X(worst)-X(best)+18,height:Y(0)-Y(1),fill:C.warn,'fill-opacity':.12})); qs.forEach(([m,q])=>svg.append(svgEl('rect',{x:X(m)-9,y:Y(q),width:18,height:Y(0)-Y(q),rx:4,fill:q===1?C.accent:q>0?C.callout:C.bad,'fill-opacity':q===1?.9:q>0?.72:.25}))); },
-        (svg,{X,Y,C,label})=>{ label('partial consensus',X((best+worst)/2),46,'middle',13,C.warn); }
-      ]});
+      for(let k=1;k<=N;k++){
+        const all=combos([...Array(N).keys()],k); let ok=0;
+        all.forEach(f=>{ let prod=1; f.forEach(i=>prod*=overlaps[i]*overlaps[i]); if(prod<=A) ok++; });
+        if(ok>0 && best===N+1) best=k;
+        if(ok===all.length && worst===N+1) worst=k;
+        qs.push([k,ok/all.length]);
+      }
+      drawPlot(el,{
+        id:'het', W:920, H:590,
+        title:'Partial consensus window',
+        desc:'Bar heights show the fraction q_m of fragments of size m that beat the record threshold.',
+        xmin:.5, xmax:N+.5, ymin:0, ymax:1.04,
+        xlabel:'fragment size m',
+        ylabel:'fraction q_m above threshold',
+        xTicks:[[1,'1'],[best,'m_some='+best],[worst,'m_all='+worst],[N,String(N)]],
+        yTicks:[[0,'0'],[.5,'.5'],[1,'1']],
+        margin:{l:98,r:58,t:170,b:94},
+        layers:[
+          (svg,{X,Y,C,m,W,H,clipId})=>{
+            const laneY = 54;
+            addCallout(svg, ['what q_m means', 'fraction of size-m fragments', 'that clear the threshold'], 220, laneY, C.muted, {size:10.7,minW:166,padX:9,fill:'rgba(7,10,12,.82)',strokeOpacity:.52,textFill:C.text,padY:6,lineStep:12.8});
+            addCallout(svg, ['partial consensus window', 'some fragments work before', 'every fragment works'], W/2, laneY, C.warn, {size:10.7,minW:172,padX:9,padY:6,lineStep:12.8});
+            addCallout(svg, ['universal success', 'q_m = 1 means all fragments', 'of that size pass'], W-230, laneY, C.accent, {size:10.7,minW:178,padX:9,padY:6,lineStep:12.8});
+
+            const g = svgEl('g',{'clip-path':`url(#${clipId})`});
+            g.append(svgEl('rect',{x:X(best),y:m.t,width:X(worst)-X(best),height:H-m.t-m.b,fill:C.warn,'fill-opacity':.105}));
+            g.append(svgEl('line',{x1:X(best),y1:Y(0),x2:X(best),y2:Y(1.02),stroke:C.callout,'stroke-width':1.9,'stroke-opacity':.78,'stroke-dasharray':'5 4'}));
+            g.append(svgEl('line',{x1:X(worst),y1:Y(0),x2:X(worst),y2:Y(1.02),stroke:C.accent,'stroke-width':1.9,'stroke-opacity':.78,'stroke-dasharray':'5 4'}));
+            const bw = Math.min(34, Math.max(18, (X(2)-X(1))*.58));
+            qs.forEach(([k,q])=>g.append(svgEl('rect',{x:X(k)-bw/2,y:Y(q),width:bw,height:Y(0)-Y(q),rx:5,fill:q===1?C.accent:q>0?C.callout:C.bad,'fill-opacity':q===1?.90:q>0?.76:.24,stroke:C.text,'stroke-width':.65,'stroke-opacity':.22})));
+            svg.append(g);
+
+            svg.append(svgEl('line',{x1:X(best),y1:m.t-8,x2:X(best),y2:m.t,stroke:C.callout,'stroke-width':1.25,'stroke-opacity':.72}));
+            addCallout(svg, ['first success', 'm_some = '+best], X(best), m.t-34, C.callout, {size:10.4,minW:124,padY:5,lineStep:12.2});
+            svg.append(svgEl('line',{x1:X(worst),y1:m.t-8,x2:X(worst),y2:m.t,stroke:C.accent,'stroke-width':1.25,'stroke-opacity':.72}));
+            addCallout(svg, ['all succeed', 'm_all = '+worst], X(worst), m.t-34, C.accent, {size:10.4,minW:124,padY:5,lineStep:12.2});
+            addCallout(svg, ['none pass here', 'q_m = 0'], X(1.42), Y(.18), C.bad, {leaderTo:[X(1),Y(0)], size:10.4,minW:122,padY:5,lineStep:12.2});
+          }
+        ]
+      });
     }
     function renderRecordRank(el){
       const N=50, delta=.1, pts=[];
-      for(let i=0;i<=100;i++){
-        const c=.45+i*.52/100, md=mDelta(c,delta), Q=md<=N?(N-md+1)/N:0;
+      for(let i=0;i<=520;i++){
+        const c=.45+i*.52/520, md=mDelta(c,delta), Q=md<=N?(N-md+1)/N:0;
         pts.push([c,Q]);
       }
-      drawPlot(el,{id:'qrank', xmin:.45, xmax:.97, ymin:0, ymax:1.02, xlabel:'overlap c', ylabel:'record-rank Q', xTicks:[[.5,'.5'],[.7,'.7'],[.9,'.9']], yTicks:[[0,'0'],[.5,'.5'],[1,'1']], layers:[
-        (svg,{X,Y,C})=>{ svg.append(svgEl('path',{d:pathFrom(pts,X,Y),fill:'none',stroke:'url(#grad-qrank)','stroke-width':4,'stroke-linecap':'round'})); },
-        (svg,{C,label})=>{ label('strong records',115,62,'start',13,C.accent); label('record-poor',520,242,'start',13,C.bad); }
-      ]});
+      function qAt(c){ const md=mDelta(c,delta); return md<=N?(N-md+1)/N:0; }
+      function stepPath(points,X,Y){
+        if(!points.length) return '';
+        let d='M'+X(points[0][0]).toFixed(2)+' '+Y(points[0][1]).toFixed(2);
+        let lastY=points[0][1];
+        for(let i=1;i<points.length;i++){
+          const [x,y]=points[i];
+          if(Math.abs(y-lastY)>1e-9){
+            d+=' L'+X(x).toFixed(2)+' '+Y(lastY).toFixed(2);
+            d+=' L'+X(x).toFixed(2)+' '+Y(y).toFixed(2);
+            lastY=y;
+          }else d+=' L'+X(x).toFixed(2)+' '+Y(y).toFixed(2);
+        }
+        return d;
+      }
+      drawPlot(el,{
+        id:'qrank', W:920, H:520,
+        title:'Record-rank as witness capacity',
+        desc:'Record-rank Q is computed from the threshold fragment size and therefore changes in integer steps.',
+        xmin:.45, xmax:.97, ymin:0, ymax:1.08,
+        xlabel:'overlap c (larger c = weaker imprint)',
+        ylabel:'record-rank Q',
+        xTicks:[[.5,'.5'],[.6,'.6'],[.7,'.7'],[.8,'.8'],[.9,'.9']],
+        yTicks:[[0,'0'],[.25,'.25'],[.5,'.5'],[.75,'.75'],[1,'1']],
+        margin:{l:92,r:54,t:118,b:92},
+        layers:[
+          (svg,{X,Y,C,clipId})=>{
+            const g=svgEl('g',{'clip-path':`url(#${clipId})`});
+            g.append(svgEl('path',{d:stepPath(pts,X,Y),fill:'none',stroke:'url(#grad-qrank)','stroke-width':4.2,'stroke-linecap':'round','stroke-linejoin':'round'}));
+            svg.append(g);
+          },
+          (svg,{X,Y,W,C,m})=>{
+            addCallout(svg, ['what Q measures', 'fraction of fragment sizes', 'that clear the threshold'], 235, 55, C.muted, {size:10.7,minW:228,fill:'rgba(7,10,12,.82)',strokeOpacity:.52,textFill:C.text,padY:6,lineStep:12.8});
+            addCallout(svg, ['strong records', 'small m_delta → high Q'], 520, 55, C.accent, {leaderTo:[X(.53),Y(qAt(.53))], size:10.9,minW:198,padY:6,lineStep:13});
+            addCallout(svg, ['record-poor edge', 'threshold nearly lost'], 745, 55, C.bad, {leaderTo:[X(.95),Y(qAt(.95))], size:10.9,minW:182,padY:6,lineStep:13});
+          }
+        ]
+      });
     }
     function renderHeatCollapse(el){
       const q=[], budget=[], inf=[];
-      for(let i=0;i<=120;i++){
-        const t=i/120*10;
+      for(let i=0;i<=300;i++){
+        const t=i/300*10;
         q.push([t,Math.exp(-t/2.2)]);
         budget.push([t,1/(1+Math.exp((t-4.6)/.75))]);
         inf.push([t,.5*(1-Math.exp(-t/2.8))]);
       }
-      drawPlot(el,{id:'heat', xmin:0, xmax:10, ymin:0, ymax:1.02, xlabel:'cosmic time parameter', ylabel:'normalized level', xTicks:[[0,'early'],[5,'mid'],[10,'late']], yTicks:[[0,'0'],[.5,'.5'],[1,'1']], layers:[
-        (svg,{X,Y,C})=>{ svg.append(svgEl('path',{d:pathFrom(q,X,Y),fill:'none',stroke:C.accent,'stroke-width':4,'stroke-linecap':'round'})); svg.append(svgEl('path',{d:pathFrom(budget,X,Y),fill:'none',stroke:C.callout,'stroke-width':3,'stroke-linecap':'round'})); svg.append(svgEl('path',{d:pathFrom(inf,X,Y),fill:'none',stroke:C.bad,'stroke-width':3,'stroke-dasharray':'7 6','stroke-linecap':'round'})); },
-        (svg,{C,label})=>{ label('Q',120,66,'start',13,C.accent); label('budget',315,150,'start',13,C.callout); label('infidelity',520,178,'start',13,C.bad); }
-      ]});
+      drawPlot(el,{
+        id:'heat', W:920, H:540,
+        title:'Record collapse schematic',
+        desc:'Conceptual plot showing decreasing record-rank, collapsing budget, and rising infidelity.',
+        xmin:0, xmax:10, ymin:0, ymax:1.08,
+        xlabel:'cosmic time parameter',
+        ylabel:'normalized level',
+        xTicks:[[0,'early'],[5,'mid'],[10,'late']],
+        yTicks:[[0,'0'],[.25,'.25'],[.5,'.5'],[.75,'.75'],[1,'1']],
+        margin:{l:92,r:54,t:122,b:92},
+        layers:[
+          (svg,{X,Y,C,clipId})=>{
+            const g=svgEl('g',{'clip-path':`url(#${clipId})`});
+            g.append(svgEl('path',{d:pathFrom(q,X,Y),fill:'none',stroke:C.callout,'stroke-width':4.2,'stroke-linecap':'round'}));
+            g.append(svgEl('path',{d:pathFrom(budget,X,Y),fill:'none',stroke:C.accent,'stroke-width':3.5,'stroke-linecap':'round'}));
+            g.append(svgEl('path',{d:pathFrom(inf,X,Y),fill:'none',stroke:C.bad,'stroke-width':3.5,'stroke-dasharray':'7 6','stroke-linecap':'round'}));
+            g.append(svgEl('line',{x1:X(5),y1:Y(0),x2:X(5),y2:Y(1.05),stroke:C.muted,'stroke-width':1.2,'stroke-dasharray':'5 5','stroke-opacity':.50}));
+            svg.append(g);
+          },
+          (svg,{X,Y,W,C})=>{
+            addCallout(svg, ['Q record-rank', 'accessible witnesses fade'], 225, 57, C.callout, {leaderTo:[X(1.35),Y(Math.exp(-1.35/2.2))], size:10.9,minW:164,padX:9,padY:6,lineStep:13});
+            addCallout(svg, ['usable budget', 'resources collapse after mid-era'], 515, 57, C.accent, {leaderTo:[X(4.6),Y(1/(1+Math.exp((4.6-4.6)/.75)))], size:10.9,minW:196,padX:9,padY:6,lineStep:13});
+            addCallout(svg, ['infidelity rises', 'records become unreliable'], 760, 57, C.bad, {leaderTo:[X(7.3),Y(0.5*(1-Math.exp(-7.3/2.8)))], size:10.9,minW:166,padX:9,padY:6,lineStep:13});
+            addCallout(svg, ['schematic visual aid', 'not an observational fit'], 710, 420, C.muted, {size:10.5,minW:188,fill:'rgba(7,10,12,.82)',strokeOpacity:.45,textFill:C.text,padY:6,lineStep:12.4});
+          }
+        ]
+      });
     }
+    function renderResourceRadar(el){
+      const C = dfrcVizColors();
+      const W=860, H=430;
+      el.innerHTML = '';
+      const svg = svgEl('svg', {viewBox:`0 0 ${W} ${H}`, role:'img', 'aria-label':'Resource profile radar showing the five-axis ε tuple'});
+      const cx=305, cy=222, r=150;
+      const axes = ['R', 'τ', 'E', 'ν', '1−δ'];
+      const angles = axes.map((_,i) => -Math.PI/2 + i*2*Math.PI/5);
+      for(let level=1; level<=4; level++){
+        const f = level/4;
+        const pts = angles.map(a => `${(cx + Math.cos(a)*r*f).toFixed(1)},${(cy + Math.sin(a)*r*f).toFixed(1)}`).join(' ');
+        svg.append(svgEl('polygon', {points:pts, fill:'none', stroke:C.line, 'stroke-opacity':.3, 'stroke-width':1}));
+      }
+      angles.forEach(a => {
+        svg.append(svgEl('line', {x1:cx, y1:cy, x2:cx + Math.cos(a)*r, y2:cy + Math.sin(a)*r, stroke:C.muted, 'stroke-opacity':.4, 'stroke-width':1}));
+      });
+      const scaleX0 = 520, scaleX1 = 760, scaleY = 72;
+      const scaleTitle = svgEl('text',{x:(scaleX0+scaleX1)/2, y:48, 'text-anchor':'middle', fill:C.text, 'font-size':13, 'font-family':'JetBrains Mono, monospace', 'font-weight':700, 'paint-order':'stroke fill', stroke:'rgba(5,8,10,.78)', 'stroke-width':3});
+      scaleTitle.textContent = 'shared spoke scale (used on every axis)';
+      svg.append(scaleTitle);
+      svg.append(svgEl('line',{x1:scaleX0,y1:scaleY,x2:scaleX1,y2:scaleY,stroke:C.callout,'stroke-width':2,'stroke-opacity':.72}));
+      [0,0.25,0.50,0.75,1.00].forEach(v => {
+        const x = scaleX0 + (scaleX1-scaleX0)*v;
+        svg.append(svgEl('line',{x1:x,y1:scaleY-6,x2:x,y2:scaleY+6,stroke:C.callout,'stroke-width':1.4,'stroke-opacity':.8}));
+        const t = svgEl('text',{x,y:scaleY+22,'text-anchor':'middle',fill:C.muted,'font-size':11,'font-family':'JetBrains Mono, monospace','paint-order':'stroke fill',stroke:'rgba(5,8,10,.80)','stroke-width':2.5});
+        t.textContent = v.toFixed(2);
+        svg.append(t);
+      });
+      angles.forEach((a, i) => {
+        const lx = cx + Math.cos(a)*(r+20);
+        const ly = cy + Math.sin(a)*(r+20) + 4;
+        let anchor = 'middle';
+        if(Math.cos(a) > 0.3) anchor='start';
+        else if(Math.cos(a) < -0.3) anchor='end';
+        const t = svgEl('text', {x:lx, y:ly, 'text-anchor':anchor, fill:C.text, 'font-size':15, 'font-family':'JetBrains Mono, monospace', 'font-weight':700, 'paint-order':'stroke fill', stroke:'rgba(5,8,10,.80)', 'stroke-width':3, 'stroke-linejoin':'round'});
+        t.textContent = axes[i];
+        svg.append(t);
+      });
+      function drawProfile(values, color, opacity){
+        const pts = values.map((v,i) => `${(cx + Math.cos(angles[i])*r*v).toFixed(1)},${(cy + Math.sin(angles[i])*r*v).toFixed(1)}`).join(' ');
+        svg.append(svgEl('polygon', {points:pts, fill:color, 'fill-opacity':opacity, stroke:color, 'stroke-width':2.5, 'stroke-opacity':.85}));
+        values.forEach((v,i) => {
+          svg.append(svgEl('circle',{cx:cx + Math.cos(angles[i])*r*v, cy:cy + Math.sin(angles[i])*r*v, r:3.5, fill:color}));
+        });
+      }
+      drawProfile([0.85, 0.88, 0.80, 0.82, 0.85], C.accent, 0.16);
+      drawProfile([0.32, 0.36, 0.20, 0.45, 0.20], C.bad, 0.22);
+      const legX = 500, legY = 116;
+      const legTxt = (txt,x,y,color,size=12,weight=400) => {
+        const t = svgEl('text',{x,y,'text-anchor':'start',fill:color,'font-size':size,'font-family':'JetBrains Mono, monospace','font-weight':weight,'paint-order':'stroke fill',stroke:'rgba(5,8,10,.75)','stroke-width':2.2});
+        t.textContent = txt; svg.append(t);
+      };
+      svg.append(svgEl('rect',{x:legX, y:legY, width:14, height:14, fill:C.accent, 'fill-opacity':0.16, stroke:C.accent, 'stroke-width':2}));
+      legTxt('permissive regime', legX+24, legY+12, C.text, 13, 600);
+      svg.append(svgEl('rect',{x:legX, y:legY+28, width:14, height:14, fill:C.bad, 'fill-opacity':0.22, stroke:C.bad, 'stroke-width':2}));
+      legTxt('constrained regime', legX+24, legY+40, C.text, 13, 600);
+      legTxt('Axis key:', legX, legY+72, C.callout, 12, 700);
+      legTxt('R = resolution', legX, legY+92, C.muted, 11);
+      legTxt('τ = time budget', legX, legY+108, C.muted, 11);
+      legTxt('E = energy / interaction budget', legX, legY+124, C.muted, 11);
+      legTxt('ν = causal coverage', legX, legY+140, C.muted, 11);
+      legTxt('1−δ = readout fidelity', legX, legY+156, C.muted, 11);
+      legTxt('Farther from center = more of that resource.', legX, legY+186, C.muted, 11);
+      legTxt('Larger polygon area = more discriminative capacity.', legX, legY+202, C.muted, 11);
+      el.appendChild(svg);
+    }
+
+    function renderBranchingLocus(el){
+      drawPlot(el, {
+        id:'locus', skipAxes:true,
+        xmin:0, xmax:10, ymin:0, ymax:4,
+        layers:[
+          (svg, {X, Y, C}) => {
+            const cx_d=5.5, cy_d=2.0, rx_d=2.0, ry_d=0.9;
+            // outer halo
+            svg.append(svgEl('ellipse',{cx:X(cx_d), cy:Y(cy_d), rx:X(cx_d+rx_d*1.45)-X(cx_d), ry:Y(cy_d-ry_d*1.45)-Y(cy_d), fill:C.accent, 'fill-opacity':0.05}));
+            // mid halo
+            svg.append(svgEl('ellipse',{cx:X(cx_d), cy:Y(cy_d), rx:X(cx_d+rx_d*1.18)-X(cx_d), ry:Y(cy_d-ry_d*1.18)-Y(cy_d), fill:C.accent, 'fill-opacity':0.10}));
+            // locus interior
+            svg.append(svgEl('ellipse',{cx:X(cx_d), cy:Y(cy_d), rx:X(cx_d+rx_d)-X(cx_d), ry:Y(cy_d-ry_d)-Y(cy_d), fill:C.accent, 'fill-opacity':0.20, stroke:C.accent, 'stroke-width':1.5, 'stroke-opacity':0.7, 'stroke-dasharray':'5 4'}));
+            const t1 = svgEl('text',{x:X(cx_d+1.55), y:Y(cy_d-0.55), 'text-anchor':'start', fill:C.accent, 'font-size':16, 'font-family':'JetBrains Mono, monospace', 'font-weight':700});
+            t1.textContent = '𝔅';
+            svg.append(t1);
+            const t2 = svgEl('text',{x:X(cx_d+1.55), y:Y(cy_d-0.55)+15, 'text-anchor':'start', fill:C.accent, 'font-size':11, 'font-family':'JetBrains Mono, monospace'});
+            t2.textContent = 'branching locus';
+            svg.append(t2);
+          },
+          (svg, {X, Y, C}) => {
+            // branched (inside)
+            const branched = [[5.0, 1.7], [6.0, 2.3], [6.5, 1.85], [4.5, 2.2]];
+            branched.forEach(([x,y]) => svg.append(svgEl('circle',{cx:X(x), cy:Y(y), r:5.5, fill:C.accent, 'fill-opacity':0.95, stroke:C.text, 'stroke-width':1.2})));
+            // partially branched (gradient)
+            const partial = [[3.0, 1.3], [7.8, 3.0]];
+            partial.forEach(([x,y]) => svg.append(svgEl('circle',{cx:X(x), cy:Y(y), r:5.5, fill:C.callout, 'fill-opacity':0.92, stroke:C.text, 'stroke-width':1.2})));
+            // far state
+            const far = [1.2, 3.5];
+            svg.append(svgEl('circle',{cx:X(far[0]), cy:Y(far[1]), r:5.5, fill:C.bad, 'fill-opacity':0.92, stroke:C.text, 'stroke-width':1.2}));
+            // d_br line from far state to nearest locus boundary point
+            const cx_d=5.5, cy_d=2.0, rx_d=2.0, ry_d=0.9;
+            const dx=far[0]-cx_d, dy=far[1]-cy_d;
+            const ang = Math.atan2(dy/ry_d, dx/rx_d);
+            const ex = cx_d + rx_d*Math.cos(ang);
+            const ey = cy_d + ry_d*Math.sin(ang);
+            svg.append(svgEl('line',{x1:X(far[0]), y1:Y(far[1]), x2:X(ex), y2:Y(ey), stroke:C.bad, 'stroke-width':2, 'stroke-dasharray':'5 4', 'stroke-opacity':0.85}));
+            // text labels
+            const lbl = (txt,x,y,color,anchor='start',size=12) => {
+              const t = svgEl('text',{x:X(x), y:Y(y), 'text-anchor':anchor, fill:color, 'font-size':size, 'font-family':'JetBrains Mono, monospace'});
+              t.textContent = txt; svg.append(t);
+            };
+            lbl('branched states', 5.5, 0.9, C.accent, 'middle');
+            lbl('partial', 3.0, 0.9, C.callout, 'middle');
+            lbl('partial', 7.8, 3.55, C.callout, 'middle');
+            lbl('non-branched', 1.2, 3.95, C.bad, 'middle');
+            // d_br label on the dashed line midpoint
+            const mx=(far[0]+ex)/2, my=(far[1]+ey)/2;
+            const dt = svgEl('text',{x:X(mx)+8, y:Y(my)-6, 'text-anchor':'start', fill:C.bad, 'font-size':12, 'font-family':'JetBrains Mono, monospace', 'font-weight':600});
+            dt.textContent = 'd_br';
+            svg.append(dt);
+          }
+        ]
+      });
+    }
+
+    function renderBottleneckFlow(el){
+      const trivial=[], nontrivial=[];
+      const fixedPoint = 0.55;
+      for(let i=0; i<=20; i++){
+        trivial.push([i, 0.70 * Math.exp(-i/2.4)]);
+        const decay = (0.70 - fixedPoint) * Math.exp(-i/2.4);
+        nontrivial.push([i, fixedPoint + decay]);
+      }
+      drawPlot(el, {
+        id:'bottleneck',
+        xmin:-0.5, xmax:20.5, ymin:0, ymax:0.85,
+        xlabel:'iteration step (relevance-preserving compression)',
+        ylabel:'I(Z;Y) preserved',
+        xTicks:[[0,'0'],[10,'10'],[20,'20']],
+        yTicks:[[0,'0'],[fixedPoint,'I(X;Y)'],[0.7,'init']],
+        layers:[
+          (svg, {X, Y, C, W, m}) => {
+            // dashed fixed-point line
+            svg.append(svgEl('line',{x1:m.l, y1:Y(fixedPoint), x2:W-m.r, y2:Y(fixedPoint), stroke:C.callout, 'stroke-width':1, 'stroke-dasharray':'4 4', 'stroke-opacity':0.6}));
+          },
+          (svg, {X, Y, C}) => {
+            // trivial trajectory
+            svg.append(svgEl('path',{d:pathFrom(trivial,X,Y), fill:'none', stroke:C.bad, 'stroke-width':3, 'stroke-dasharray':'7 6', 'stroke-linecap':'round'}));
+            // nontrivial trajectory
+            svg.append(svgEl('path',{d:pathFrom(nontrivial,X,Y), fill:'none', stroke:'url(#grad-bottleneck)', 'stroke-width':4, 'stroke-linecap':'round'}));
+            // markers
+            svg.append(svgEl('circle',{cx:X(0), cy:Y(0.70), r:5, fill:C.muted}));
+            svg.append(svgEl('circle',{cx:X(20), cy:Y(fixedPoint), r:5, fill:C.accent}));
+            svg.append(svgEl('circle',{cx:X(20), cy:Y(trivial[20][1]), r:5, fill:C.bad}));
+          },
+          (svg, {C, dataLabel}) => {
+            dataLabel('relevance-preserving', 12, 0.62, C.accent, {dx:0, dy:0, anchor:'middle'});
+            dataLabel('over-compression', 12, 0.07, C.bad, {dx:0, dy:0, anchor:'middle'});
+            dataLabel('nontrivial fixed point', 1, fixedPoint, C.callout, {dx:6, dy:-8});
+          }
+        ]
+      });
+    }
+
+    function renderRegimes(el){
+      const C = dfrcVizColors();
+      const W=720, H=320, ml=24, mr=24;
+      el.innerHTML = '';
+      const svg = svgEl('svg', {viewBox:`0 0 ${W} ${H}`, role:'img', 'aria-label':'Cosmological regimes timeline with admissibility profiles'});
+      const regimes = [
+        {name:'reheating', x0:0.02, x1:0.32, color:C.accent, profile:[0.55, 0.45, 0.85, 0.65, 0.6]},
+        {name:'structure formation', x0:0.34, x1:0.66, color:C.callout, profile:[0.85, 0.78, 0.55, 0.78, 0.82]},
+        {name:'late de Sitter', x0:0.68, x1:0.98, color:C.bad, profile:[0.30, 0.32, 0.18, 0.45, 0.22]}
+      ];
+      const labels = ['R', 'τ', 'K', 'ν', '1−δ'];
+      const yBase = H - 50;
+      // header
+      const cap = svgEl('text',{x:W/2, y:22, 'text-anchor':'middle', fill:C.text, 'font-size':13, 'font-family':'JetBrains Mono, monospace', 'font-weight':600});
+      cap.textContent = 'intrinsic admissibility profile per cosmological regime';
+      svg.append(cap);
+      // timeline
+      svg.append(svgEl('line',{x1:ml, y1:yBase, x2:W-mr, y2:yBase, stroke:C.muted, 'stroke-width':1.5, 'stroke-opacity':0.55}));
+      // arrowhead
+      const arr = svgEl('polygon',{points:`${W-mr-2},${yBase-5} ${W-mr+6},${yBase} ${W-mr-2},${yBase+5}`, fill:C.muted, 'fill-opacity':0.6});
+      svg.append(arr);
+      // each regime
+      regimes.forEach(reg => {
+        const rx0 = ml + reg.x0 * (W - ml - mr);
+        const rx1 = ml + reg.x1 * (W - ml - mr);
+        const rw = rx1 - rx0;
+        // background panel
+        svg.append(svgEl('rect',{x:rx0, y:yBase-200, width:rw, height:175, fill:reg.color, 'fill-opacity':0.06, rx:8, ry:8, stroke:reg.color, 'stroke-width':1, 'stroke-opacity':0.4}));
+        // regime name
+        const t = svgEl('text',{x:rx0+rw/2, y:yBase-180, 'text-anchor':'middle', fill:reg.color, 'font-size':13, 'font-family':'JetBrains Mono, monospace', 'font-weight':700});
+        t.textContent = reg.name;
+        svg.append(t);
+        // bars
+        const slotW = rw / 6;
+        const barW = slotW * 0.62;
+        const barAreaY0 = yBase - 155;
+        const barAreaH = 110;
+        reg.profile.forEach((v, i) => {
+          const slotCenter = rx0 + slotW * (i + 1);
+          const bx = slotCenter - barW/2;
+          const bh = v * barAreaH;
+          svg.append(svgEl('rect',{x:bx, y:barAreaY0+(barAreaH-bh), width:barW, height:bh, fill:reg.color, 'fill-opacity':0.65, rx:2}));
+          svg.append(svgEl('rect',{x:bx, y:barAreaY0, width:barW, height:barAreaH, fill:'none', stroke:reg.color, 'stroke-width':1, 'stroke-opacity':0.18}));
+          const lblT = svgEl('text',{x:bx+barW/2, y:barAreaY0+barAreaH+15, 'text-anchor':'middle', fill:C.muted, 'font-size':11, 'font-family':'JetBrains Mono, monospace'});
+          lblT.textContent = labels[i];
+          svg.append(lblT);
+        });
+        // tick on timeline
+        const ticx = rx0 + rw/2;
+        svg.append(svgEl('line',{x1:ticx, y1:yBase-3, x2:ticx, y2:yBase+5, stroke:reg.color, 'stroke-width':2, 'stroke-opacity':0.8}));
+      });
+      // time axis label
+      const tLabel = svgEl('text',{x:W/2, y:yBase+22, 'text-anchor':'middle', fill:C.muted, 'font-size':12, 'font-family':'JetBrains Mono, monospace'});
+      tLabel.textContent = 'cosmic time →';
+      svg.append(tLabel);
+      el.appendChild(svg);
+    }
+
+    function renderLocalityGraph(el){
+      const C = dfrcVizColors();
+      const W=720, H=320;
+      el.innerHTML = '';
+      const svg = svgEl('svg', {viewBox:`0 0 ${W} ${H}`, role:'img', 'aria-label':'Emergent locality from admissible distinguishability weights'});
+      const nodes = [
+        {x:0.18, y:0.32, label:'1'},
+        {x:0.27, y:0.58, label:'2'},
+        {x:0.34, y:0.32, label:'3'},
+        {x:0.30, y:0.78, label:'4'},
+        {x:0.65, y:0.32, label:'5'},
+        {x:0.72, y:0.60, label:'6'},
+        {x:0.79, y:0.32, label:'7'},
+        {x:0.70, y:0.80, label:'8'},
+      ];
+      const edges = [
+        {from:0, to:1, w:0.82},
+        {from:0, to:2, w:0.75},
+        {from:1, to:2, w:0.68},
+        {from:1, to:3, w:0.78},
+        {from:2, to:3, w:0.62},
+        {from:4, to:5, w:0.80},
+        {from:4, to:6, w:0.72},
+        {from:5, to:6, w:0.65},
+        {from:5, to:7, w:0.78},
+        {from:6, to:7, w:0.58},
+        {from:2, to:4, w:0.16},
+        {from:3, to:5, w:0.12},
+        {from:0, to:6, w:0.08},
+      ];
+      const px = x => 50 + x * (W - 100);
+      const py = y => 50 + y * (H - 110);
+      // cluster halos
+      svg.append(svgEl('ellipse',{cx:px(0.275), cy:py(0.55), rx:140, ry:95, fill:C.accent, 'fill-opacity':0.06, stroke:C.accent, 'stroke-width':1, 'stroke-dasharray':'4 5', 'stroke-opacity':0.4}));
+      svg.append(svgEl('ellipse',{cx:px(0.715), cy:py(0.55), rx:140, ry:95, fill:C.accent2, 'fill-opacity':0.06, stroke:C.accent2, 'stroke-width':1, 'stroke-dasharray':'4 5', 'stroke-opacity':0.4}));
+      // edges
+      edges.forEach(e => {
+        const a = nodes[e.from], b = nodes[e.to];
+        const isStrong = e.w >= 0.4;
+        svg.append(svgEl('line', {
+          x1:px(a.x), y1:py(a.y), x2:px(b.x), y2:py(b.y),
+          stroke: isStrong ? C.accent : C.muted,
+          'stroke-width': 0.5 + e.w * 6.5,
+          'stroke-opacity': isStrong ? 0.65 : 0.4
+        }));
+      });
+      // nodes
+      nodes.forEach(n => {
+        svg.append(svgEl('circle', {
+          cx:px(n.x), cy:py(n.y), r:14,
+          fill:C.bg2,
+          stroke:C.text, 'stroke-width':1.8, 'stroke-opacity':0.85
+        }));
+        const t = svgEl('text', {x:px(n.x), y:py(n.y)+5, 'text-anchor':'middle', fill:C.text, 'font-size':13, 'font-family':'JetBrains Mono, monospace'});
+        t.textContent = n.label;
+        svg.append(t);
+      });
+      // cluster labels
+      const lblA = svgEl('text', {x:px(0.275), y:30, 'text-anchor':'middle', fill:C.accent, 'font-size':12, 'font-family':'JetBrains Mono, monospace', 'font-weight':700});
+      lblA.textContent = 'cluster I (high w_ij)';
+      svg.append(lblA);
+      const lblB = svgEl('text', {x:px(0.715), y:30, 'text-anchor':'middle', fill:C.accent2, 'font-size':12, 'font-family':'JetBrains Mono, monospace', 'font-weight':700});
+      lblB.textContent = 'cluster II (high w_ij)';
+      svg.append(lblB);
+      // caption
+      const lg = svgEl('text', {x:W/2, y:H-12, 'text-anchor':'middle', fill:C.muted, 'font-size':11, 'font-family':'JetBrains Mono, monospace'});
+      lg.textContent = 'edge thickness ∝ admissible-distinguishability weight w_ij; emergent nearness comes from the weights, not from a preassumed background';
+      svg.append(lg);
+      el.appendChild(svg);
+    }
+
     function renderDFRCVisuals(){
       document.querySelectorAll('[data-viz]').forEach(el=>{
         const kind=el.dataset.viz;
@@ -1616,6 +2256,11 @@
         if(kind==='heterogeneous-window') renderHeterogeneous(el);
         if(kind==='record-rank') renderRecordRank(el);
         if(kind==='heat-collapse') renderHeatCollapse(el);
+        if(kind==='resource-radar') renderResourceRadar(el);
+        if(kind==='branching-locus') renderBranchingLocus(el);
+        if(kind==='bottleneck-flow') renderBottleneckFlow(el);
+        if(kind==='regimes-timeline') renderRegimes(el);
+        if(kind==='locality-graph') renderLocalityGraph(el);
       });
     }
 
