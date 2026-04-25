@@ -271,6 +271,24 @@
     .cor{border-left:4px solid var(--warn)}
     .remark{border-left:4px solid var(--accent2)}
     .target{border-left:4px solid var(--bad)}
+    .repair{border-left:4px solid var(--warn); background:linear-gradient(90deg, rgba(242,205,121,.07), rgba(255,255,255,.025))}
+    .status-note{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      width:fit-content;
+      max-width:100%;
+      margin:10px 0 14px;
+      padding:8px 12px;
+      border:1px solid var(--line-strong);
+      border-radius:999px;
+      color:var(--muted);
+      background:rgba(255,255,255,.035);
+      font:700 .78rem 'JetBrains Mono',monospace;
+      letter-spacing:.02em;
+      text-transform:uppercase;
+    }
+    .status-note strong{color:var(--callout)}
     .label{
       display:inline-block;
       font:700 .78rem 'JetBrains Mono',monospace;
@@ -282,12 +300,33 @@
 
     .equation{
       display:block;
-      overflow:auto hidden;
+      overflow:visible;
       margin:12px 0;
       padding:12px 14px;
       border-radius:var(--radius-md);
       background:rgba(8,12,18,.82);
       border:1px solid rgba(255,255,255,.04);
+      max-width:100%;
+      white-space:normal;
+      overflow-wrap:anywhere;
+      word-break:normal;
+      font-size:clamp(.72rem, 1.45vw, .96rem);
+      line-height:1.55;
+    }
+    .equation mjx-container{
+      max-width:100%;
+      overflow:visible !important;
+      white-space:normal !important;
+      font-size:clamp(78%, 1.55vw, 100%) !important;
+    }
+    .equation mjx-container[jax="CHTML"][display="true"]{
+      display:block !important;
+      width:100% !important;
+      text-align:left !important;
+    }
+    .equation mjx-math{
+      max-width:100%;
+      white-space:normal !important;
     }
     body.reader-theme .equation{
       background:rgba(16,13,10,.72);
@@ -723,18 +762,18 @@
             <span class="hero-divider">/</span>
             <button class="hero-mode" data-mode="reader" aria-pressed="false">reader mode</button>
           </div>
-          <p class="motto">A theory note built around the claim that physically admissible distinguishability is more primitive than the classical structures that emerge from it.</p>
+          <p class="motto">A research scaffold with a finite-dimensional theorem core, built around the claim that physically admissible distinguishability may be more primitive than the classical structures that emerge from it.</p>
         </section>
 
         <section id="paper" class="mode-panel active">
           <div id="paper-overview" class="panel section">
             <h2>Abstract</h2>
-            <p>I formulate a distinguishability-first framework in which the primitive physical structure is not spacetime geometry, observer-tagged measurement, or exact branch ontology, but <strong>covariant admissible distinguishability</strong>: the extent to which states can be discriminated by bounded local interactions. On that basis I define branch structure, record redundancy, recursive record closure, relevance-preserving compression, and a cosmological record-rank order parameter. I prove a budgeted data-processing theorem, construct an explicit qubit admissibility class, compute the associated distinguishability functional in closed form, derive exact fragment-level accessible information in a Quantum Darwinism toy model, prove an exact finite-\(N\) threshold for redundant record formation, extract its strong- and weak-imprinting asymptotics, derive admissibility-sensitive branch distances, formulate a heterogeneous extension with distinct best-fragment and worst-fragment thresholds together with a heterogeneous order parameter, prove a nontrivial fixed-point theorem for an admissibility-coupled bottleneck flow in the commuting sector, extend that fixed-point structure to a modularly admissible noncommuting sector via conditional expectations, and prove vanishing of record-rank at heat death under explicit finite-dimensional hypotheses.</p>
+            <p>I formulate a distinguishability-first research framework in which the proposed primitive is not spacetime geometry, observer-tagged measurement, or exact branch ontology, but <strong>covariant admissible distinguishability</strong>: the extent to which states can be discriminated by bounded local interactions. The paper currently has two different layers. The first is a finite-dimensional theorem core: restricted measured distinguishability, budgeted admissibility, a worked noisy-qubit readout model, exact accessible-information thresholds in homogeneous and heterogeneous Quantum-Darwinism-style environments, and controlled bottleneck/fixed-point constructions in commuting and finite-dimensional modular sectors. The second is a criterion-level cosmological program: record-rank, heat-death collapse of admissible records, Big-Bang-side factorization failure, emergent locality, and cross-aeon structural compression. Those cosmological claims are not presented here as completed derivations of our universe. They are structured open targets whose value is that they make the speculative parts precise enough to test, repair, or falsify.</p>
           </div>
 
           <div id="paper-intro" class="panel section">
             <h2>1. Introduction</h2>
-            <p>The guiding claim of this framework is that the physically load-bearing primitive is not geometry, not exact branching, and not observer-relative measurement, but the structure of which distinctions are physically realizable under bounded interactions. Spacetime locality, classical branches, stable identities, and cosmological cycle structure are then treated as downstream emergent organizations of admissible distinguishability.</p>
+            <p>The guiding claim of this framework is that the physically load-bearing primitive may be not geometry, exact branching, or observer-relative measurement, but the structure of which distinctions are physically realizable under bounded interactions. Spacetime locality, classical branches, stable identities, and cosmological cycle structure are then treated as candidate downstream organizations of admissible distinguishability. The finite-dimensional parts of the paper are intended as theorem-level scaffolding; the cosmological parts are explicitly criterion-level and remain open to failure.</p>
           </div>
 
           <div id="paper-primitive" class="panel section">
@@ -781,8 +820,9 @@
             <h2>6. Branching locus and admissibility-sensitive branch distance</h2>
             <div class="block def"><div class="label">Definition 6.1</div><p>The branching locus \(\mathfrak B_{\epsilon,\delta,\kappa}^{(N)}\) consists of effectively classical-branching states whose fragment records exceed threshold and whose variance across relevant fragments is bounded.</p></div>
             <div class="block def"><div class="label">Definition 6.2</div><div class="equation">\[d_{\rm br}^\epsilon(\rho):=\inf_{\omega\in\mathfrak B_{\epsilon,\delta,\kappa}^{(N)}}\mathcal D_\epsilon(\rho,\omega).\]</div></div>
-            <div class="block prop"><div class="label">Proposition 6.3</div><div class="equation">\[d_{\rm br}^{\epsilon,\mathrm{joint}}(m)=\frac12 c^{2(N-m)}+O(c^{4(N-m)}).\]</div></div>
-            <div class="block prop"><div class="label">Proposition 6.4</div><div class="equation">\[d_{\rm br}^{\epsilon,S\text{-only}}=\frac12 c^{2N}+O(c^{4N}).\]</div></div>
+            <div class="block repair"><div class="label">Repair status</div><p>The scaling formulas below are currently best read as comparison divergences to a dephased candidate branch state. To claim true distance-to-locus, the manuscript must still prove that the comparison state lies in \(\mathfrak B\) and that no closer branch-locus element exists.</p></div>
+            <div class="block prop"><div class="label">Comparison scaling 6.3</div><div class="equation">\[D_{\rm comp}^{\epsilon,\mathrm{joint}}(m)=\frac12 c^{2(N-m)}+O(c^{4(N-m)}).\]</div></div>
+            <div class="block prop"><div class="label">Comparison scaling 6.4</div><div class="equation">\[D_{\rm comp}^{\epsilon,S\text{-only}}=\frac12 c^{2N}+O(c^{4N}).\]</div></div>
           </div>
 
           <div id="paper-hetero" class="panel section">
@@ -823,12 +863,12 @@
 
           <div id="paper-q" class="panel section">
             <h2>11. Cosmological record-rank</h2>
-            <div class="block def"><div class="label">Definition 11.1</div><div class="equation">\[Q_{\epsilon,\delta}(\rho):=\sup_{X\in\mathsf O_\epsilon}\int_0^1 df\,\Theta\!\Big(\bar I_{\rm acc}^\epsilon(X:F_f)-(1-\delta)H(X)\Big).\]</div></div>
+            <div class="block def"><div class="label">Definition 11.1</div><div class="equation">\[Q_{\epsilon,\delta}(\rho):=\sup_{X\in\mathsf O_\epsilon}\int_0^1 df\,\Theta\!\Big(\bar I_{\rm acc}^\epsilon(X:F_f)-(1-\delta)H(X)\Big).\]</div><p>This is a DFRC record-rank diagnostic, not identical to standard Quantum Darwinism redundancy. In the repaired notation it should be separated from fragment threshold \(f_\delta\), redundancy \(R_\delta\), and consensus variance.</p></div>
           </div>
 
           <div id="paper-heat" class="panel section">
             <h2>12. Heat death</h2>
-            <div class="block prop"><div class="label">Proposition 12.1</div><p>If a finite-dimensional CPTP semigroup relaxes to a unique product fixed point, then \(Q_{\epsilon,\delta}(\Lambda_t(\rho))\to0\).</p></div>
+            <div class="block prop"><div class="label">Proposition 12.1</div><p>If a finite-dimensional CPTP semigroup relaxes to a unique product fixed point, and the observable class excludes trivial zero-entropy observables by an entropy-floor condition, then \(Q_{\epsilon,\delta}(\Lambda_t(\rho))\to0\). Infinite-dimensional or cosmological versions require energy-constrained continuity and causal-patch/local-algebra hypotheses.</p></div>
             <div class="block cor"><div class="label">Corollary 12.2</div><p>If additionally \(K_{\rm int}\to0\) and \(\delta_{\rm int}\to\frac12\), then \(Q_\delta^{\rm int}\to0\).</p></div>
           </div>
 
@@ -836,7 +876,7 @@
             <h2>13. Big Bang-side vanishing through factorization collapse</h2>
             <div class="block def"><div class="label">Definition 13.1</div><p>The intrinsic split scale \(\lambda_{\rm split}(\rho)\) is the minimal thickening scale needed for type-I interpolation between local algebras.</p></div>
             <div class="block def"><div class="label">Definition 13.2</div><div class="equation">\[\Xi(\rho):=\frac{R_{\rm int}(\rho)}{\lambda_{\rm split}(\rho)}.\]</div></div>
-            <div class="block prop"><div class="label">Proposition 13.3</div><p>If \(\Xi(\rho_t)\to0\) as \(t\to0^+\), then no admissible fragment family exists within the intrinsic budget and therefore \(Q_\delta^{\rm int}(\rho_t)\to0\).</p></div>
+            <div class="block prop"><div class="label">Criterion 13.3</div><p>If \(\Xi(\rho_t)\to0\) as \(t\to0^+\), and if admissible fragments require an AQFT split inclusion inside the intrinsic budget, then admissible fragment families become trivial and \(Q_\delta^{\rm int}(\rho_t)\to0\). This is a criterion theorem pending a concrete early-universe split-scale model.</p></div>
           </div>
 
           <div id="paper-locality" class="panel section">
@@ -880,22 +920,22 @@
           <div id="paper-status" class="panel section">
             <h2>18. Proven results, constructed objects, and open targets</h2>
             <ul>
-              <li>Budgeted data processing.</li>
-              <li>Explicit qubit distinguishability.</li>
-              <li>Exact homogeneous fragment threshold and finite-\(N\) phase boundary.</li>
+              <li>Budgeted data processing, conditional on explicit resource-composition closure.</li>
+              <li>Explicit noisy-qubit distinguishability.</li>
+              <li>Exact homogeneous fragment threshold and finite-\(N\) phase boundary in a pure product-fragment toy model.</li>
               <li>Fidelity/Bures reformulation in the pure-state toy setting.</li>
-              <li>Admissibility-sensitive branch-distance split.</li>
-              <li>Heterogeneous best/worst thresholds and fractional order parameter.</li>
+              <li>Branch comparison-divergence scalings; true distance-to-locus remains a repair target.</li>
+              <li>Heterogeneous best/worst thresholds and fractional record diagnostic.</li>
               <li>Commuting-sector bottleneck fixed point.</li>
-              <li>Finite-dimensional modular fixed point.</li>
-              <li>Finite-dimensional heat-death result.</li>
-              <li>Criterion for Big-Bang-side vanishing via factorization collapse.</li>
+              <li>Finite-dimensional modular fixed point under stated conditional-expectation assumptions.</li>
+              <li>Finite-dimensional heat-death result with entropy-floor repair.</li>
+              <li>Criterion for Big-Bang-side vanishing via AQFT split/factorization collapse, pending physical instantiation.</li>
             </ul>
           </div>
 
           <div id="paper-close" class="panel section">
             <h2>19. Closing</h2>
-            <p>This draft now has the shape of a real theory paper. The primitive is explicit, composability is repaired, the toy model yields exact thresholds and a finite-\(N\) phase diagram, the heterogeneous section now includes a corresponding order parameter, the noncommuting sector is narrowed to the modular domain where honest theorems exist, the intrinsic-admissibility self-reference loop is controlled by component-wise transport, and the cross-aeon seed formalism matches the narrowed claim of structural inheritance.</p>
+            <p>This draft now has the shape of a serious research program rather than a finished cosmology. The primitive is explicit enough to attack, the toy models yield exact thresholds and a finite-\(N\) phase diagram, the heterogeneous section gives a route toward imperfect records, and the modular sector identifies a controlled noncommuting domain. The cosmological and cross-aeon material is still speculative, but it has been narrowed into criterion statements, open theorem targets, and falsification conditions rather than left as unconstrained narrative.</p>
           </div>
         </section>
 
@@ -905,7 +945,8 @@
   <div class="reader-flow">
     <div id="reader-overview" class="reader-section section">
       <h2>Overview</h2>
-      <p class="reader-lede">This theory starts from a different place than most cosmology. Instead of asking first what the universe is made of, it asks what differences the universe can physically detect, preserve, and pass along. The proposal is that this is not a side issue. It is the layer that classical reality is built from.</p>
+      <p class="reader-lede">This theory starts from a different place than most cosmology. Instead of asking first what the universe is made of, it asks what differences the universe can physically detect, preserve, and pass along. The framework is a disciplined speculative program with a calculable quantum-information core and a bolder question: whether classical reality, locality, and cosmic boundary behavior can be organized around record-making capacity.</p>
+      <div class="status-note"><strong>Status:</strong> finite-dimensional theorem core + open cosmological extension</div>
       <p>
         That matters because many of the hardest problems in physics appear exactly where ordinary classical description stops working:
         measurement, branching, objectivity, the role of observers, and the relation between the beginning and end of cosmic history.
@@ -922,7 +963,7 @@
         <div class="term"><strong>Distinguishability</strong>How well two physical situations can actually be told apart under real physical limits.</div>
         <div class="term"><strong>Admissibility</strong>Which measurements and interventions count because they can actually be carried out in the regime being studied.</div>
         <div class="term"><strong>Branching</strong>The growth of many stable records of the same coarse information, rather than a mysterious exact split.</div>
-        <div class="term"><strong>Record-rank \(Q\)</strong>A measure of how much of the environment supports redundant, accessible records of a fact.</div>
+        <div class="term"><strong>Record-rank \(Q\)</strong>A DFRC diagnostic for accessible record structure. It should be kept distinct from standard Quantum Darwinism redundancy.</div>
       </div>
     </div>
 
@@ -937,7 +978,7 @@
         The theory instead begins with a practical physical question:
         when can one state of the world be told apart from another by processes the universe itself can support?
         That is why <span class="tooltip" tabindex="0">admissibility<span class="tooltip-text" role="tooltip">The rule that only physically realizable measurements and interventions count, not every measurement that is mathematically imaginable.</span></span> comes before branches,
-        before identity, and before cycle structure in the architecture of the paper.
+        before identity, and before cycle structure. The framework is strongest where that idea is turned into finite-dimensional calculations, and most speculative where it is projected onto cosmology.
       </p>
       <p>
         This is not a claim about human knowledge in particular. A detector, a crystal defect, a biological memory, a radiation imprint, or a field fragment
@@ -949,7 +990,7 @@
     <div id="reader-primitive" class="reader-section section">
       <h2>2. Primitive layer</h2>
       <p>
-        In paper mode, the primitive object is written as \(\mathcal D_\epsilon\). The notation is technical, but the idea is straightforward.
+        The primitive object is written as \(\mathcal D_\epsilon\). The notation is technical, but the idea is straightforward.
         Take two possible states of a system. Then ask: under the actual constraints of the situation — finite time, finite control strength, finite resolution,
         finite readout reliability, finite causal access — how distinguishable are they?
       </p>
@@ -972,8 +1013,7 @@
         Once that is admitted, another fact follows: preprocessing a state and then measuring it cannot be treated as free extra power.
       </p>
       <p>
-        The budgeted formalism is how the draft makes this explicit. It says:
-        split the available resources into what is spent on dynamics and what is spent on measurement, then ask how distinguishability behaves under that split.
+        The budgeted formalism makes this explicit. It splits the available resources into what is spent on dynamics and what is spent on measurement, then asks how distinguishability behaves under that split.
         This is less flashy than the cosmological claims, but it is one of the things that makes the framework more serious.
       </p>
       <p>
@@ -1039,7 +1079,7 @@
         The branching-locus picture captures that better than the image of a single exact split into worlds.
       </p>
       <p>
-        So branching becomes a gradient. The more redundancy there is and the more stable the records are, the more branch-like the state becomes.
+        So branching becomes a gradient. The more redundancy there is and the more stable the records are, the more branch-like the state becomes. At this stage, the branch-distance formulas are best understood as comparison scalings; a full distance-to-locus theorem requires a true minimization over the branch locus.
       </p>
     </div>
 
@@ -1050,7 +1090,7 @@
         That means the homogeneous toy model is useful but idealized.
       </p>
       <p>
-        The revised draft improves this by defining two thresholds instead of one.
+        The framework therefore uses two thresholds instead of one.
         One threshold marks the first fragment size for which <span class="subemph">some</span> fragments work.
         The other marks the first size for which <span class="subemph">all</span> fragments work.
         Between them lies a partial-consensus region where some environmental pieces are reliable witnesses and others are not.
@@ -1072,8 +1112,7 @@
     <div id="reader-commuting" class="reader-section section">
       <h2>8. Commuting bottleneck flow</h2>
       <p>
-        Up to this point, the reader mode has explained how the world becomes <em>classically readable</em> within a single era:
-        differences become stable when the environment records them redundantly. The next question only appears once one starts thinking cosmologically.
+        Within a single era, the world becomes <em>classically readable</em> when differences become stable because the environment records them redundantly. The next question appears once one starts thinking cosmologically.
         If a universe runs all the way toward a record-poor end state, and if the framework is serious about cycle-closure or cross-aeon inheritance,
         then <span class="call">what exactly could survive in compressed form?</span>
       </p>
@@ -1088,8 +1127,7 @@
         not total erasure, but a smaller description that still retains the part that matters for what comes next.
       </p>
       <p>
-        So the importance of section 8 is not technical elegance by itself.
-        It provides the first mathematically controlled version of the claim that a universe might not need to carry all of its microscopic detail forward —
+        The point is not technical elegance by itself. The commuting bottleneck flow provides a mathematically controlled version of the claim that a universe might not need to carry all of its microscopic detail forward —
         only a compressed inheritance structure that still preserves the information relevant to the next stage of cosmic history.
       </p>
     </div>
@@ -1101,16 +1139,15 @@
         Real quantum theory is often harder than that. Different observables can interfere with each other, fail to be jointly readable, or refuse to sit inside one tidy classical description.
       </p>
       <p>
-        That is why the draft has a separate noncommuting section. It asks whether the same compression idea still works once the information one wants to keep is genuinely quantum and not classically compatible.
-        The honest answer, at least right now, is: <span class="emph">only in a restricted regime where the mathematics behaves cleanly</span>.
+        The noncommuting sector asks whether the same compression idea works when the information one wants to keep is genuinely quantum and not classically compatible.
+        The answer is limited but meaningful: <span class="emph">the controlled theorem lives in a restricted regime where the mathematics behaves cleanly</span>.
       </p>
       <p>
-        That restricted regime is called the <span class="tooltip" tabindex="0">modularly admissible sector<span class="tooltip-text" role="tooltip">A limited quantum regime where the mathematical tools needed for the compression theorem still work cleanly. Outside that regime, the full theorem is still open.</span></span>.
-        For a non-specialist, the right way to read that phrase is not “here is more jargon to learn,” but “this is the part of quantum theory where the draft can currently prove something real.”
+        That restricted regime is called the <span class="tooltip" tabindex="0">modularly admissible sector<span class="tooltip-text" role="tooltip">A limited quantum regime where the mathematical tools needed for the compression theorem work cleanly. Beyond that regime, the full theorem remains open.</span></span>.
+        For a non-specialist, the right way to read that phrase is not “here is more jargon to learn,” but “this is the part of the quantum problem where the framework has a controlled result.”
       </p>
       <p>
-        In other words, section 9 is important because it marks the boundary between what is already established and what is still research.
-        It tells the reader that the framework has not solved the full quantum compression problem yet — but it has identified a domain in which the structure survives and can be rigorously controlled.
+        This marks the boundary between controlled result and open problem. The full quantum compression problem remains open, but the framework identifies a domain in which the structure survives and can be rigorously controlled.
       </p>
     </div>
 
@@ -1132,11 +1169,10 @@
     <div id="reader-q" class="reader-section section">
       <h2>11. Record-rank</h2>
       <p>
-        The quantity \(Q\) is one of the most intuitive pieces of the theory. It measures how much of the environment is acting as a stable witness to some coarse fact.
+        The quantity \(Q\) is one of the most intuitive pieces of the theory, but it has to be read carefully. It is not simply “the number of worlds,” and it is not identical to standard Quantum Darwinism redundancy. It is better understood as a DFRC record-rank diagnostic: how much accessible record structure a regime supports under its own physical limits.
       </p>
       <p>
-        A high \(Q\) means the world is rich in redundant accessible records. A low \(Q\) means those records are sparse or absent.
-        That is why <span class="tooltip" tabindex="0">record-rank<span class="tooltip-text" role="tooltip">A quantity that measures how much of the environment supports redundant, accessible records of a coarse fact.</span></span> becomes the natural order parameter for discussing when the universe is classically organized in the sense that matters for embedded observers.
+        A high \(Q\) means the world is rich in accessible records. A low \(Q\) means those records are sparse, fragile, or absent. As a cosmological order parameter, \(Q\) depends on specifying the observable class, fragment family, entropy floor, and consensus criterion in realistic settings.
       </p>
     </div>
 
@@ -1146,8 +1182,10 @@
         In ordinary thermodynamic language, heat death means exhausted gradients. In this framework, the sharper statement is that the universe loses the ability to sustain redundant accessible records of the kinds of observables that make classical structure possible.
       </p>
       <p>
-        The finite-dimensional theorem proves that if the late-time dynamics relax to a product fixed point, then \(Q\) goes to zero.
-        The world does not merely become boring. It loses the record architecture that supports a stable shared classical description.
+        The finite-dimensional theorem proves a narrower statement: under product relaxation, and with nontrivial observables separated from zero-entropy edge cases, \(Q\) goes to zero. The cosmological version requires energy-constrained continuity and a precise causal-patch or local-algebra formulation.
+      </p>
+      <p>
+        The interesting idea survives that caution. Heat death need not mean microscopic sameness. It can mean that usable gradients and admissible detectors disappear, so the universe loses the record architecture that supports a stable shared classical description.
       </p>
       <p>
         That gives heat death an informational meaning in addition to a thermodynamic one.
@@ -1166,7 +1204,7 @@
       </p>
       <p>
         This is the heart of the framework’s phase-equivalence idea:
-        beginning and end may converge as limits of vanishing record structure without becoming the same geometric state.
+        beginning and end may converge as limits of vanishing record structure without becoming the same geometric state. This is a criterion-level claim rather than a derived early-universe model; its mathematical burden is to make the split-scale story precise in algebraic quantum field theory or an equivalent local-algebra framework.
       </p>
     </div>
 
@@ -1189,10 +1227,10 @@
         which subsystems can exchange robust information, how strongly they are linked, and whether those links can be organized into something that behaves like a low-dimensional geometry.
       </p>
       <p>
-        So when reader mode says locality could be “reconstructed,” it means something specific:
+        When the framework says locality could be “reconstructed,” it means something specific:
         one tries to recover the effective shape of space from the structure of record-bearing relations,
         rather than taking the spatial background as primitive from the outset.
-        That is a nontrivial claim, and it is one of the most ambitious open parts of the framework.
+        The toy result assumes strong exponential-weight structure, so it is not a derivation of locality from nothing. It is a sanity check and a target for a harder theorem.
       </p>
     </div>
 
@@ -1214,20 +1252,20 @@
     <div id="reader-cross" class="reader-section section">
       <h2>16. Cross-aeon compression</h2>
       <p>
-        By the time this section arrives, the role of compression should now make sense:
+        The role of compression is central to the cycle question:
         if the universe approaches a regime where ordinary record structure dissolves, then any cycle picture has to answer a hard question —
         what, if anything, could carry forward without requiring an impossible archive of everything that ever happened?
       </p>
       <p>
-        One of the most important corrections in the draft is that the seed is no longer treated as an unconstrained archive of everything that happened.
-        That would demand implausible channel capacity and blur the framework into fantasy.
+        The seed is not treated as an unconstrained archive of everything that happened.
+        Such an archive would demand implausible channel capacity and blur the framework into fantasy.
       </p>
       <p>
-        The seed is now restricted to a bounded space of effective-theory structures \(\mathcal T_B(U)\).
-        In ordinary language: what carries across aeons is not a complete diary. It is a compressed inheritance object describing what kind of universe can be rebuilt.
+        The seed is restricted to a bounded space of effective-theory structures \(\mathcal T_B(U)\).
+        In ordinary language: what carries across aeons is not a complete diary. It is, at most, a compressed inheritance object describing what kind of universe can be rebuilt.
       </p>
       <p>
-        This narrowing is essential. It makes the seed concept smaller, but far more defensible.
+        This bounded-seed view makes the cross-aeon claim smaller, but far more defensible. It also marks the boundary clearly: cross-aeon inheritance is a formal scaffold and research target, not an established physical mechanism.
       </p>
     </div>
 
@@ -1247,17 +1285,17 @@
       <h2>18. Status</h2>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Already established in the draft</th><th>Still open</th></tr></thead>
+          <thead><tr><th>Controlled core</th><th>Open targets</th></tr></thead>
           <tbody>
             <tr>
-              <td>Exact toy-model threshold, asymptotics, heterogeneous \(Q\), commuting fixed point, finite-dimensional modular fixed point, finite-dimensional heat-death result</td>
-              <td>General noncommuting qIB convergence, realistic early-universe factorization collapse, infinite-dimensional cosmological heat-death theorem, emergent-locality reconstruction, concrete cosmological \(\epsilon_{\rm int}\)</td>
+              <td>Exact toy-model threshold, asymptotics, heterogeneous threshold diagnostics, commuting fixed point, finite-dimensional modular fixed point under assumptions, and finite-dimensional heat-death result with entropy-floor condition</td>
+              <td>True branch-distance minimization, general noncommuting qIB convergence, realistic early-universe factorization collapse, infinite-dimensional cosmological heat-death theorem, emergent-locality reconstruction, concrete cosmological \(\epsilon_{\rm int}\), and a physical cross-aeon channel</td>
             </tr>
           </tbody>
         </table>
       </div>
       <p>
-        The important point is that the framework is no longer just a conceptual manifesto. It now contains exact results, explicit formal structures, and a clearly marked frontier between what is proved and what remains open.
+        The important point is that the framework is not empty speculation, but it is also not finished physics. It contains exact toy-model results, explicit formal structures, and a clearly marked frontier between theorem core, criterion-level cosmology, and speculative cross-aeon scaffolding.
       </p>
     </div>
 
@@ -1268,7 +1306,7 @@
         <span class="call">reality becomes classical where differences can be copied into many stable records, and it loses classical structure where that record-making capacity disappears.</span>
       </p>
       <p>
-        What makes the framework promising is not that it is already complete. It is that it now says enough clearly enough to be criticized, extended, tested, and perhaps eventually falsified.
+        What makes the framework promising is not completeness. It is that its central claims are clear enough to be criticized, extended, tested, and perhaps eventually falsified.
       </p>
     </div>
   </div>
