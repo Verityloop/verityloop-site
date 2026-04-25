@@ -86,21 +86,128 @@
       scroll-behavior:smooth;
     }
     body{
-      background:
-        radial-gradient(circle at 18% 28%, var(--bg-radial-1) 0%, transparent 33%),
-        radial-gradient(circle at 82% 82%, var(--bg-radial-2) 0%, transparent 28%),
-        linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+      background:linear-gradient(180deg, #06080d 0%, #0b1016 42%, #100d0b 100%);
       overflow-x:hidden;
     }
-    body::before{
-      content:"";
+    body::before{display:none;}
+
+    .bg-engine{
       position:fixed;
       inset:0;
-      pointer-events:none;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.02), transparent 22%),
-        radial-gradient(1200px 520px at 50% -10%, rgba(255,255,255,.02), transparent 50%);
       z-index:0;
+      pointer-events:none;
+      overflow:hidden;
+      --bg-shift-grid:0px;
+      --bg-shift-mesh:0px;
+      --bg-shift-orb-a:0px;
+      --bg-shift-orb-b:0px;
+      --bg-shift-orb-c:0px;
+      background:
+        radial-gradient(1200px 760px at 18% 8%, rgba(99,208,255,.09), transparent 62%),
+        radial-gradient(1100px 860px at 84% 18%, rgba(216,171,115,.10), transparent 58%),
+        radial-gradient(820px 700px at 50% 105%, rgba(140,92,69,.14), transparent 68%),
+        linear-gradient(180deg, rgba(6,8,13,1) 0%, rgba(11,16,22,1) 42%, rgba(16,13,11,1) 100%);
+    }
+    .bg-engine::before,
+    .bg-engine::after{
+      content:"";
+      position:absolute;
+      inset:-10%;
+      pointer-events:none;
+    }
+    .bg-engine::before{
+      background:radial-gradient(circle at 50% 0%, rgba(255,255,255,.055), transparent 42%);
+      opacity:.35;
+      mix-blend-mode:screen;
+    }
+    .bg-engine::after{
+      background:linear-gradient(180deg, rgba(255,255,255,.010), transparent 16%, transparent 84%, rgba(0,0,0,.18));
+    }
+    .bg-layer{position:absolute; inset:-10%; pointer-events:none; will-change:transform, opacity;}
+    .bg-grid{
+      inset:-8%;
+      opacity:.14;
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,.058) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,.04) 1px, transparent 1px),
+        linear-gradient(to right, rgba(99,208,255,.055) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(216,171,115,.04) 1px, transparent 1px);
+      background-size:64px 64px, 64px 64px, 256px 256px, 256px 256px;
+      background-position:center center, center center, center center, center center;
+      mask-image:radial-gradient(circle at 50% 28%, rgba(0,0,0,.95), rgba(0,0,0,.78) 44%, transparent 92%);
+      transform:translate3d(0, var(--bg-shift-grid), 0);
+    }
+    .bg-mesh{
+      inset:-6%;
+      opacity:.11;
+      background:
+        linear-gradient(115deg, transparent 0 46%, rgba(99,208,255,.07) 48%, transparent 52%),
+        linear-gradient(245deg, transparent 0 46%, rgba(216,171,115,.06) 48%, transparent 52%),
+        radial-gradient(circle at 30% 38%, rgba(255,255,255,.055) 0 1.2px, transparent 1.8px),
+        radial-gradient(circle at 70% 62%, rgba(255,255,255,.04) 0 1.2px, transparent 1.8px);
+      background-size:520px 520px, 520px 520px, 160px 160px, 180px 180px;
+      background-position:0 0, 0 0, 0 0, 40px 20px;
+      transform:translate3d(0, var(--bg-shift-mesh), 0);
+      mask-image:linear-gradient(180deg, transparent 0%, rgba(0,0,0,.9) 12%, rgba(0,0,0,.95) 88%, transparent 100%);
+    }
+    .bg-noise{
+      inset:0;
+      opacity:.03;
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,.55) 0 0.6px, transparent .9px),
+        radial-gradient(circle at 70% 40%, rgba(255,255,255,.35) 0 0.6px, transparent .9px),
+        radial-gradient(circle at 38% 76%, rgba(255,255,255,.45) 0 0.6px, transparent .9px);
+      background-size:120px 120px, 140px 140px, 160px 160px;
+      mix-blend-mode:screen;
+    }
+    .bg-orb{
+      position:absolute;
+      border-radius:50%;
+      filter:blur(42px);
+      will-change:transform;
+      opacity:.22;
+      mix-blend-mode:screen;
+    }
+    .bg-orb-a{
+      width:min(34vw, 540px);
+      height:min(34vw, 540px);
+      left:-6vw;
+      top:8vh;
+      background:radial-gradient(circle at 42% 42%, rgba(99,208,255,.12), rgba(99,208,255,.05) 42%, transparent 76%);
+      transform:translate3d(0, var(--bg-shift-orb-a), 0);
+    }
+    .bg-orb-b{
+      width:min(28vw, 460px);
+      height:min(28vw, 460px);
+      right:4vw;
+      top:20vh;
+      background:radial-gradient(circle at 50% 50%, rgba(216,171,115,.14), rgba(216,171,115,.05) 44%, transparent 78%);
+      transform:translate3d(0, var(--bg-shift-orb-b), 0);
+    }
+    .bg-orb-c{
+      width:min(32vw, 500px);
+      height:min(32vw, 500px);
+      left:34vw;
+      bottom:-10vh;
+      background:radial-gradient(circle at 50% 50%, rgba(140,92,69,.12), rgba(140,92,69,.045) 46%, transparent 80%);
+      transform:translate3d(0, var(--bg-shift-orb-c), 0);
+    }
+    .bg-canvas{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      opacity:.42;
+      mix-blend-mode:screen;
+    }
+    .bg-vignette{
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at center, transparent 44%, rgba(0,0,0,.12) 74%, rgba(0,0,0,.26) 100%);
+    }
+    @media (prefers-reduced-motion: reduce){
+      .bg-grid,.bg-mesh,.bg-orb{transform:none !important;}
+      .bg-canvas{opacity:.28;}
     }
 
     a{color:var(--accent); text-decoration:none}
@@ -301,7 +408,8 @@
 
     .equation{
       display:block;
-      overflow:visible;
+      overflow-x:auto;
+      overflow-y:hidden;
       margin:12px 0;
       padding:12px 14px;
       border-radius:var(--radius-md);
@@ -316,7 +424,8 @@
     }
     .equation mjx-container{
       max-width:100%;
-      overflow:visible !important;
+      overflow-x:auto !important;
+      overflow-y:hidden !important;
       white-space:normal !important;
       font-size:clamp(78%, 1.55vw, 100%) !important;
     }
@@ -381,7 +490,7 @@
       z-index:1;
       margin:0 0 4px;
       color:var(--heading);
-      font:700 .88rem 'JetBrains Mono',monospace;
+      font:700 .82rem 'JetBrains Mono',monospace;
       letter-spacing:.035em;
     }
     .viz-caption{
@@ -389,8 +498,8 @@
       z-index:1;
       margin:0 0 10px;
       color:var(--muted);
-      font-size:.88rem;
-      line-height:1.45;
+      font-size:.83rem;
+      line-height:1.42;
     }
     .viz-plot{
       position:relative;
@@ -407,9 +516,30 @@
     .viz-plot svg{
       display:block;
       width:100%;
+      max-width:100%;
       height:auto;
       min-height:260px;
-      overflow:visible;
+      overflow:hidden;
+    }
+    .main,
+    .panel,
+    .reader-section,
+    .viz-grid,
+    .viz-card,
+    .viz-plot,
+    .concept-figure,
+    .condition-svg-wrap,
+    .interactive-module,
+    .explorer-explanation,
+    .boundary-axis-guide{
+      max-width:100%;
+      overflow-x:clip;
+    }
+    .viz-plot,
+    .concept-figure,
+    .condition-svg-wrap,
+    .interactive-module{
+      overflow:hidden;
     }
     .viz-note{
       position:relative;
@@ -485,7 +615,8 @@
 
     mjx-container[jax="CHTML"][display="true"]{
       margin:.95rem 0 !important;
-      overflow:visible !important;
+      overflow-x:auto !important;
+      overflow-y:hidden !important;
       max-width:100%;
       padding:.1rem 0;
     }
@@ -792,7 +923,7 @@ body.reader-theme{
   gap:20px;
 }
 .viz-card{
-  overflow:visible;
+  overflow:hidden;
   border-color:var(--line-strong);
   background:
     radial-gradient(circle at 16% 0%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 36%),
@@ -827,7 +958,7 @@ body.reader-theme .viz-plot{
 }
 .viz-plot svg{
   min-height:430px;
-  overflow:visible;
+  overflow:hidden;
 }
 @media (max-width: 760px){
   .viz-plot, .viz-plot svg{min-height:330px}
@@ -843,7 +974,7 @@ body.reader-theme .viz-plot{
   background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.012));
   overflow:hidden;
 }
-.concept-figure svg{display:block;width:100%;height:auto;min-height:220px;overflow:visible;}
+.concept-figure svg{display:block;width:100%;height:auto;min-height:220px;overflow:hidden;}
 .concept-caption{margin:0;padding:12px 15px 14px;color:var(--muted);font-size:.92rem;line-height:1.55;border-top:1px solid rgba(255,255,255,.055);}
 .concept-caption strong{color:var(--accent2);}
 .reader-section p{font-size:1rem;}
@@ -872,17 +1003,17 @@ body.reader-theme .viz-plot{
 .control-row input[type="range"]{grid-column:1 / -1;width:100%;accent-color:var(--accent2);}
 .metric-stack{display:grid;gap:12px;}
 .metric-line{display:grid;grid-template-columns:145px 1fr 44px;gap:10px;align-items:center;}
-.metric-line span:first-child{color:var(--muted);font-size:.92rem;}
+.metric-line span:first-child{color:var(--muted);font-size:.86rem;}
 .metric-bar{height:14px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;border:1px solid var(--line);}
 .metric-fill{height:100%;width:0%;border-radius:inherit;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .18s ease;}
-.metric-value{font-variant-numeric:tabular-nums;color:var(--heading);font-size:.9rem;text-align:right;}
+.metric-value{font-variant-numeric:tabular-nums;color:var(--heading);font-size:.84rem;text-align:right;}
 .regime-readout{margin-top:14px;padding:14px 16px;border-radius:16px;background:rgba(0,0,0,.17);border:1px solid var(--line);}
 .regime-readout strong{color:var(--heading);}
 .regime-readout p{margin:.35rem 0 0;color:var(--muted);}
 .theory-tabs,.condition-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 14px;}
 .theory-tab,.condition-tab{
   border:1px solid var(--line-strong);background:rgba(255,255,255,.035);color:var(--text);
-  border-radius:999px;padding:8px 12px;cursor:pointer;font-weight:700;
+  border-radius:999px;padding:7px 11px;cursor:pointer;font-weight:700;font-size:.9rem;
 }
 .theory-tab.active,.condition-tab.active{background:rgba(216,171,115,.16);border-color:rgba(216,171,115,.55);}
 .theory-panel{display:none;padding:16px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.025);}
@@ -892,6 +1023,7 @@ body.reader-theme .viz-plot{
 .condition-visual{display:grid;grid-template-columns:1fr;gap:12px;}
 .condition-svg-wrap{border:1px solid var(--line);border-radius:18px;background:rgba(0,0,0,.12);padding:10px;}
 .condition-svg-wrap svg{width:100%;height:auto;display:block;min-height:220px;}
+.concept-figure svg,.condition-svg-wrap svg{max-width:100%;overflow:hidden;}
 .boundary-legend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px;}
 .boundary-legend div{padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.025);border:1px solid var(--line);color:var(--muted);}
 .kernel-projections{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0;}
@@ -1124,6 +1256,351 @@ body.reader-theme .viz-plot{
 .prose-spine{margin:1rem 0 1.4rem;padding:1rem 1.2rem;border-left:3px solid var(--accent);background:rgba(99,208,255,.055);border-radius:0 16px 16px 0}
 .prose-spine p{margin:.65rem 0}
 @media(max-width:780px){.bridge-row{grid-template-columns:1fr}.bridge-cell{border-top:1px solid rgba(255,255,255,.06)}.bridge-row.header{display:none}}
+
+
+/* v15 responsive readability pass: larger math and visual working area */
+:root{
+  --content-w:clamp(1040px, calc(100vw - var(--sidebar-w) - 64px), 1540px);
+  --hero-w:clamp(760px, 58vw, 1040px);
+}
+.main{padding:clamp(22px, 2vw, 36px) clamp(18px, 2vw, 32px) 64px;}
+.shell{max-width:var(--content-w);}
+.panel,.reader-section{padding:clamp(26px, 1.75vw, 36px) clamp(26px, 2vw, 40px) clamp(22px, 1.6vw, 34px);}
+p,li{font-size:clamp(1rem, .22vw + .94rem, 1.16rem);}
+.section-intro,.reader-lede{font-size:clamp(1.04rem, .24vw + .98rem, 1.22rem);}
+h1{font-size:clamp(2.35rem, 3.2vw, 4rem);}
+h2{font-size:clamp(1.58rem, 1.35vw, 2.28rem);}
+h3{font-size:clamp(1.12rem, .45vw + .98rem, 1.34rem);}
+.block,.term,.viz-card,.interactive-module{border-radius:18px;}
+
+.equation{
+  margin:16px 0;
+  padding:clamp(14px, 1vw, 22px) clamp(16px, 1.2vw, 26px);
+  font-size:clamp(.96rem, .33vw + .88rem, 1.22rem);
+  overflow-x:auto;
+  overflow-y:hidden;
+  overflow-wrap:normal;
+}
+.equation mjx-container{
+  font-size:clamp(108%, .42vw + 98%, 132%) !important;
+  line-height:1.42 !important;
+  overflow-x:auto !important;
+  overflow-y:hidden !important;
+  max-width:100% !important;
+}
+.equation mjx-container[jax="CHTML"][display="true"]{
+  padding:.18rem 0;
+}
+
+.viz-grid{
+  grid-template-columns:1fr;
+  gap:18px;
+  margin:22px 0 12px;
+}
+.viz-card{
+  padding:clamp(18px, 1.25vw, 26px);
+}
+.viz-title{font-size:clamp(1.12rem, .4vw + 1rem, 1.34rem);}
+.viz-caption,.viz-note,.concept-caption{
+  font-size:clamp(.94rem, .22vw + .88rem, 1.08rem);
+}
+.viz-plot{
+  min-height:clamp(340px, 32vw, 560px);
+}
+.viz-plot svg{
+  min-height:clamp(340px, 32vw, 560px);
+}
+.concept-figure svg{
+  min-height:clamp(270px, 28vw, 520px);
+}
+.condition-svg-wrap svg{
+  min-height:clamp(300px, 30vw, 540px);
+}
+.interactive-module .interactive-head{padding:clamp(20px,1.4vw,30px) clamp(22px,1.7vw,34px) 14px;}
+.interactive-body{padding:clamp(20px,1.6vw,34px);}
+.interactive-grid{gap:clamp(18px, 1.6vw, 30px);}
+.metric-line{grid-template-columns:minmax(150px, 210px) 1fr 54px;}
+canvas{image-rendering:auto;}
+.exact-darwinism canvas{max-height:none;}
+.exact-darwinism .control-strip{gap:clamp(14px, 1.25vw, 24px);}
+.exact-darwinism .control-strip label{padding:clamp(14px,1vw,20px);}
+
+@media (min-width: 1800px){
+  .sidebar{--sidebar-text-scale:1.05;}
+  .toc a{font-size:1.02rem;}
+  .brand{font-size:1.08rem;}
+}
+@media (max-width: 1040px){
+  .bg-grid{background-size:52px 52px, 52px 52px, 208px 208px, 208px 208px; opacity:.2;}
+  .bg-mesh{opacity:.16; background-size:460px 460px, 460px 460px, 150px 150px, 170px 170px;}
+  .bg-orb{filter:blur(24px); opacity:.42;}
+  :root{--content-w:min(100%, 980px);--hero-w:min(100%, 780px);}
+  .main{padding:22px 16px 52px;}
+  .viz-plot,.viz-plot svg{min-height:clamp(300px, 46vw, 430px);}
+  .concept-figure svg,.condition-svg-wrap svg{min-height:clamp(250px, 42vw, 390px);}
+}
+@media (max-width: 760px){
+  .bg-engine{background:
+    radial-gradient(860px 620px at 20% 10%, rgba(99,208,255,.08), transparent 60%),
+    radial-gradient(760px 560px at 84% 18%, rgba(216,171,115,.09), transparent 56%),
+    linear-gradient(180deg, rgba(6,8,13,1) 0%, rgba(11,16,22,1) 48%, rgba(16,13,11,1) 100%);}
+  .bg-grid{background-size:44px 44px, 44px 44px, 176px 176px, 176px 176px; opacity:.16;}
+  .bg-mesh{display:none;}
+  .bg-orb{opacity:.3; filter:blur(28px);}
+  .bg-orb-a{width:72vw;height:72vw;left:-22vw;top:8vh;}
+  .bg-orb-b{width:62vw;height:62vw;right:-10vw;top:18vh;}
+  .bg-orb-c{width:70vw;height:70vw;left:16vw;bottom:-18vh;}
+  .bg-canvas{opacity:.28;}
+  p,li{font-size:1rem;line-height:1.72;}
+  h1{font-size:clamp(2rem, 10vw, 2.55rem);}
+  h2{font-size:clamp(1.36rem, 7vw, 1.78rem);}
+  h3{font-size:1.08rem;}
+  .main{padding:18px 12px 44px;}
+  .panel,.reader-section{padding:20px 16px 18px;}
+  .equation{padding:12px 12px;font-size:.94rem;}
+  .equation mjx-container{font-size:102% !important;}
+  .viz-card{padding:14px 12px;}
+  .viz-plot,.viz-plot svg{min-height:300px;}
+  .concept-figure svg,.condition-svg-wrap svg{min-height:240px;}
+  .metric-line{grid-template-columns:115px 1fr 40px;}
+  .exact-darwinism .control-strip{grid-template-columns:1fr;}
+}
+
+
+/* v16 layout normalization: mobile sidebar layering, centered reading columns, shrink-to-content math */
+.app{
+  z-index:auto;
+}
+.mobile-sidebar-backdrop{
+  pointer-events:none;
+}
+.mobile-sidebar-backdrop.open{
+  pointer-events:auto;
+}
+@media (max-width: 1040px){
+  .sidebar{
+    z-index:120;
+  }
+  .mobile-sidebar-backdrop{
+    z-index:90;
+  }
+  .mobile-sidebar-toggle{
+    z-index:130;
+  }
+}
+
+/* Give wide displays room without making prose hug the left side of an oversized panel. */
+.panel > h2,
+.panel > .section-intro,
+.panel > p,
+.reader-section > h2,
+.reader-section > .reader-lede,
+.reader-section > p,
+.reader-section > .lead-note,
+.reader-section > .prose-spine,
+.reader-section > .foundation-block,
+.panel > .lead-note{
+  max-width:86ch;
+  margin-left:auto;
+  margin-right:auto;
+}
+.reader-section > h2::after,
+.panel > h2::after{
+  margin-left:0;
+}
+.reader-section > .concept-figure,
+.reader-section > .viz-grid,
+.reader-section > .interactive-module,
+.reader-section > .table-wrap,
+.reader-section > .equation,
+.panel > .concept-figure,
+.panel > .viz-grid,
+.panel > .interactive-module,
+.panel > .table-wrap,
+.panel > .equation{
+  margin-left:auto;
+  margin-right:auto;
+}
+
+/* Display equations should feel like centered mathematical statements, not full-width banners. */
+.equation{
+  display:block;
+  width:fit-content;
+  max-width:min(100%, 112ch);
+  margin:18px auto;
+  text-align:center;
+  overflow-x:auto;
+  overflow-y:hidden;
+  scrollbar-gutter:stable both-edges;
+}
+.equation mjx-container[jax="CHTML"][display="true"]{
+  width:auto !important;
+  min-width:0 !important;
+  max-width:none !important;
+  display:inline-block !important;
+  text-align:center !important;
+  margin:.45rem auto !important;
+}
+.equation mjx-container{
+  text-align:center !important;
+}
+.equation mjx-math{
+  white-space:nowrap !important;
+}
+
+/* Larger multi-equation derivations may still need more width, but remain centered. */
+.equation.wide,
+.block .equation{
+  max-width:min(100%, 122ch);
+}
+
+/* Keep the normal mobile behavior: equations can use the available width and scroll. */
+@media (max-width:760px){
+  .panel > h2,
+  .panel > .section-intro,
+  .panel > p,
+  .reader-section > h2,
+  .reader-section > .reader-lede,
+  .reader-section > p,
+  .reader-section > .lead-note,
+  .reader-section > .prose-spine,
+  .reader-section > .foundation-block,
+  .panel > .lead-note{
+    max-width:100%;
+  }
+  .equation{
+    width:100%;
+    max-width:100%;
+    margin:14px auto;
+  }
+}
+
+
+
+/* v22 layout repair: prevent visual sections from growing wider down the page. */
+:root{
+  --content-w:min(1260px, calc(100vw - var(--sidebar-w) - 88px));
+  --hero-w:min(980px, 72vw);
+}
+.shell{
+  width:100%;
+  max-width:var(--content-w);
+  margin-left:auto;
+  margin-right:auto;
+  overflow-x:clip;
+}
+.reader-section,
+.panel{
+  width:100%;
+  max-width:100%;
+  box-sizing:border-box;
+  overflow:hidden;
+}
+.reader-section > h3,
+.panel > h3,
+.reader-section > .viz-grid,
+.reader-section > .interactive-module,
+.reader-section > .concept-figure,
+.reader-section > .condition-svg-wrap,
+.reader-section > .table-wrap,
+.panel > .viz-grid,
+.panel > .interactive-module,
+.panel > .concept-figure,
+.panel > .condition-svg-wrap,
+.panel > .table-wrap{
+  max-width:min(100%, 1120px);
+  margin-left:auto;
+  margin-right:auto;
+  box-sizing:border-box;
+}
+.viz-grid,
+.viz-card,
+.viz-plot,
+.interactive-module,
+.condition-layout,
+.condition-svg-wrap,
+.concept-figure,
+.table-wrap{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  box-sizing:border-box;
+}
+.viz-plot svg,
+.concept-figure svg,
+.condition-svg-wrap svg{
+  width:100%;
+  max-width:100%;
+  height:auto;
+  overflow:hidden;
+}
+.viz-card,
+body.reader-theme .viz-card{
+  background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.018)) !important;
+}
+.viz-card::after{display:none !important;}
+.reader-section:nth-child(odd){background:var(--panel) !important;}
+.bg-orb-c{display:none !important;}
+@media (max-width:1040px){
+  :root{--content-w:min(100%, 980px);--hero-w:min(100%, 780px);}
+}
+@media (max-width:760px){
+  :root{--content-w:100%;--hero-w:100%;}
+  .reader-section > h3,
+  .panel > h3,
+  .reader-section > .viz-grid,
+  .reader-section > .interactive-module,
+  .reader-section > .concept-figure,
+  .reader-section > .condition-svg-wrap,
+  .reader-section > .table-wrap,
+  .panel > .viz-grid,
+  .panel > .interactive-module,
+  .panel > .concept-figure,
+  .panel > .condition-svg-wrap,
+  .panel > .table-wrap{max-width:100%;}
+}
+
+/* v23 section-window consistency repair.
+   Keep every card at the same readable width even if malformed legacy closers
+   would otherwise eject a later section from the normal reader shell. */
+.shell,
+.reader-flow{
+  width:100%;
+  max-width:var(--content-w);
+  margin-left:auto;
+  margin-right:auto;
+  box-sizing:border-box;
+}
+.reader-section,
+.panel{
+  width:min(100%, var(--content-w)) !important;
+  max-width:var(--content-w) !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  box-sizing:border-box;
+  background:var(--panel) !important;
+}
+.reader-section:nth-child(odd),
+.reader-section:nth-child(even){
+  background:var(--panel) !important;
+}
+.viz-card,
+body.reader-theme .viz-card{
+  background:linear-gradient(180deg, rgba(255,255,255,.042), rgba(255,255,255,.018)) !important;
+}
+.viz-card::before,
+.viz-card::after,
+.reader-section::before,
+.reader-section::after,
+.panel::before,
+.panel::after{
+  background:none !important;
+  box-shadow:none !important;
+}
+@media (max-width:1040px){
+  .reader-section,.panel{width:100% !important; max-width:100% !important;}
+}
+
 </style>
 <script>
     window.MathJax = {
@@ -1131,12 +1608,22 @@ body.reader-theme .viz-plot{
         inlineMath: [['\\(','\\)'], ['$','$']],
         displayMath: [['\\[','\\]'], ['$$','$$']]
       },
-      chtml: { scale: 1.02, mtextInheritFont: true }
+      chtml: { scale: 1.10, mtextInheritFont: true }
     };
   </script>
 <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
+<div aria-hidden="true" class="bg-engine" id="bgEngine">
+<div class="bg-layer bg-grid"></div>
+<div class="bg-layer bg-mesh"></div>
+<div class="bg-layer bg-noise"></div>
+<div class="bg-orb bg-orb-a"></div>
+<div class="bg-orb bg-orb-b"></div>
+<div class="bg-orb bg-orb-c"></div>
+<canvas class="bg-canvas" id="bgResearchCanvas"></canvas>
+<div class="bg-vignette"></div>
+</div>
 <button aria-controls="pageSidebar" aria-expanded="false" aria-label="Open section menu" class="mobile-sidebar-toggle" id="mobileSidebarToggle">
 <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" viewbox="0 0 24 24">
 <path d="M4 7h16M4 12h16M4 17h16"></path>
@@ -1275,7 +1762,7 @@ body.reader-theme .viz-plot{
 <h2>8. Admissibility-coupled bottleneck flow: commuting sector and RG interpretation</h2>
 <div class="block def"><div class="label">Definition 8.1</div><div class="equation">\[X=(S,R),\qquad Y=f(S).\]</div></div>
 <div class="block axiom"><div class="label">Convention 8.2</div><p>\(f\) acts as the identity on its image, so \(\Pi_Y^2=\Pi_Y\).</p></div>
-<div class="block def"><div class="label">Definition 8.3</div><div class="equation">\[(\Pi)_*\mathfrak C:=\left\{\Psi\ \middle|\ \exists \Phi\in\mathfrak C\text{ such that }\Pi\circ\Phi=\Psi\circ\Pi\right\}.\]</div></div>
+<div class="block def"><div class="label">Definition 8.3</div><div class="equation">\[(\Pi)_*\mathfrak C:=\left\{\Psi\;\middle|\;\exists\,\Phi\in\mathfrak C,\;\Pi\circ\Phi=\Psi\circ\Pi\right\}.\]</div></div>
 <div class="block prop"><div class="label">Proposition 8.4</div><p>Under the iterated flow \(X\to S\to Y\to Y\cdots\), the minimal sufficient statistic \(Y\) is a nontrivial absorbing fixed point.</p></div>
 <div class="block remark"><div class="label">RG / information-bottleneck interpretation</div><p>The research reason to keep this section is that it gives a controlled version of the fixed-point idea. Ordinary compression does not generically produce a meaningful nontrivial attractor. The admissibility-coupled version is stronger: compression maps content forward while also pushing forward the admissible channel class. Directions quotiented out at one scale are no longer admissible distinctions at the next scale. In RG language, the surviving variable behaves like a relevance algebra; irrelevant directions are deleted, intermediate directions may survive one quotient, and relevant directions remain load-bearing.</p></div>
 <div class="equation">\[
@@ -1626,7 +2113,7 @@ Admissible distinguishability is a resource-sensitive version of restricted-meas
 <p class="viz-note" id="qd-note">The threshold relation is evaluated directly from the toy model.</p>
 </div>
 <div class="darwinism-chart-wrap">
-<canvas aria-label="Exact accessible-information bars for the finite-N Quantum Darwinism toy model" height="520" id="qd-canvas" width="1100"></canvas>
+<canvas aria-label="Exact accessible-information bars for the finite-N Quantum Darwinism toy model" height="760" id="qd-canvas" width="1600"></canvas>
 </div>
 </div>
 </div>
@@ -1645,6 +2132,13 @@ Admissible distinguishability is a resource-sensitive version of restricted-meas
 <p>
         So branching becomes a gradient. The more redundancy there is and the more stable the records are, the more branch-like the state becomes. At this stage, the branch-distance formulas are best understood as comparison scalings; a full distance-to-locus theorem requires a true minimization over the branch locus.
       </p>
+<div class="viz-grid"><div class="viz-card">
+<div class="viz-title">Branching-locus picture</div>
+<p class="viz-caption">This visual turns the branch-locus idea into geometry. The interior of \(\mathfrak B\) represents states with strong redundant records and low interference. Near-boundary points are only partly branch-like, and distant points are too record-poor or too interference-heavy to count as classical branches.</p>
+<div class="viz-plot" data-viz="branching-locus"></div>
+<p class="viz-note"><strong>How to read it:</strong> the dashed quantity \(d_{
+m br}\) is a distance-to-locus idea. The smaller it is, the closer the state lies to a stable branch-like regime.</p>
+</div></div>
 </div>
 <div class="reader-section section" id="reader-hetero">
 <h2>7. Heterogeneous environments</h2>
@@ -1692,10 +2186,17 @@ Q_{\epsilon,\delta}^{\rm worst,(N)}\le Q_{\epsilon,\delta}^{\rm frac,(N)}\le Q_{
 <p>The fixed-point problem is where DFRC asks how anything can survive a boundary without smuggling in a complete microscopic archive. The bridge here is renormalization-group and information-bottleneck reasoning: many microscopic details can wash out, while a smaller set of relevant variables remains capable of controlling large-scale behavior.</p>
 <p>The DFRC addition is that compression alone is not enough. If a map quotients away a distinction, the later theory should not quietly allow that same deleted distinction to reappear as if it were still measurable. The admissible channel class has to flow with the compression. That is what the pushforward of admissibility is doing.</p>
 <div class="equation">\[
-(\Pi)_*\mathfrak C:=\left\{\Psi\ \middle|\ \exists \Phi\in\mathfrak C\text{ such that }\Pi\circ\Phi=\Psi\circ\Pi\right\}.
+(\Pi)_*\mathfrak C:=\left\{\Psi\;\middle|\;\exists\,\Phi\in\mathfrak C,\;\Pi\circ\Phi=\Psi\circ\Pi\right\}.
 \]</div>
 <p>A simple commuting example is \(X=(S,R)\) with \(Y=f(S)\). The details in \(R\) are irrelevant to \(Y\); some information in \(S\) may be intermediate; the part captured by \(Y\) is relevant. After the flow reaches \(Y\), the surviving description is not merely smaller. It is smaller together with a smaller admissible measurement structure.</p>
 <p>This is the reader-mode reason the paper mode treats the fixed point as a triple of algebra, channel class, and relevance structure rather than as a single compressed variable. The theory is not asking what information could be remembered by an impossible observer. It is asking what remains load-bearing after both description and admissibility have been pushed through the bottleneck.</p>
+<div class="viz-grid"><div class="viz-card">
+<div class="viz-title">Admissibility-coupled bottleneck flow</div>
+<p class="viz-caption">The point of the bottleneck is not just to compress. A good flow preserves the information relevant to the target description \(Y\); an over-compressive flow deletes that structure and cannot legitimately recover it later.</p>
+<div class="viz-plot" data-viz="bottleneck-flow"></div>
+<p class="viz-note"><strong>Connection to the math:</strong> the fixed point keeps the relevant content \(I(Z;Y)\) alive while the admissible channel class is pushed forward with the compression map.</p>
+</div></div>
+</div>
 </div>
 <div class="reader-section section" id="reader-noncommuting">
 <h2>9. Noncommuting modular sector</h2>
@@ -1810,6 +2311,15 @@ Q_{\epsilon,\delta}(\rho):=\sup_{X\in\mathsf O_\epsilon}\int_0^1 df\,\Theta\!\Bi
         rather than taking the spatial background as primitive from the outset.
         The toy result assumes strong exponential-weight structure, so it is not a derivation of locality from nothing. It is a sanity check and a target for a harder theorem.
       </p>
+<p>
+        To read the graph below, watch for three ingredients at once. First, thick links mean two subsystems can support one another’s records strongly enough to behave as near neighbors. Second, thin cross-links mean correlation still exists, but not strongly enough to organize a stable shared neighborhood. Third, clusters form because many strong links reinforce one another, so “place” begins to emerge as a property of the whole network rather than as an input background.
+      </p>
+<div class="viz-grid"><div class="viz-card">
+<div class="viz-title">Emergent-locality graph</div>
+<p class="viz-caption">Nodes stand for subsystems. Thick edges mean high admissible record-exchange weight \(w_{ij}\), thin edges mean weak exchange. Locality is reconstructed by asking which links are strong enough to hold together as a stable neighborhood.</p>
+<div class="viz-plot" data-viz="locality-graph"></div>
+<p class="viz-note"><strong>How to read it:</strong> each cluster is a candidate emergent neighborhood. The sparse weak links between clusters show that nonzero correlation is not enough; what matters is whether the relation is strong and stable enough to count as an admissible local connection.</p>
+</div></div>
 </div>
 <div class="reader-section section" id="reader-regimes">
 <h2>15. Cosmological regimes</h2>
@@ -1829,7 +2339,14 @@ Q_{\epsilon,\delta}(\rho):=\sup_{X\in\mathsf O_\epsilon}\int_0^1 df\,\Theta\!\Bi
 <p>This makes black holes natural candidates for a successor-universe module, but not a proven mechanism. The finite-dimensional theorem core does not depend on black holes. The stronger cosmological genealogy does.</p>
 <p>
       The next section compares these boundary conditions directly. The comparison is deliberately cautious: it does not collapse heat death, the Big-Bang side, and black holes into one ordinary event. It asks what kind of admissibility failure or boundary dominance is being proposed in each case.
-    </p></div>
+    </p>
+<div class="viz-grid"><div class="viz-card">
+<div class="viz-title">Intrinsic admissibility across cosmic regimes</div>
+<p class="viz-caption">DFRC does not assume one fixed measurement capacity for all of cosmic history. Different regimes support different budgets, couplings, timescales, and witness reliability.</p>
+<div class="viz-plot" data-viz="regimes-timeline"></div>
+<p class="viz-note"><strong>Legend:</strong> \(R\) = resource budget, \(\tau\) = timescale, \(K\) = coupling accessibility, \(\nu\) = noise tolerance, and \(1-\delta\) = witness fidelity threshold.</p>
+</div></div>
+</div>
 <div class="reader-section section" id="reader-cross">
 <h2>16. Boundary conditions and the boundary kernel</h2><div class="prose-spine kernel-bridge">
 <p>The boundary kernel should be read through the bridge of renormalization-group and information-bottleneck reasoning. In RG language, most microscopic details are irrelevant at a fixed point; what remains is a universality structure plus a finite number of relevant directions. DFRC adapts that shape to cosmological inheritance: the successor does not need a complete memory of the parent, but it cannot be explanatory nothing either.</p>
@@ -2040,10 +2557,16 @@ Q_{\epsilon,\delta}(\rho):=\sup_{X\in\mathsf O_\epsilon}\int_0^1 df\,\Theta\!\Bi
       Object.entries(attrs).forEach(([k,v]) => el.setAttribute(k, v));
       return el;
     }
+    function visualTextScale(){
+      if(window.matchMedia && window.matchMedia('(min-width: 1800px)').matches) return 1.03;
+      if(window.matchMedia && window.matchMedia('(max-width: 760px)').matches) return .96;
+      return 1.00;
+    }
     function addText(svg, txt, x, y, opts={}){
       const C = dfrcVizColors();
       const lines = Array.isArray(txt) ? txt : String(txt).split('\n');
-      const size = opts.size || 12;
+      const scale = opts.noScale ? 1 : visualTextScale();
+      const size = (opts.size || 12) * scale;
       const lineStep = opts.lineStep || size * 1.20;
       const anchor = opts.anchor || 'middle';
       // Baselines are centered by line count, not by the bounding-box estimate.
@@ -2072,9 +2595,10 @@ Q_{\epsilon,\delta}(\rho):=\sup_{X\in\mathsf O_\epsilon}\int_0^1 df\,\Theta\!\Bi
     function addCallout(svg, lines, x, y, color, opts={}){
       const C = dfrcVizColors();
       const normalized = Array.isArray(lines) ? lines.map(String) : String(lines).split('\n');
-      const size = opts.size || 11.5;
-      const padX = opts.padX == null ? 13 : opts.padX;
-      const padY = opts.padY == null ? 7 : opts.padY;
+      const scale = opts.noScale ? 1 : visualTextScale();
+      const size = (opts.size || 10.8) * scale;
+      const padX = opts.padX == null ? 11 * scale : opts.padX;
+      const padY = opts.padY == null ? 6 * scale : opts.padY;
       const lineStep = opts.lineStep || size * 1.18;
       const maxChars = Math.max(1, ...normalized.map(line => line.length));
       const textW = Math.max(opts.minW || 0, maxChars * size * 0.60);
@@ -2495,51 +3019,32 @@ Q_{\epsilon,\delta}(\rho):=\sup_{X\in\mathsf O_\epsilon}\int_0^1 df\,\Theta\!\Bi
         xmin:0, xmax:10, ymin:0, ymax:4,
         layers:[
           (svg, {X, Y, C}) => {
-            const cx_d=5.5, cy_d=2.0, rx_d=2.0, ry_d=0.9;
-            // outer halo
-            svg.append(svgEl('ellipse',{cx:X(cx_d), cy:Y(cy_d), rx:X(cx_d+rx_d*1.45)-X(cx_d), ry:Y(cy_d-ry_d*1.45)-Y(cy_d), fill:C.accent, 'fill-opacity':0.05}));
-            // mid halo
-            svg.append(svgEl('ellipse',{cx:X(cx_d), cy:Y(cy_d), rx:X(cx_d+rx_d*1.18)-X(cx_d), ry:Y(cy_d-ry_d*1.18)-Y(cy_d), fill:C.accent, 'fill-opacity':0.10}));
-            // locus interior
-            svg.append(svgEl('ellipse',{cx:X(cx_d), cy:Y(cy_d), rx:X(cx_d+rx_d)-X(cx_d), ry:Y(cy_d-ry_d)-Y(cy_d), fill:C.accent, 'fill-opacity':0.20, stroke:C.accent, 'stroke-width':1.5, 'stroke-opacity':0.7, 'stroke-dasharray':'5 4'}));
-            const t1 = svgEl('text',{x:X(cx_d+1.55), y:Y(cy_d-0.55), 'text-anchor':'start', fill:C.accent, 'font-size':16, 'font-family':'JetBrains Mono, monospace', 'font-weight':700});
-            t1.textContent = '𝔅';
-            svg.append(t1);
-            const t2 = svgEl('text',{x:X(cx_d+1.55), y:Y(cy_d-0.55)+15, 'text-anchor':'start', fill:C.accent, 'font-size':11, 'font-family':'JetBrains Mono, monospace'});
-            t2.textContent = 'branching locus';
-            svg.append(t2);
+            const cx_d=5.45, cy_d=2.0, rx_d=2.05, ry_d=0.92;
+            svg.append(svgEl('ellipse',{cx:X(cx_d), cy:Y(cy_d), rx:X(cx_d+rx_d*1.48)-X(cx_d), ry:Y(cy_d-ry_d*1.48)-Y(cy_d), fill:C.accent, 'fill-opacity':0.045}));
+            svg.append(svgEl('ellipse',{cx:X(cx_d), cy:Y(cy_d), rx:X(cx_d+rx_d*1.18)-X(cx_d), ry:Y(cy_d-ry_d*1.18)-Y(cy_d), fill:C.accent, 'fill-opacity':0.09}));
+            svg.append(svgEl('ellipse',{cx:X(cx_d), cy:Y(cy_d), rx:X(cx_d+rx_d)-X(cx_d), ry:Y(cy_d-ry_d)-Y(cy_d), fill:C.accent, 'fill-opacity':0.18, stroke:C.accent, 'stroke-width':1.5, 'stroke-opacity':0.72, 'stroke-dasharray':'5 4'}));
           },
           (svg, {X, Y, C}) => {
-            // branched (inside)
-            const branched = [[5.0, 1.7], [6.0, 2.3], [6.5, 1.85], [4.5, 2.2]];
-            branched.forEach(([x,y]) => svg.append(svgEl('circle',{cx:X(x), cy:Y(y), r:5.5, fill:C.accent, 'fill-opacity':0.95, stroke:C.text, 'stroke-width':1.2})));
-            // partially branched (gradient)
-            const partial = [[3.0, 1.3], [7.8, 3.0]];
-            partial.forEach(([x,y]) => svg.append(svgEl('circle',{cx:X(x), cy:Y(y), r:5.5, fill:C.callout, 'fill-opacity':0.92, stroke:C.text, 'stroke-width':1.2})));
-            // far state
-            const far = [1.2, 3.5];
-            svg.append(svgEl('circle',{cx:X(far[0]), cy:Y(far[1]), r:5.5, fill:C.bad, 'fill-opacity':0.92, stroke:C.text, 'stroke-width':1.2}));
-            // d_br line from far state to nearest locus boundary point
-            const cx_d=5.5, cy_d=2.0, rx_d=2.0, ry_d=0.9;
+            const branched = [[5.0, 1.7], [6.0, 2.3], [6.45, 1.9], [4.55, 2.2]];
+            branched.forEach(([x,y]) => svg.append(svgEl('circle',{cx:X(x), cy:Y(y), r:5.6, fill:C.accent, 'fill-opacity':0.95, stroke:C.text, 'stroke-width':1.1})));
+            const partial = [[3.25, 1.45], [7.85, 3.0]];
+            partial.forEach(([x,y]) => svg.append(svgEl('circle',{cx:X(x), cy:Y(y), r:5.6, fill:C.callout, 'fill-opacity':0.93, stroke:C.text, 'stroke-width':1.1})));
+            const far = [1.35, 3.45];
+            svg.append(svgEl('circle',{cx:X(far[0]), cy:Y(far[1]), r:5.7, fill:C.bad, 'fill-opacity':0.95, stroke:C.text, 'stroke-width':1.1}));
+            const cx_d=5.45, cy_d=2.0, rx_d=2.05, ry_d=0.92;
             const dx=far[0]-cx_d, dy=far[1]-cy_d;
             const ang = Math.atan2(dy/ry_d, dx/rx_d);
             const ex = cx_d + rx_d*Math.cos(ang);
             const ey = cy_d + ry_d*Math.sin(ang);
-            svg.append(svgEl('line',{x1:X(far[0]), y1:Y(far[1]), x2:X(ex), y2:Y(ey), stroke:C.bad, 'stroke-width':2, 'stroke-dasharray':'5 4', 'stroke-opacity':0.85}));
-            // text labels
-            const lbl = (txt,x,y,color,anchor='start',size=12) => {
-              const t = svgEl('text',{x:X(x), y:Y(y), 'text-anchor':anchor, fill:color, 'font-size':size, 'font-family':'JetBrains Mono, monospace'});
-              t.textContent = txt; svg.append(t);
-            };
-            lbl('branched states', 5.5, 0.9, C.accent, 'middle');
-            lbl('partial', 3.0, 0.9, C.callout, 'middle');
-            lbl('partial', 7.8, 3.55, C.callout, 'middle');
-            lbl('non-branched', 1.2, 3.95, C.bad, 'middle');
-            // d_br label on the dashed line midpoint
-            const mx=(far[0]+ex)/2, my=(far[1]+ey)/2;
-            const dt = svgEl('text',{x:X(mx)+8, y:Y(my)-6, 'text-anchor':'start', fill:C.bad, 'font-size':12, 'font-family':'JetBrains Mono, monospace', 'font-weight':600});
+            svg.append(svgEl('line',{x1:X(far[0]), y1:Y(far[1]), x2:X(ex), y2:Y(ey), stroke:C.bad, 'stroke-width':2, 'stroke-dasharray':'5 4', 'stroke-opacity':0.9}));
+            const dt = svgEl('text',{x:X((far[0]+ex)/2)+10, y:Y((far[1]+ey)/2)-6, 'text-anchor':'start', fill:C.bad, 'font-size':11.5, 'font-family':'JetBrains Mono, monospace', 'font-weight':700});
             dt.textContent = 'd_br';
             svg.append(dt);
+          },
+          (svg, {C, dataCallout}) => {
+            dataCallout(['branch-like regime','redundant records','low interference'], 5.45, 2.0, C.accent, {dx:0, dy:-95, anchor:'middle', size:10.8, minW:108, leaderTo:[5.45, 2.0]});
+            dataCallout(['partially branch-like','some records, but','consensus still weak'], 3.25, 1.45, C.callout, {dx:-120, dy:8, anchor:'end', size:10.5, minW:114, leaderTo:[3.25,1.45]});
+            dataCallout(['record-poor /','interference-heavy','state'], 1.35, 3.45, C.bad, {dx:20, dy:-12, anchor:'start', size:10.5, minW:104, leaderTo:[1.35,3.45]});
           }
         ]
       });
@@ -2644,7 +3149,7 @@ Q_{\epsilon,\delta}(\rho):=\sup_{X\in\mathsf O_\epsilon}\int_0^1 df\,\Theta\!\Bi
 
     function renderLocalityGraph(el){
       const C = dfrcVizColors();
-      const W=720, H=320;
+      const W=720, H=350;
       el.innerHTML = '';
       const svg = svgEl('svg', {viewBox:`0 0 ${W} ${H}`, role:'img', 'aria-label':'Emergent locality from admissible distinguishability weights'});
       const nodes = [
@@ -2673,11 +3178,19 @@ Q_{\epsilon,\delta}(\rho):=\sup_{X\in\mathsf O_\epsilon}\int_0^1 df\,\Theta\!\Bi
         {from:0, to:6, w:0.08},
       ];
       const px = x => 50 + x * (W - 100);
-      const py = y => 50 + y * (H - 110);
-      // cluster halos
-      svg.append(svgEl('ellipse',{cx:px(0.275), cy:py(0.55), rx:140, ry:95, fill:C.accent, 'fill-opacity':0.06, stroke:C.accent, 'stroke-width':1, 'stroke-dasharray':'4 5', 'stroke-opacity':0.4}));
-      svg.append(svgEl('ellipse',{cx:px(0.715), cy:py(0.55), rx:140, ry:95, fill:C.accent2, 'fill-opacity':0.06, stroke:C.accent2, 'stroke-width':1, 'stroke-dasharray':'4 5', 'stroke-opacity':0.4}));
-      // edges
+      const py = y => 58 + y * (H - 146);
+      function note(cx, cy, lines, color, width){
+        const lineArr = Array.isArray(lines) ? lines : [lines];
+        const boxW = width || 120;
+        const boxH = 18 + lineArr.length * 13;
+        svg.append(svgEl('rect',{x:cx-boxW/2,y:cy-boxH/2,width:boxW,height:boxH,rx:10,ry:10,fill:'rgba(7,10,12,.84)',stroke:color,'stroke-width':1.0,'stroke-opacity':0.78}));
+        lineArr.forEach((line,i)=>{
+          const t = svgEl('text',{x:cx,y:cy-boxH/2+17+i*13,'text-anchor':'middle',fill:color,'font-size':10.5,'font-family':'JetBrains Mono, monospace','font-weight':700});
+          t.textContent=line; svg.append(t);
+        });
+      }
+      svg.append(svgEl('ellipse',{cx:px(0.275), cy:py(0.55), rx:140, ry:92, fill:C.accent, 'fill-opacity':0.055, stroke:C.accent, 'stroke-width':1, 'stroke-dasharray':'4 5', 'stroke-opacity':0.42}));
+      svg.append(svgEl('ellipse',{cx:px(0.715), cy:py(0.55), rx:140, ry:92, fill:C.accent2, 'fill-opacity':0.055, stroke:C.accent2, 'stroke-width':1, 'stroke-dasharray':'4 5', 'stroke-opacity':0.42}));
       edges.forEach(e => {
         const a = nodes[e.from], b = nodes[e.to];
         const isStrong = e.w >= 0.4;
@@ -2685,31 +3198,33 @@ Q_{\epsilon,\delta}(\rho):=\sup_{X\in\mathsf O_\epsilon}\int_0^1 df\,\Theta\!\Bi
           x1:px(a.x), y1:py(a.y), x2:px(b.x), y2:py(b.y),
           stroke: isStrong ? C.accent : C.muted,
           'stroke-width': 0.5 + e.w * 6.5,
-          'stroke-opacity': isStrong ? 0.65 : 0.4
+          'stroke-opacity': isStrong ? 0.68 : 0.42
         }));
       });
-      // nodes
       nodes.forEach(n => {
         svg.append(svgEl('circle', {
           cx:px(n.x), cy:py(n.y), r:14,
           fill:C.bg2,
           stroke:C.text, 'stroke-width':1.8, 'stroke-opacity':0.85
         }));
-        const t = svgEl('text', {x:px(n.x), y:py(n.y)+5, 'text-anchor':'middle', fill:C.text, 'font-size':13, 'font-family':'JetBrains Mono, monospace'});
+        const t = svgEl('text', {x:px(n.x), y:py(n.y)+4.5, 'text-anchor':'middle', fill:C.text, 'font-size':12.5, 'font-family':'JetBrains Mono, monospace'});
         t.textContent = n.label;
         svg.append(t);
       });
-      // cluster labels
-      const lblA = svgEl('text', {x:px(0.275), y:30, 'text-anchor':'middle', fill:C.accent, 'font-size':12, 'font-family':'JetBrains Mono, monospace', 'font-weight':700});
-      lblA.textContent = 'cluster I (high w_ij)';
+      const lblA = svgEl('text', {x:px(0.275), y:30, 'text-anchor':'middle', fill:C.accent, 'font-size':11.5, 'font-family':'JetBrains Mono, monospace', 'font-weight':700});
+      lblA.textContent = 'cluster I: strong internal links';
       svg.append(lblA);
-      const lblB = svgEl('text', {x:px(0.715), y:30, 'text-anchor':'middle', fill:C.accent2, 'font-size':12, 'font-family':'JetBrains Mono, monospace', 'font-weight':700});
-      lblB.textContent = 'cluster II (high w_ij)';
+      const lblB = svgEl('text', {x:px(0.715), y:30, 'text-anchor':'middle', fill:C.accent2, 'font-size':11.5, 'font-family':'JetBrains Mono, monospace', 'font-weight':700});
+      lblB.textContent = 'cluster II: strong internal links';
       svg.append(lblB);
-      // caption
-      const lg = svgEl('text', {x:W/2, y:H-12, 'text-anchor':'middle', fill:C.muted, 'font-size':11, 'font-family':'JetBrains Mono, monospace'});
-      lg.textContent = 'edge thickness ∝ admissible-distinguishability weight w_ij; emergent nearness comes from the weights, not from a preassumed background';
-      svg.append(lg);
+      note(px(0.26), py(0.12), ['thick edges = strong', 'admissible witness', 'exchange'], C.accent, 132);
+      note(px(0.51), py(0.88), ['thin bridges = weak', 'cross-cluster ties', 'not enough for locality'], C.callout, 146);
+      const lg1 = svgEl('text', {x:W/2, y:H-28, 'text-anchor':'middle', fill:C.muted, 'font-size':11, 'font-family':'JetBrains Mono, monospace'});
+      lg1.textContent = 'edge thickness ∝ admissible-distinguishability weight w_ij';
+      svg.append(lg1);
+      const lg2 = svgEl('text', {x:W/2, y:H-13, 'text-anchor':'middle', fill:C.muted, 'font-size':11, 'font-family':'JetBrains Mono, monospace'});
+      lg2.textContent = 'emergent nearness comes from these weights, not from a preassumed background';
+      svg.append(lg2);
       el.appendChild(svg);
     }
 
@@ -2932,7 +3447,7 @@ if (mobileSidebarToggle) {
 }
 
 if (mobileSidebarBackdrop) {
-  mobileSidebarBackdrop.addEventListener('click', () => closeSidebar());
+  mobileSidebarBackdrop.addEventListener('click', (e) => { e.stopPropagation(); closeSidebar(); });
 }
 
 tooltipEls.forEach(el => {
@@ -2967,10 +3482,94 @@ document.addEventListener('keydown', (e) => {
 <script>
 (function(){
   function clamp(n){ return Math.max(0, Math.min(100, Math.round(n))); }
-  function setBar(id, val){
-    var bar=document.getElementById(id), txt=document.getElementById(id+'-v');
-    if(bar) bar.style.width=clamp(val)+'%';
-    if(txt) txt.textContent=clamp(val);
+  function initBackgroundEngine(){
+    var engine=document.getElementById('bgEngine');
+    var canvas=document.getElementById('bgResearchCanvas');
+    if(!engine || !canvas) return;
+    var reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var ctx=canvas.getContext('2d');
+    if(!ctx) return;
+    var dpr=1, w=0, h=0, ticking=false;
+    var fields=[
+      {x:0.18, y:0.16, rx:0.34, ry:0.22, color:'99,208,255', alpha:0.12, sx:0.018, sy:0.022, phase:0.0},
+      {x:0.82, y:0.22, rx:0.30, ry:0.20, color:'216,171,115', alpha:0.11, sx:0.020, sy:0.016, phase:1.7},
+      {x:0.56, y:0.78, rx:0.38, ry:0.24, color:'140,92,69', alpha:0.10, sx:0.016, sy:0.018, phase:3.2}
+    ];
+    function resize(){
+      var rect=engine.getBoundingClientRect();
+      dpr=Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+      w=Math.max(320, Math.round(rect.width));
+      h=Math.max(320, Math.round(rect.height));
+      canvas.width=Math.round(w*dpr);
+      canvas.height=Math.round(h*dpr);
+      canvas.style.width=w+'px';
+      canvas.style.height=h+'px';
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+    function syncParallax(){
+      var s=window.scrollY || window.pageYOffset || 0;
+      engine.style.setProperty('--bg-shift-grid', (-s*0.055).toFixed(2)+'px');
+      engine.style.setProperty('--bg-shift-mesh', (-s*0.085).toFixed(2)+'px');
+      engine.style.setProperty('--bg-shift-orb-a', (-s*0.045).toFixed(2)+'px');
+      engine.style.setProperty('--bg-shift-orb-b', (-s*0.065).toFixed(2)+'px');
+      engine.style.setProperty('--bg-shift-orb-c', (-s*0.095).toFixed(2)+'px');
+      ticking=false;
+    }
+    function onScroll(){
+      if(ticking) return;
+      ticking=true;
+      requestAnimationFrame(syncParallax);
+    }
+    function drawBands(time){
+      ctx.save();
+      ctx.globalCompositeOperation='screen';
+      for(var i=0;i<fields.length;i++){
+        var f=fields[i];
+        var px=(f.x + (reduce?0:Math.sin(time*f.sx + f.phase)*0.03)) * w;
+        var py=(f.y + (reduce?0:Math.cos(time*f.sy + f.phase)*0.025)) * h;
+        var rx=f.rx*w, ry=f.ry*h;
+        var g=ctx.createRadialGradient(px,py,0,px,py,Math.max(rx,ry));
+        g.addColorStop(0,'rgba('+f.color+','+f.alpha.toFixed(3)+')');
+        g.addColorStop(0.42,'rgba('+f.color+','+(f.alpha*0.38).toFixed(3)+')');
+        g.addColorStop(1,'rgba('+f.color+',0)');
+        ctx.fillStyle=g;
+        ctx.beginPath();
+        ctx.ellipse(px,py,rx,ry,0,0,Math.PI*2);
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+    function drawContours(time){
+      ctx.save();
+      ctx.lineWidth=1.1;
+      ctx.lineCap='round';
+      var lines=4;
+      for(var i=0;i<lines;i++){
+        var baseY=h*(0.18 + i*0.18);
+        var amp=18 + i*6;
+        var phase=time*(0.12 + i*0.03);
+        ctx.beginPath();
+        for(var x=0;x<=w;x+=8){
+          var y=baseY + Math.sin((x/w)*Math.PI*2.0 + phase)*amp + Math.sin((x/w)*Math.PI*4.0 + phase*0.7)*(amp*0.18);
+          if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+        }
+        ctx.strokeStyle=i % 2 === 0 ? 'rgba(99,208,255,0.045)' : 'rgba(216,171,115,0.038)';
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+    function draw(timeMs){
+      var time=timeMs*0.001;
+      ctx.clearRect(0,0,w,h);
+      drawBands(time);
+      drawContours(time);
+      requestAnimationFrame(draw);
+    }
+    resize();
+    syncParallax();
+    window.addEventListener('resize', resize, {passive:true});
+    window.addEventListener('scroll', onScroll, {passive:true});
+    requestAnimationFrame(draw);
   }
   function initTheoryTabs(){
     document.querySelectorAll('.theory-tab').forEach(function(btn){
@@ -2983,6 +3582,14 @@ document.addEventListener('keydown', (e) => {
       });
     });
   }
+  function setBar(id, value){
+    var pct = clamp(value);
+    var fill = document.getElementById(id);
+    if(fill) fill.style.width = pct + '%';
+    var valueEl = document.getElementById(id + '-v');
+    if(valueEl) valueEl.textContent = pct;
+  }
+
   function initRecordRank(){
     var ids=['rr-access','rr-frag','rr-noise','rr-coherence'];
     if(!document.getElementById('rr-access')) return;
@@ -3042,7 +3649,7 @@ document.addEventListener('keydown', (e) => {
       document.getElementById('qd-note').textContent=note;
       var dpr=window.devicePixelRatio||1, W=canvas.width, H=canvas.height, ctx=canvas.getContext('2d');
       ctx.clearRect(0,0,W,H); ctx.fillStyle='rgba(5,8,12,0.45)'; ctx.fillRect(0,0,W,H);
-      var ml=62,mr=28,mt=32,mb=58,pw=W-ml-mr,ph=H-mt-mb;
+      var ml=88,mr=42,mt=48,mb=82,pw=W-ml-mr,ph=H-mt-mb;
       function X(m){return ml+(m-1)/(Math.max(1,N-1))*pw;} function Y(v){return mt+(1-v)*ph;}
       ctx.strokeStyle=C.grid; ctx.lineWidth=1;
       for(var gy=0;gy<=4;gy++){ var y=mt+gy*ph/4; ctx.beginPath(); ctx.moveTo(ml,y); ctx.lineTo(W-mr,y); ctx.stroke(); }
@@ -3054,11 +3661,11 @@ document.addEventListener('keydown', (e) => {
         ctx.fillRect(X(m)-bw/2,Y(v),bw,Y(0)-Y(v)); ctx.globalAlpha=1;
       }
       if(md<=N){ ctx.strokeStyle=C.warn; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(X(md),mt); ctx.lineTo(X(md),H-mb); ctx.stroke(); }
-      ctx.fillStyle=C.text; ctx.font='13px JetBrains Mono, monospace'; ctx.textAlign='center'; ctx.fillText('fragment size m', ml+pw/2, H-18);
+      ctx.fillStyle=C.text; ctx.font='15px JetBrains Mono, monospace'; ctx.textAlign='center'; ctx.fillText('fragment size m', ml+pw/2, H-22);
       ctx.save(); ctx.translate(20,mt+ph/2); ctx.rotate(-Math.PI/2); ctx.fillText('I_acc(m) bits',0,0); ctx.restore();
-      ctx.fillStyle=C.muted; ctx.textAlign='right'; ctx.fillText('1.0', ml-10, Y(1)+4); ctx.fillText('0.5', ml-10, Y(.5)+4); ctx.fillText('0', ml-10, Y(0)+4);
+      ctx.fillStyle=C.muted; ctx.font='14px JetBrains Mono, monospace'; ctx.textAlign='right'; ctx.fillText('1.0', ml-10, Y(1)+4); ctx.fillText('0.5', ml-10, Y(.5)+4); ctx.fillText('0', ml-10, Y(0)+4);
       ctx.textAlign='center'; ctx.fillText('1', X(1), H-mb+20); ctx.fillText(String(N), X(N), H-mb+20);
-      ctx.fillStyle=C.warn; ctx.textAlign='left'; ctx.fillText('1−δ = '+thresh.toFixed(2), ml+8, Y(thresh)-8);
+      ctx.fillStyle=C.warn; ctx.font='14px JetBrains Mono, monospace'; ctx.textAlign='left'; ctx.fillText('1−δ = '+thresh.toFixed(2), ml+8, Y(thresh)-8);
       if(md<=N){ ctx.fillText('mδ='+md, X(md)+8, mt+18); }
     }
     ['qd-c','qd-n','qd-delta'].forEach(function(id){ document.getElementById(id).addEventListener('input', draw); });
@@ -3084,8 +3691,19 @@ document.addEventListener('keydown', (e) => {
     document.querySelectorAll('.condition-tab').forEach(function(btn){ btn.addEventListener('click', function(){ show(btn.getAttribute('data-boundary')); }); });
     show('heat');
   }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', function(){ initTheoryTabs(); initRecordRank(); initExactDarwinism(); initBoundaryExplorer(); });
-  else { initTheoryTabs(); initRecordRank(); initExactDarwinism(); initBoundaryExplorer(); }
+  function safeInit(fn){
+    try{ fn(); }
+    catch(err){ console.error('[DFRC init]', fn && fn.name ? fn.name : 'anonymous', err); }
+  }
+  function initAll(){
+    safeInit(initBackgroundEngine);
+    safeInit(initTheoryTabs);
+    safeInit(initRecordRank);
+    safeInit(initExactDarwinism);
+    safeInit(initBoundaryExplorer);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', initAll);
+  else initAll();
 })();
 </script>
 </body>
