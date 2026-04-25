@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Distinguishability-First Relational Cosmology</title>
-  <link id="dynamic-favicon" rel="icon" type="image/svg+xml" href="">
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Distinguishability-First Relational Cosmology</title>
+<link href="" id="dynamic-favicon" rel="icon" type="image/svg+xml"/>
+<style>
     @import url('https://fonts.googleapis.com/css?family=JetBrains+Mono:400,700|Inter:400,500,600,700&display=swap');
 
     :root{
@@ -832,9 +833,299 @@ body.reader-theme .viz-plot{
   .viz-plot, .viz-plot svg{min-height:330px}
 }
 
-</style>
 
-  <script>
+
+/* v4 research-integrated explanatory figures */
+.concept-figure{
+  margin:18px 0 12px;
+  border:1px solid var(--line);
+  border-radius:var(--radius-lg);
+  background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.012));
+  overflow:hidden;
+}
+.concept-figure svg{display:block;width:100%;height:auto;min-height:220px;overflow:visible;}
+.concept-caption{margin:0;padding:12px 15px 14px;color:var(--muted);font-size:.92rem;line-height:1.55;border-top:1px solid rgba(255,255,255,.055);}
+.concept-caption strong{color:var(--accent2);}
+.reader-section p{font-size:1rem;}
+
+
+/* Interactive explanatory modules */
+.interactive-module{
+  margin:24px 0;
+  border:1px solid var(--line-strong);
+  border-radius:22px;
+  background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.018));
+  overflow:hidden;
+}
+.interactive-module .interactive-head{
+  padding:18px 20px 12px;
+  border-bottom:1px solid var(--line);
+}
+.interactive-module .interactive-head h3{margin:0 0 8px;}
+.interactive-module .interactive-head p{margin:0;color:var(--muted);}
+.interactive-body{padding:18px 20px 20px;}
+.interactive-grid{display:grid;grid-template-columns:minmax(260px, .9fr) minmax(300px, 1.1fr);gap:18px;align-items:start;}
+.control-stack{display:grid;gap:14px;}
+.control-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;}
+.control-row label{font-weight:700;color:var(--heading);}
+.control-row output{font-variant-numeric:tabular-nums;color:var(--muted);min-width:3.2em;text-align:right;}
+.control-row input[type="range"]{grid-column:1 / -1;width:100%;accent-color:var(--accent2);}
+.metric-stack{display:grid;gap:12px;}
+.metric-line{display:grid;grid-template-columns:145px 1fr 44px;gap:10px;align-items:center;}
+.metric-line span:first-child{color:var(--muted);font-size:.92rem;}
+.metric-bar{height:14px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;border:1px solid var(--line);}
+.metric-fill{height:100%;width:0%;border-radius:inherit;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .18s ease;}
+.metric-value{font-variant-numeric:tabular-nums;color:var(--heading);font-size:.9rem;text-align:right;}
+.regime-readout{margin-top:14px;padding:14px 16px;border-radius:16px;background:rgba(0,0,0,.17);border:1px solid var(--line);}
+.regime-readout strong{color:var(--heading);}
+.regime-readout p{margin:.35rem 0 0;color:var(--muted);}
+.theory-tabs,.condition-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 14px;}
+.theory-tab,.condition-tab{
+  border:1px solid var(--line-strong);background:rgba(255,255,255,.035);color:var(--text);
+  border-radius:999px;padding:8px 12px;cursor:pointer;font-weight:700;
+}
+.theory-tab.active,.condition-tab.active{background:rgba(216,171,115,.16);border-color:rgba(216,171,115,.55);}
+.theory-panel{display:none;padding:16px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.025);}
+.theory-panel.active{display:block;}
+.theory-panel h4{margin:.1rem 0 .45rem;}
+.theory-panel p{margin:.45rem 0;color:var(--muted);}
+.condition-visual{display:grid;grid-template-columns:1fr;gap:12px;}
+.condition-svg-wrap{border:1px solid var(--line);border-radius:18px;background:rgba(0,0,0,.12);padding:10px;}
+.condition-svg-wrap svg{width:100%;height:auto;display:block;min-height:220px;}
+.boundary-legend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px;}
+.boundary-legend div{padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.025);border:1px solid var(--line);color:var(--muted);}
+.kernel-projections{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0;}
+.kernel-projection{padding:14px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.025);}
+.kernel-projection strong{display:block;color:var(--heading);margin-bottom:4px;}
+.kernel-projection span{color:var(--muted);}
+
+.exact-darwinism canvas{width:100%;height:auto;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.025);display:block;}
+
+@media (max-width:900px){
+  .interactive-grid,.kernel-projections{grid-template-columns:1fr;}
+  .metric-line{grid-template-columns:120px 1fr 42px;}
+  .boundary-legend{grid-template-columns:1fr;}
+}
+
+
+/* v8 refinement: full-width exact Darwinism calculator and boundary explorer */
+.exact-darwinism .interactive-body{padding:20px;}
+.exact-darwinism .interactive-grid{display:block;}
+.exact-darwinism .control-stack{display:block;}
+.exact-darwinism .control-strip{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+  margin-bottom:14px;
+}
+.exact-darwinism .control-strip label{
+  display:block;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:rgba(255,255,255,.025);
+  padding:13px 14px 12px;
+  color:var(--heading);
+  font-weight:700;
+}
+.exact-darwinism .control-strip input[type="range"]{
+  display:block;
+  width:100%;
+  margin:10px 0 4px;
+  accent-color:var(--accent2);
+}
+.exact-darwinism .control-strip span{
+  display:inline-block;
+  font-variant-numeric:tabular-nums;
+  color:var(--muted);
+}
+.exact-darwinism .darwinism-metrics{
+  margin:14px 0 16px;
+}
+.exact-darwinism .darwinism-chart-wrap{
+  margin-top:14px;
+}
+.exact-darwinism canvas{
+  width:100%;
+  height:auto;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(255,255,255,.025);
+  display:block;
+}
+
+.boundary-explorer-layout{
+  display:grid;
+  grid-template-columns:minmax(260px,.78fr) minmax(420px,1.22fr);
+  gap:18px;
+  align-items:start;
+}
+.condition-panel{
+  padding:16px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(0,0,0,.14);
+}
+.condition-panel h4{margin:.15rem 0 .55rem;color:var(--heading);}
+.condition-panel p{margin:.4rem 0;color:var(--muted);}
+.condition-metrics{display:grid;gap:12px;margin-top:14px;}
+.condition-svg-wrap svg .boundary-node{transition:opacity .18s ease, transform .18s ease;}
+.condition-svg-wrap svg text{font-family:JetBrains Mono, ui-monospace, monospace;}
+@media (max-width:900px){
+  .exact-darwinism .control-strip,
+  .boundary-explorer-layout{grid-template-columns:1fr;}
+}
+
+
+/* v9 reader-depth refinements: serious conceptual staging and explorer explanations */
+.foundation-block{
+  margin:22px 0;
+  padding:20px;
+  border:1px solid var(--line-strong);
+  border-radius:22px;
+  background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015));
+}
+.foundation-block h3{margin-top:0;color:var(--heading);}
+.foundation-block p{max-width:108ch;}
+.concept-ladder{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:10px;
+  margin:18px 0 10px;
+}
+.ladder-step{
+  position:relative;
+  min-height:150px;
+  padding:14px 12px 13px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(255,255,255,.028);
+}
+.ladder-step:not(:last-child)::after{
+  content:"";
+  position:absolute;
+  right:-10px;
+  top:52%;
+  width:18px;
+  height:2px;
+  background:linear-gradient(90deg,var(--accent),var(--callout));
+  opacity:.75;
+}
+.ladder-step strong{
+  display:block;
+  color:var(--heading);
+  margin-bottom:8px;
+  font-size:.98rem;
+}
+.ladder-step span{
+  display:block;
+  color:var(--muted);
+  font-size:.9rem;
+  line-height:1.48;
+}
+.example-weave{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  margin:17px 0 4px;
+}
+.example-weave .example-card{
+  border:1px solid var(--line);
+  border-radius:17px;
+  background:rgba(0,0,0,.10);
+  padding:14px;
+}
+.example-card h4{margin:.05rem 0 .45rem;color:var(--heading);font-size:1rem;}
+.example-card p{margin:.35rem 0;color:var(--muted);font-size:.93rem;line-height:1.55;}
+.explorer-explanation{
+  margin:16px 0 20px;
+  padding:17px 18px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(0,0,0,.12);
+}
+.explorer-explanation p{margin:.4rem 0;color:var(--muted);}
+.explorer-explanation strong{color:var(--accent2);}
+.explorer-dictionary{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin-top:12px;
+}
+.explorer-dictionary div{
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:12px;
+  background:rgba(255,255,255,.022);
+  color:var(--muted);
+  font-size:.92rem;
+  line-height:1.52;
+}
+.explorer-dictionary strong{display:block;color:var(--heading);margin-bottom:4px;}
+.explorer-formula-note{
+  margin-top:13px;
+  padding:12px 14px;
+  border-radius:15px;
+  background:rgba(255,255,255,.026);
+  border:1px solid var(--line);
+  color:var(--muted);
+  font-size:.92rem;
+}
+.regime-limiter{
+  margin:.55rem 0 0;
+  color:var(--muted);
+  border-top:1px solid var(--line);
+  padding-top:10px;
+  font-size:.92rem;
+}
+.boundary-axis-guide{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  margin:15px 0 18px;
+}
+.boundary-axis-guide div{
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:12px;
+  background:rgba(255,255,255,.022);
+  color:var(--muted);
+  font-size:.9rem;
+  line-height:1.48;
+}
+.boundary-axis-guide strong{display:block;color:var(--heading);margin-bottom:4px;}
+.boundary-logic-note{
+  margin-top:14px;
+  padding:13px 14px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:rgba(255,255,255,.025);
+  color:var(--muted);
+  font-size:.93rem;
+  line-height:1.55;
+}
+.boundary-logic-note strong{color:var(--accent2);}
+@media(max-width:1000px){
+  .concept-ladder,.boundary-axis-guide{grid-template-columns:1fr 1fr;}
+  .example-weave,.explorer-dictionary{grid-template-columns:1fr;}
+}
+@media(max-width:650px){
+  .concept-ladder,.boundary-axis-guide{grid-template-columns:1fr;}
+  .ladder-step:not(:last-child)::after{display:none;}
+}
+
+
+/* Bridge-term additions for v11 */
+.bridge-map{margin:1.2rem 0;border:1px solid rgba(255,255,255,.12);border-radius:18px;overflow:hidden;background:rgba(255,255,255,.025)}
+.bridge-row{display:grid;grid-template-columns:1.05fr 1.35fr 1.6fr;border-top:1px solid rgba(255,255,255,.09)}
+.bridge-row:first-child{border-top:0}
+.bridge-row.header{background:rgba(255,255,255,.055);font-weight:700;color:#f1f5ff}
+.bridge-cell{padding:14px 16px}
+.bridge-cell p{margin:.35rem 0 0;color:var(--muted)}
+.prose-spine{margin:1rem 0 1.4rem;padding:1rem 1.2rem;border-left:3px solid var(--accent);background:rgba(99,208,255,.055);border-radius:0 16px 16px 0}
+.prose-spine p{margin:.65rem 0}
+@media(max-width:780px){.bridge-row{grid-template-columns:1fr}.bridge-cell{border-top:1px solid rgba(255,255,255,.06)}.bridge-row.header{display:none}}
+</style>
+<script>
     window.MathJax = {
       tex: {
         inlineMath: [['\\(','\\)'], ['$','$']],
@@ -843,586 +1134,618 @@ body.reader-theme .viz-plot{
       chtml: { scale: 1.02, mtextInheritFont: true }
     };
   </script>
-  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
-
-<button class="mobile-sidebar-toggle" id="mobileSidebarToggle" aria-label="Open section menu" aria-controls="pageSidebar" aria-expanded="false">
-  <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-    <path d="M4 7h16M4 12h16M4 17h16"/>
-  </svg>
+<button aria-controls="pageSidebar" aria-expanded="false" aria-label="Open section menu" class="mobile-sidebar-toggle" id="mobileSidebarToggle">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" viewbox="0 0 24 24">
+<path d="M4 7h16M4 12h16M4 17h16"></path>
+</svg>
 </button>
-<div class="mobile-sidebar-backdrop" id="mobileSidebarBackdrop" hidden></div>
-  <div class="app">
-    <aside class="sidebar" id="pageSidebar">
-      <div class="brand">
-        <svg class="tiny" viewBox="0 0 120 120" aria-hidden="true">
-          <path d="M60 14 Q83 50 106 60 Q83 70 60 106 Q37 70 14 60 Q37 50 60 14Z" fill="none" stroke="currentColor" stroke-width="7"/>
-          <circle cx="60" cy="60" r="11" fill="none" stroke="currentColor" stroke-width="6"/>
-        </svg>
-        <span>DFRC</span>
-      </div>
-
-      <div class="toggle-wrap" role="tablist" aria-label="Mode toggle">
-        <button class="toggle active" data-mode="paper" aria-selected="true">Paper</button>
-        <button class="toggle" data-mode="reader" aria-selected="false">Reader</button>
-      </div>
-
-      <div class="toc-title">Contents</div>
-      <ul class="toc" id="toc">
-        <li><a href="#" data-key="overview">Overview</a></li>
-        <li><a href="#" data-key="intro">Introduction</a></li>
-        <li><a href="#" data-key="primitive">Primitive layer</a></li>
-        <li><a href="#" data-key="budget">Budgeted admissibility</a></li>
-        <li><a href="#" data-key="qubit">Worked qubit example</a></li>
-        <li><a href="#" data-key="homogeneous">Homogeneous Darwinism model</a></li>
-        <li><a href="#" data-key="branch">Branching locus</a></li>
-        <li><a href="#" data-key="hetero">Heterogeneous environments</a></li>
-        <li><a href="#" data-key="commuting">Commuting bottleneck flow</a></li>
-        <li><a href="#" data-key="noncommuting">Modular noncommuting sector</a></li>
-        <li><a href="#" data-key="intrinsic">Intrinsic admissibility</a></li>
-        <li><a href="#" data-key="q">Record-rank</a></li>
-        <li><a href="#" data-key="heat">Heat death</a></li>
-        <li><a href="#" data-key="bigbang">Big Bang-side vanishing</a></li>
-        <li><a href="#" data-key="locality">Emergent locality</a></li>
-        <li><a href="#" data-key="regimes">Cosmological regimes</a></li>
-        <li><a href="#" data-key="cross">Cross-aeon compression</a></li>
-        <li><a href="#" data-key="fals">Falsification</a></li>
-        <li><a href="#" data-key="status">Status</a></li>
-        <li><a href="#" data-key="close">Closing</a></li>
-      </ul>
-    </aside>
-
-    <main class="main">
-      <div class="shell">
-        <section class="hero">
-          <svg class="glyph" viewBox="0 0 120 120" aria-label="Ana's symbolic glyph" role="img" tabindex="0">
-            <title>Ana's symbolic glyph: triangle, echoes, and iris</title>
-            <circle cx="60" cy="60" r="48" fill="none" stroke="var(--glyph-ring-1)" stroke-width="2.2" opacity="0.19"></circle>
-            <circle cx="60" cy="60" r="28" fill="none" stroke="var(--glyph-ring-2)" stroke-width="2.1" opacity="0.30"></circle>
-            <path d="M60 14 Q83 50 106 60 Q83 70 60 106 Q37 70 14 60 Q37 50 60 14Z" fill="none" stroke="var(--glyph-triangle)" stroke-width="2"></path>
-            <circle cx="60" cy="60" r="11" fill="var(--glyph-iris-fill)" stroke="var(--glyph-iris-stroke)" stroke-width="1.6"></circle>
-            <circle cx="60" cy="60" r="17" fill="none" stroke="var(--glyph-pulse)" stroke-width="1.2">
-              <animate attributeName="r" values="17;20;17" dur="2.7s" repeatCount="indefinite"></animate>
-              <animate attributeName="stroke-opacity" values="0.6;0.2;0.6" dur="2.7s" repeatCount="indefinite"></animate>
-            </circle>
-          </svg>
-
-          <h1>Distinguishability-First Relational Cosmology</h1>
-          <div class="subtitle">
-            <button class="hero-mode active" data-mode="paper" aria-pressed="true">paper mode</button>
-            <span class="hero-divider">/</span>
-            <button class="hero-mode" data-mode="reader" aria-pressed="false">reader mode</button>
-          </div>
-          <p class="motto">A research scaffold with a finite-dimensional theorem core, built around the claim that physically admissible distinguishability may be more primitive than the classical structures that emerge from it.</p>
-        </section>
-
-        <section id="paper" class="mode-panel active">
-          <div id="paper-overview" class="panel section">
-            <h2>Abstract</h2>
-            <p>I formulate a distinguishability-first research framework in which the proposed primitive is not spacetime geometry, observer-tagged measurement, or exact branch ontology, but <strong>covariant admissible distinguishability</strong>: the extent to which states can be discriminated by bounded local interactions. The paper currently has two different layers. The first is a finite-dimensional theorem core: restricted measured distinguishability, budgeted admissibility, a worked noisy-qubit readout model, exact accessible-information thresholds in homogeneous and heterogeneous Quantum-Darwinism-style environments, and controlled bottleneck/fixed-point constructions in commuting and finite-dimensional modular sectors. The second is a criterion-level cosmological program: record-rank, heat-death collapse of admissible records, Big-Bang-side factorization failure, emergent locality, and cross-aeon structural compression. Those cosmological claims are not presented here as completed derivations of our universe. They are structured open targets whose value is that they make the speculative parts precise enough to test, repair, or falsify.</p>
-          </div>
-
-          <div id="paper-intro" class="panel section">
-            <h2>1. Introduction</h2>
-            <p>The guiding claim of this framework is that the physically load-bearing primitive may be not geometry, exact branching, or observer-relative measurement, but the structure of which distinctions are physically realizable under bounded interactions. Spacetime locality, classical branches, stable identities, and cosmological cycle structure are then treated as candidate downstream organizations of admissible distinguishability. The finite-dimensional parts of the paper are intended as theorem-level scaffolding; the cosmological parts are explicitly criterion-level and remain open to failure.</p>
-          </div>
-
-          <div id="paper-primitive" class="panel section">
-            <h2>2. Primitive layer</h2>
-            <div class="block def"><div class="label">Definition 2.1</div><p>A resource profile is \(\epsilon=(R,\tau,E,\nu,\delta)\), where \(R\) is a spacetime region, \(\tau\) is a proper-time budget, \(E\) is an interaction-energy or action budget, \(\nu\) is a bandwidth/resolution scale, and \(\delta\) is an allowed readout infidelity.</p></div>
-            <div class="block def"><div class="label">Definition 2.2</div><p>\(\mathcal M_\epsilon(R)\) is the set of instruments physically realizable in \(R\) under those bounds.</p></div>
-            <div class="block def"><div class="label">Definition 2.3</div><div class="equation">\[\mathcal D_\epsilon^{(R)}(\rho,\sigma):=\sup_{M\in\mathcal M_\epsilon(R)}D_{\rm KL}(p_\rho^M\|p_\sigma^M).\]</div></div>
-            <div class="block axiom"><div class="label">Axiom 2.4</div><p><strong>Covariant admissibility.</strong> \(\mathcal M_\epsilon(R)\) is determined by interaction structure and causal support rather than observer tags.</p></div>
-            <div class="block def"><div class="label">Definition 2.5</div><p>\(\rho\sim_\epsilon \sigma\) iff \(\mathcal D_\epsilon^{(R)}(\rho,\sigma)=0\) for all admissible \(R\).</p></div>
-          </div>
-
-          <div id="paper-budget" class="panel section">
-            <h2>3. Budgeted admissibility and composability</h2>
-            <div class="block def"><div class="label">Definition 3.1</div><p>Write the total budget as \(\bar\epsilon=\epsilon_c\oplus \epsilon_m\), where \(\epsilon_c\) is the channel budget and \(\epsilon_m\) is the measurement budget.</p></div>
-            <div class="block def"><div class="label">Definition 3.2</div><p>For the finite-dimensional qubit model, the channel budget is naturally expressed by the action \(K:=\int_0^\tau \|H(t)\|_\infty\,dt\).</p></div>
-            <div class="block def"><div class="label">Definition 3.3</div><div class="equation">\[\mathcal C_{\epsilon_c}=\left\{\Phi(\rho)=\operatorname{Tr}_A\!\big[U(\rho\otimes|0\rangle\!\langle0|_A)U^\dagger\big]:U=\mathcal T e^{-i\int_0^{\tau_c}H(t)dt},\int_0^{\tau_c}\|H(t)\|dt\le K_c\right\}.\]</div></div>
-            <div class="block def"><div class="label">Definition 3.4</div><div class="equation">\[\mathcal D_{\le \bar\epsilon}(\rho,\sigma):=\sup_{\epsilon_c\oplus\epsilon_m\preceq \bar\epsilon}\sup_{\Phi\in\mathcal C_{\epsilon_c}}\sup_{M\in\mathcal M_{\epsilon_m}}D_{\rm KL}(p_{\Phi(\rho)}^M\|p_{\Phi(\sigma)}^M).\]</div></div>
-            <div class="block prop"><div class="label">Proposition 3.5</div><div class="equation">\[\mathcal D_{\le \bar\epsilon}(\Psi(\rho),\Psi(\sigma))\le\mathcal D_{\le \eta\oplus\bar\epsilon}(\rho,\sigma).\]</div><p>for every \(\Psi\in\mathcal C_\eta\).</p></div>
-          </div>
-
-          <div id="paper-qubit" class="panel section">
-            <h2>4. Worked admissibility example: bounded-action qubit measurement</h2>
-            <div class="block def"><div class="label">Definition 4.1</div><div class="equation">\[M_0=(1-\delta_m)|0\rangle\!\langle0|+\delta_m|1\rangle\!\langle1|,\qquad M_1=\delta_m|0\rangle\!\langle0|+(1-\delta_m)|1\rangle\!\langle1|,\qquad \eta:=1-2\delta_m.\]</div></div>
-            <div class="block prop"><div class="label">Proposition 4.2</div><div class="equation">\[\mathcal D_{\epsilon_m}(\rho_z,\sigma_{z'})=d_{\rm bin}\!\left(\frac{1+\eta z}{2}\,\middle\|\,\frac{1+\eta z'}{2}\right),\qquad \mathcal D_{\epsilon_m}(|0\rangle\!\langle0|,|1\rangle\!\langle1|)=\eta\ln\frac{1+\eta}{1-\eta}.\]</div></div>
-            <div class="block cor"><div class="label">Corollary 4.3</div><div class="equation">\[\mathcal D_{\epsilon_m}(|0\rangle\!\langle0|,|1\rangle\!\langle1|)=2\eta^2+O(\eta^4)\qquad (\eta\to0).\]</div></div>
-          </div>
-
-          <div id="paper-homogeneous" class="panel section">
-            <h2>5. Homogeneous Darwinism model</h2>
-            <div class="block def"><div class="label">Definition 5.1</div><div class="equation">\[|\Psi\rangle=\alpha |0\rangle |0\rangle^{\otimes N}+\beta |1\rangle |\phi_\theta\rangle^{\otimes N},\qquad \langle0|\phi_\theta\rangle = c=\cos\theta\in(0,1).\]</div></div>
-            <div class="block prop"><div class="label">Proposition 5.2</div><div class="equation">\[I_{\rm acc}(m)=1-h_2\!\left(\frac12\Big(1-\sqrt{1-c^{2m}}\Big)\right).\]</div></div>
-            <div class="block def"><div class="label">Definition 5.3</div><div class="equation">\[u_\delta:=h_2^{-1}(\delta),\qquad A_\delta:=4u_\delta(1-u_\delta).\]</div></div>
-            <div class="block prop"><div class="label">Proposition 5.5</div><div class="equation">\[m_\delta=\left\lceil\frac{\ln A_\delta}{2\ln c}\right\rceil=\left\lceil\frac{|\ln A_\delta|}{2|\ln c|}\right\rceil.\]</div></div>
-            <div class="block def"><div class="label">Definition 5.6</div><div class="equation">\[\bar R_\delta \approx \frac{N}{m_\delta},\qquad Q_{\epsilon,\delta}^{(N)}=\frac1N\sum_{m=1}^N\Theta\!\big(I_{\rm acc}(m)-(1-\delta)\big).\]</div></div>
-            <div class="block prop"><div class="label">Proposition 5.7</div><div class="equation">\[Q_{\epsilon,\delta}^{(N)}=\frac{N-m_\delta+1}{N}\quad\text{if }m_\delta\le N,\qquad Q_{\epsilon,\delta}^{(N)}=0\quad\text{if }m_\delta>N,\]</div><div class="equation">\[m_\delta\le N\iff c^{2N}\le A_\delta.\]</div></div>
-            <div class="block cor"><div class="label">Corollary 5.8</div><div class="equation">\[c^2\le A_\delta \Rightarrow m_\delta=1,\quad \bar R_\delta\approx N,\quad Q_{\epsilon,\delta}^{(N)}=1.\]</div></div>
-            <div class="block cor"><div class="label">Corollary 5.9</div><div class="equation">\[m_\delta=\frac{|\ln A_\delta|}{1-c^2}+O(1),\qquad \bar R_\delta\sim\frac{N(1-c^2)}{|\ln A_\delta|}.\]</div></div>
-            <div class="block cor"><div class="label">Corollary 5.10</div><div class="equation">\[1-c^2 \gtrsim \frac{|\ln A_\delta|}{N}\]</div><p>is the weak-imprinting envelope of the exact threshold.</p></div>
-            <div class="block cor"><div class="label">Corollary 5.11</div><div class="equation">\[F(\Psi_0,\Psi_1)=|\langle\Psi_0|\Psi_1\rangle|^2=c^{2N},\qquad F(\Psi_0,\Psi_1)\le A_\delta.\]</div></div>
-            <div class="block cor"><div class="label">Corollary 5.12</div><div class="equation">\[D_B^2(\Psi_0,\Psi_1)=2(1-c^N),\qquad D_B^2(\Psi_0,\Psi_1)\ge 2(1-\sqrt{A_\delta}).\]</div></div>
-          </div>
-
-          <div id="paper-branch" class="panel section">
-            <h2>6. Branching locus and admissibility-sensitive branch distance</h2>
-            <div class="block def"><div class="label">Definition 6.1</div><p>The branching locus \(\mathfrak B_{\epsilon,\delta,\kappa}^{(N)}\) consists of effectively classical-branching states whose fragment records exceed threshold and whose variance across relevant fragments is bounded.</p></div>
-            <div class="block def"><div class="label">Definition 6.2</div><div class="equation">\[d_{\rm br}^\epsilon(\rho):=\inf_{\omega\in\mathfrak B_{\epsilon,\delta,\kappa}^{(N)}}\mathcal D_\epsilon(\rho,\omega).\]</div></div>
-            <div class="block repair"><div class="label">Repair status</div><p>The scaling formulas below are currently best read as comparison divergences to a dephased candidate branch state. To claim true distance-to-locus, the manuscript must still prove that the comparison state lies in \(\mathfrak B\) and that no closer branch-locus element exists.</p></div>
-            <div class="block prop"><div class="label">Comparison scaling 6.3</div><div class="equation">\[D_{\rm comp}^{\epsilon,\mathrm{joint}}(m)=\frac12 c^{2(N-m)}+O(c^{4(N-m)}).\]</div></div>
-            <div class="block prop"><div class="label">Comparison scaling 6.4</div><div class="equation">\[D_{\rm comp}^{\epsilon,S\text{-only}}=\frac12 c^{2N}+O(c^{4N}).\]</div></div>
-          </div>
-
-          <div id="paper-hetero" class="panel section">
-            <h2>7. Heterogeneous environments</h2>
-            <div class="block def"><div class="label">Definition 7.1</div><div class="equation">\[C_F:=\prod_{i\in F} c_i\]</div></div>
-            <div class="block prop"><div class="label">Proposition 7.2</div><div class="equation">\[I_{\rm acc}(F)\ge 1-\delta\iff C_F^2\le A_\delta.\]</div></div>
-            <div class="block def"><div class="label">Definition 7.3</div><div class="equation">\[c_{(1)}\le c_{(2)}\le \cdots \le c_{(N)}.\]</div></div>
-            <div class="block prop"><div class="label">Proposition 7.4</div><div class="equation">\[m_\delta^{\rm best}:=\min\left\{k:\ \prod_{i=1}^k c_{(i)}^2\le A_\delta\right\}.\]</div><p>This is the smallest size for which <em>some</em> fragment works.</p></div>
-            <div class="block prop"><div class="label">Proposition 7.5</div><div class="equation">\[m_\delta^{\rm worst}:=\min\left\{k:\ \prod_{i=N-k+1}^{N} c_{(i)}^2\le A_\delta\right\}.\]</div><p>This is the smallest size for which <em>every</em> fragment works.</p></div>
-            <div class="block cor"><div class="label">Corollary 7.6</div><div class="equation">\[m_\delta^{\rm best}\le m_\delta^{\rm worst}.\]</div><p>The interval between them is the partial-consensus window.</p></div>
-            <div class="block def"><div class="label">Definition 7.7</div><div class="equation">\[C_\delta^{\rm het}(m):=1-\frac{\operatorname{Var}_{|F|=m} I_{\rm acc}(F)}{H(X)^2}.\]</div></div>
-            <div class="block def"><div class="label">Definition 7.8</div><div class="equation">\[Q_{\epsilon,\delta}^{\rm frac,(N)}:=\frac1N\sum_{m=1}^N q_m,\qquad q_m:=\frac{1}{\binom{N}{m}}\sum_{|F|=m}\Theta\!\big(I_{\rm acc}(F)-(1-\delta)\big).\]</div></div>
-            <div class="block cor"><div class="label">Corollary 7.9</div><div class="equation">\[Q_{\epsilon,\delta}^{\rm worst,(N)}\le Q_{\epsilon,\delta}^{\rm frac,(N)}\le Q_{\epsilon,\delta}^{\rm best,(N)}.\]</div></div>
-            <div class="block cor"><div class="label">Corollary 7.10</div><p>In the homogeneous limit, all three heterogeneous order parameters collapse to the original homogeneous \(Q_{\epsilon,\delta}^{(N)}\).</p></div>
-          </div>
-
-          <div id="paper-commuting" class="panel section">
-            <h2>8. Admissibility-coupled bottleneck flow: commuting sector</h2>
-            <div class="block def"><div class="label">Definition 8.1</div><div class="equation">\[X=(S,R),\qquad Y=f(S).\]</div></div>
-            <div class="block axiom"><div class="label">Convention 8.2</div><p>\(f\) acts as the identity on its image, so \(\Pi_Y^2=\Pi_Y\).</p></div>
-            <div class="block def"><div class="label">Definition 8.3</div><div class="equation">\[(\Pi)_*\mathfrak C:=\left\{\Psi\ \middle|\ \exists \Phi\in\mathfrak C\text{ such that }\Pi\circ\Phi=\Psi\circ\Pi\right\}.\]</div></div>
-            <div class="block prop"><div class="label">Proposition 8.4</div><p>Under the iterated flow \(X\to S\to Y\to Y\cdots\), the minimal sufficient statistic \(Y\) is a nontrivial absorbing fixed point.</p></div>
-          </div>
-
-          <div id="paper-noncommuting" class="panel section">
-            <h2>9. Noncommuting extension in the <span class="tooltip" tabindex="0">modularly admissible sector<span class="tooltip-text" role="tooltip">The restricted noncommuting regime where the relevant operator-algebraic conditional expectations actually exist and can be used safely.</span></span></h2>
-            <div class="block def"><div class="label">Definition 9.1</div><p>Let \(\mathcal A\) be a finite-dimensional von Neumann algebra with faithful state \(\omega\), and let \(\mathcal B_1\supseteq \mathcal B_2\supseteq\cdots\) be a descending chain of \(\sigma_t^\omega\)-invariant subalgebras.</p></div>
-            <div class="block prop"><div class="label">Proposition 9.2</div><p>In finite dimension, the chain stabilizes after finitely many steps at \(\mathcal B_\infty\), and the associated \(\omega\)-preserving conditional expectations converge to an idempotent \(E_\infty\) with fixed-point algebra \(\mathcal B_\infty\).</p></div>
-            <div class="block prop"><div class="label">Proposition 9.3</div><div class="equation">\[X=E_\infty(X)+\sum_{n\ge1}(E_n-E_{n+1})(X)+(X-E_1(X)).\]</div></div>
-          </div>
-
-          <div id="paper-intrinsic" class="panel section">
-            <h2>10. Intrinsic admissibility and the embedded observer principle</h2>
-            <div class="block axiom"><div class="label">Axiom 10.1</div><p>Each macrostate \(\rho\) comes with an intrinsic admissibility profile \(\epsilon_{\rm int}(\rho)\) whose instruments must be buildable from the same macrostate family.</p></div>
-            <div class="block axiom"><div class="label">Axiom 10.2</div><p>\(\epsilon_{\rm int}\) measures counterfactual admissibility: what the state could support as measurement structure, not only what is actually performed.</p></div>
-            <div class="block axiom"><div class="label">Axiom 10.3</div><p>Intrinsic admissibility evolves component-wise continuously:</p><div class="equation">\[|R_{\rm int}(\Lambda\rho)-R_{\rm int}(\rho)|\le L_R\|\Lambda\rho-\rho\|_1,\]</div><div class="equation">\[|\tau_{\rm int}(\Lambda\rho)-\tau_{\rm int}(\rho)|\le L_\tau\|\Lambda\rho-\rho\|_1,\]</div><div class="equation">\[|K_{\rm int}(\Lambda\rho)-K_{\rm int}(\rho)|\le L_K\|\Lambda\rho-\rho\|_1,\]</div><div class="equation">\[|\nu_{\rm int}(\Lambda\rho)-\nu_{\rm int}(\rho)|\le L_\nu\|\Lambda\rho-\rho\|_1,\]</div><div class="equation">\[|\delta_{\rm int}(\Lambda\rho)-\delta_{\rm int}(\rho)|\le L_\delta\|\Lambda\rho-\rho\|_1.\]</div></div>
-          </div>
-
-          <div id="paper-q" class="panel section">
-            <h2>11. Cosmological record-rank</h2>
-            <div class="block def"><div class="label">Definition 11.1</div><div class="equation">\[Q_{\epsilon,\delta}(\rho):=\sup_{X\in\mathsf O_\epsilon}\int_0^1 df\,\Theta\!\Big(\bar I_{\rm acc}^\epsilon(X:F_f)-(1-\delta)H(X)\Big).\]</div><p>This is a DFRC record-rank diagnostic, not identical to standard Quantum Darwinism redundancy. In the repaired notation it should be separated from fragment threshold \(f_\delta\), redundancy \(R_\delta\), and consensus variance.</p></div>
-          </div>
-
-          <div id="paper-heat" class="panel section">
-            <h2>12. Heat death</h2>
-            <div class="block prop"><div class="label">Proposition 12.1</div><p>If a finite-dimensional CPTP semigroup relaxes to a unique product fixed point, and the observable class excludes trivial zero-entropy observables by an entropy-floor condition, then \(Q_{\epsilon,\delta}(\Lambda_t(\rho))\to0\). Infinite-dimensional or cosmological versions require energy-constrained continuity and causal-patch/local-algebra hypotheses.</p></div>
-            <div class="block cor"><div class="label">Corollary 12.2</div><p>If additionally \(K_{\rm int}\to0\) and \(\delta_{\rm int}\to\frac12\), then \(Q_\delta^{\rm int}\to0\).</p></div>
-          </div>
-
-          <div id="paper-bigbang" class="panel section">
-            <h2>13. Big Bang-side vanishing through factorization collapse</h2>
-            <div class="block def"><div class="label">Definition 13.1</div><p>The intrinsic split scale \(\lambda_{\rm split}(\rho)\) is the minimal thickening scale needed for type-I interpolation between local algebras.</p></div>
-            <div class="block def"><div class="label">Definition 13.2</div><div class="equation">\[\Xi(\rho):=\frac{R_{\rm int}(\rho)}{\lambda_{\rm split}(\rho)}.\]</div></div>
-            <div class="block prop"><div class="label">Criterion 13.3</div><p>If \(\Xi(\rho_t)\to0\) as \(t\to0^+\), and if admissible fragments require an AQFT split inclusion inside the intrinsic budget, then admissible fragment families become trivial and \(Q_\delta^{\rm int}(\rho_t)\to0\). This is a criterion theorem pending a concrete early-universe split-scale model.</p></div>
-          </div>
-
-          <div id="paper-locality" class="panel section">
-            <h2>14. Emergent locality from admissible distinguishability neighborhoods</h2>
-            <div class="block def"><div class="label">Definition 14.1</div><div class="equation">\[w_{ij}^{(\epsilon)}:=\sup_{M_i\in\mathcal M_{\epsilon,i},\,M_j\in\mathcal M_{\epsilon,j}}I(M_i:M_j).\]</div></div>
-            <div class="block def"><div class="label">Definition 14.2</div><div class="equation">\[d_{ij}^{(\epsilon)}:=-\xi \log\frac{w_{ij}^{(\epsilon)}}{w_*}.\]</div></div>
-            <div class="block def"><div class="label">Definition 14.3</div><p>Locality emerges at scale \(\epsilon\) if the weighted graph of admissible edge weights admits a low-distortion embedding into a low-dimensional metric manifold and admissible dynamics are approximately banded in that induced metric.</p></div>
-          </div>
-
-          <div id="paper-regimes" class="panel section">
-            <h2>15. Intrinsic admissibility in cosmological regimes</h2>
-            <div class="block def"><div class="label">Definition 15.1</div><div class="equation">\[\epsilon_{\rm int}(\rho)=(R_{\rm int},\tau_{\rm int},K_{\rm int},\nu_{\rm int},\delta_{\rm int}).\]</div></div>
-            <div class="block remark"><div class="label">Remark 15.2</div><p>Reheating is the first natural epoch where ordinary detector-supporting matter sectors become broadly available, making it the first clear record-bearing regime in ordinary cosmological terms.</p></div>
-            <div class="block remark"><div class="label">Remark 15.3</div><p>In a late de Sitter-like regime, usable non-equilibrium budgets are expected to shrink while intrinsic readout infidelity rises.</p></div>
-          </div>
-
-          <div id="paper-cross" class="panel section">
-            <h2>16. Cross-aeon compression and structural inheritance</h2>
-            <div class="block def"><div class="label">Definition 16.1</div><div class="equation">\[\mathcal T_B(U):=\{\,U(p)\ :\ |p|\le B\,\}.\]</div></div>
-            <div class="block def"><div class="label">Definition 16.2</div><div class="equation">\[\mathcal E_{\beta,\epsilon}^{\star,\mathcal T_B}=\arg\min_{\mathcal E\in\mathfrak C_\epsilon,\ \mathrm{codom}(\mathcal E)\subseteq\mathcal T_B}\Big[I(X;Z)-\beta I(Z;Y)\Big],\qquad Z^*=\mathcal E_{\beta,\epsilon}^{\star,\mathcal T_B}(X).\]</div></div>
-            <div class="block def"><div class="label">Definition 16.3</div><p>Reconstruction requires three distinct objects: \(\mathcal F\), \(Z^*\), and \(\mathcal I\).</p></div>
-            <div class="block def"><div class="label">Definition 16.4</div><div class="equation">\[\mathrm{Score}=L(\mathcal F)+L(\mathcal I)+L(Z^*)+L(\Delta c\mid\mathcal N).\]</div></div>
-          </div>
-
-          <div id="paper-fals" class="panel section">
-            <h2>17. Falsification criteria</h2>
-            <div class="table-wrap">
-              <table>
-                <thead><tr><th>Criterion</th><th>Failure condition</th></tr></thead>
-                <tbody>
-                  <tr><td>Primitive failure</td><td>\(\mathcal M_\epsilon\) cannot be built from interaction bounds without observer dependence.</td></tr>
-                  <tr><td>No branching locus</td><td>No stable \(\mathfrak B_{\epsilon,\delta,\kappa}\) exists.</td></tr>
-                  <tr><td>No nontrivial seed</td><td>Compression yields only trivial fixed points or unbounded cost.</td></tr>
-                  <tr><td>Boundary failure</td><td>Neither late-time relaxation nor early-time factorization collapse drives \(Q^{\rm int}\to0\).</td></tr>
-                  <tr><td>Residual non-identifiability</td><td>The residual vector is indistinguishable from preregistered noise models.</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div id="paper-status" class="panel section">
-            <h2>18. Proven results, constructed objects, and open targets</h2>
-            <ul>
-              <li>Budgeted data processing, conditional on explicit resource-composition closure.</li>
-              <li>Explicit noisy-qubit distinguishability.</li>
-              <li>Exact homogeneous fragment threshold and finite-\(N\) phase boundary in a pure product-fragment toy model.</li>
-              <li>Fidelity/Bures reformulation in the pure-state toy setting.</li>
-              <li>Branch comparison-divergence scalings; true distance-to-locus remains a repair target.</li>
-              <li>Heterogeneous best/worst thresholds and fractional record diagnostic.</li>
-              <li>Commuting-sector bottleneck fixed point.</li>
-              <li>Finite-dimensional modular fixed point under stated conditional-expectation assumptions.</li>
-              <li>Finite-dimensional heat-death result with entropy-floor repair.</li>
-              <li>Criterion for Big-Bang-side vanishing via AQFT split/factorization collapse, pending physical instantiation.</li>
-            </ul>
-          </div>
-
-          <div id="paper-close" class="panel section">
-            <h2>19. Closing</h2>
-            <p>This draft now has the shape of a serious research program rather than a finished cosmology. The primitive is explicit enough to attack, the toy models yield exact thresholds and a finite-\(N\) phase diagram, the heterogeneous section gives a route toward imperfect records, and the modular sector identifies a controlled noncommuting domain. The cosmological and cross-aeon material is still speculative, but it has been narrowed into criterion statements, open theorem targets, and falsification conditions rather than left as unconstrained narrative.</p>
-          </div>
-        </section>
-
-        
-
-<section id="reader" class="mode-panel">
-  <div class="reader-flow">
-    <div id="reader-overview" class="reader-section section">
-      <h2>Overview</h2>
-      <p class="reader-lede">This theory starts from a different place than most cosmology. Instead of asking first what the universe is made of, it asks what differences the universe can physically detect, preserve, and pass along. The framework is a disciplined speculative program with a calculable quantum-information core and a bolder question: whether classical reality, locality, and cosmic boundary behavior can be organized around record-making capacity.</p>
-      <div class="status-note"><strong>Status:</strong> finite-dimensional theorem core + open cosmological extension</div>
-      <p>
-        That matters because many of the hardest problems in physics appear exactly where ordinary classical description stops working:
-        measurement, branching, objectivity, the role of observers, and the relation between the beginning and end of cosmic history.
-        The framework says these may become easier to organize if we stop treating the familiar world as basic and instead ask how it is produced from
-        <span class="tooltip" tabindex="0">distinguishability<span class="tooltip-text" role="tooltip">How well two physical situations can actually be told apart by the interactions and measurement resources available in that setting.</span></span>.
-      </p>
-      <p>
-        The core picture is simple enough to say in everyday language:
-        a fact becomes <span class="call">real in the strong practical sense</span> when many parts of the world can independently carry and stabilize that fact.
-        If that copying process is weak, the world stays more quantum and less classically definite.
-        If that copying process collapses, then the ordinary world of stable shared facts dissolves with it.
-      </p>
-      <div class="glossary">
-        <div class="term"><strong>Distinguishability</strong>How well two physical situations can actually be told apart under real physical limits.</div>
-        <div class="term"><strong>Admissibility</strong>Which measurements and interventions count because they can actually be carried out in the regime being studied.</div>
-        <div class="term"><strong>Branching</strong>The growth of many stable records of the same coarse information, rather than a mysterious exact split.</div>
-        <div class="term"><strong>Record-rank \(Q\)</strong>A DFRC diagnostic for accessible record structure. It should be kept distinct from standard Quantum Darwinism redundancy.</div>
-      </div>
-    </div>
-
-    <div id="reader-intro" class="reader-section section">
-      <h2>1. Introduction</h2>
-      <p>
-        Most theories begin by choosing some basic furniture of reality: particles, fields, wavefunctions, spacetime, or something like them.
-        This framework does not deny those things matter. What it questions is whether they are the best <span class="subemph">starting point</span>
-        for understanding why the universe appears classical, local, and history-bearing from the inside.
-      </p>
-      <p>
-        The theory instead begins with a practical physical question:
-        when can one state of the world be told apart from another by processes the universe itself can support?
-        That is why <span class="tooltip" tabindex="0">admissibility<span class="tooltip-text" role="tooltip">The rule that only physically realizable measurements and interventions count, not every measurement that is mathematically imaginable.</span></span> comes before branches,
-        before identity, and before cycle structure. The framework is strongest where that idea is turned into finite-dimensional calculations, and most speculative where it is projected onto cosmology.
-      </p>
-      <p>
-        This is not a claim about human knowledge in particular. A detector, a crystal defect, a biological memory, a radiation imprint, or a field fragment
-        can all count as carriers of physical difference if they preserve and transmit it. The framework is therefore about what the world can do with distinctions,
-        not about what people happen to know.
-      </p>
-    </div>
-
-    <div id="reader-primitive" class="reader-section section">
-      <h2>2. Primitive layer</h2>
-      <p>
+<div class="mobile-sidebar-backdrop" hidden="" id="mobileSidebarBackdrop"></div>
+<div class="app">
+<aside class="sidebar" id="pageSidebar">
+<div class="brand">
+<svg aria-hidden="true" class="tiny" viewbox="0 0 120 120">
+<path d="M60 14 Q83 50 106 60 Q83 70 60 106 Q37 70 14 60 Q37 50 60 14Z" fill="none" stroke="currentColor" stroke-width="7"></path>
+<circle cx="60" cy="60" fill="none" r="11" stroke="currentColor" stroke-width="6"></circle>
+</svg>
+<span>DFRC</span>
+</div>
+<div aria-label="Mode toggle" class="toggle-wrap" role="tablist">
+<button aria-selected="true" class="toggle active" data-mode="paper">Paper</button>
+<button aria-selected="false" class="toggle" data-mode="reader">Reader</button>
+</div>
+<div class="toc-title">Contents</div>
+<ul class="toc" id="toc">
+<li><a data-key="overview" href="#">Overview</a></li>
+<li><a data-key="intro" href="#">Introduction</a></li>
+<li><a data-key="primitive" href="#">Primitive layer</a></li>
+<li><a data-key="budget" href="#">Budgeted admissibility</a></li>
+<li><a data-key="qubit" href="#">Worked qubit example</a></li>
+<li><a data-key="homogeneous" href="#">Einselection + Darwinism</a></li>
+<li><a data-key="branch" href="#">Branching locus</a></li>
+<li><a data-key="hetero" href="#">Heterogeneous environments</a></li>
+<li><a data-key="commuting" href="#">RG bottleneck flow</a></li>
+<li><a data-key="noncommuting" href="#">Modular noncommuting sector</a></li>
+<li><a data-key="intrinsic" href="#">Intrinsic admissibility</a></li>
+<li><a data-key="q" href="#">Record-rank</a></li>
+<li><a data-key="heat" href="#">Heat death</a></li>
+<li><a data-key="bigbang" href="#">Big Bang-side vanishing</a></li>
+<li><a data-key="locality" href="#">Emergent locality</a></li>
+<li><a data-key="regimes" href="#">Cosmological regimes</a></li>
+<li><a data-key="cross" href="#">Boundary kernel</a></li>
+<li><a data-key="fals" href="#">Falsification</a></li>
+<li><a data-key="status" href="#">Status</a></li>
+<li><a data-key="close" href="#">Closing</a></li>
+</ul>
+</aside>
+<main class="main">
+<div class="shell">
+<section class="hero">
+<svg aria-label="Ana's symbolic glyph" class="glyph" role="img" tabindex="0" viewbox="0 0 120 120">
+<title>Ana's symbolic glyph: triangle, echoes, and iris</title>
+<circle cx="60" cy="60" fill="none" opacity="0.19" r="48" stroke="var(--glyph-ring-1)" stroke-width="2.2"></circle>
+<circle cx="60" cy="60" fill="none" opacity="0.30" r="28" stroke="var(--glyph-ring-2)" stroke-width="2.1"></circle>
+<path d="M60 14 Q83 50 106 60 Q83 70 60 106 Q37 70 14 60 Q37 50 60 14Z" fill="none" stroke="var(--glyph-triangle)" stroke-width="2"></path>
+<circle cx="60" cy="60" fill="var(--glyph-iris-fill)" r="11" stroke="var(--glyph-iris-stroke)" stroke-width="1.6"></circle>
+<circle cx="60" cy="60" fill="none" r="17" stroke="var(--glyph-pulse)" stroke-width="1.2">
+<animate attributename="r" dur="2.7s" repeatcount="indefinite" values="17;20;17"></animate>
+<animate attributename="stroke-opacity" dur="2.7s" repeatcount="indefinite" values="0.6;0.2;0.6"></animate>
+</circle>
+</svg>
+<h1>Distinguishability-First Relational Cosmology</h1>
+<div class="subtitle">
+<button aria-pressed="true" class="hero-mode active" data-mode="paper">paper mode</button>
+<span class="hero-divider">/</span>
+<button aria-pressed="false" class="hero-mode" data-mode="reader">reader mode</button>
+</div>
+<p class="motto">A research scaffold with a finite-dimensional theorem core, using admissible distinguishability, einselection, redundant records, and relevance-preserving compression to study classicality, identity, locality, and cosmological boundary behavior.</p>
+</section>
+<section class="mode-panel active" id="paper">
+<div class="panel section" id="paper-overview">
+<h2>Abstract</h2>
+<p>I formulate a distinguishability-first research framework in which the proposed primitive is not spacetime geometry, observer-tagged measurement, or exact branch ontology, but <strong>covariant admissible distinguishability</strong>: the extent to which states can be discriminated by bounded local interactions. The paper has two layers. The first is a finite-dimensional theorem core: restricted measured distinguishability, budgeted admissibility, a worked noisy-qubit readout model, exact accessible-information thresholds in homogeneous and heterogeneous Quantum-Darwinism-style environments, branch-distance diagnostics, and controlled bottleneck/fixed-point constructions in commuting and finite-dimensional modular sectors. The second is a criterion-level cosmological program: record-rank, heat-death collapse of admissible records, Big-Bang-side factorization failure, emergent locality, black-hole boundary analogues, and cross-aeon structural compression. The research update made here is to state the mechanism stack explicitly: admissible interactions make distinctions available; <strong>einselection</strong> selects stable pointer structures; <strong>Quantum Darwinism</strong> proliferates redundant records; and relevance-preserving bottleneck flow is interpreted in RG language as a coupled flow of content and admissibility. The cosmological claims remain open targets, not completed derivations of our universe.</p>
+</div>
+<div class="panel section" id="paper-intro">
+<h2>1. Introduction</h2>
+<p>The guiding claim of this framework is that the physically load-bearing primitive may be not geometry, exact branching, or observer-relative measurement, but the structure of which distinctions are physically realizable under bounded interactions. Spacetime locality, classical branches, stable identities, and cosmological cycle structure are then treated as candidate downstream organizations of admissible distinguishability. The finite-dimensional parts of the paper are intended as theorem-level scaffolding; the cosmological parts are explicitly criterion-level and remain open to failure.</p>
+<div class="block remark"><div class="label">Research integration</div><p>The framework should be read as a mechanism stack rather than a single metaphor. Decoherence suppresses interference; einselection identifies which states remain stable under environmental monitoring; Quantum Darwinism explains how those stable states become redundantly available in environment fragments; and the bottleneck/RG layer asks which structures remain relevant when inaccessible detail is quotiented away. This separation prevents the theory from overloading any one concept.</p></div>
+</div>
+<div class="panel section" id="paper-primitive">
+<h2>2. Primitive layer</h2>
+<div class="block def"><div class="label">Definition 2.1</div><p>A resource profile is \(\epsilon=(R,\tau,E,\nu,\delta)\), where \(R\) is a spacetime region, \(\tau\) is a proper-time budget, \(E\) is an interaction-energy or action budget, \(\nu\) is a bandwidth/resolution scale, and \(\delta\) is an allowed readout infidelity.</p></div>
+<div class="block def"><div class="label">Definition 2.2</div><p>\(\mathcal M_\epsilon(R)\) is the set of instruments physically realizable in \(R\) under those bounds.</p></div>
+<div class="block def"><div class="label">Definition 2.3</div><div class="equation">\[\mathcal D_\epsilon^{(R)}(\rho,\sigma):=\sup_{M\in\mathcal M_\epsilon(R)}D_{\rm KL}(p_\rho^M\|p_\sigma^M).\]</div></div>
+<div class="block axiom"><div class="label">Axiom 2.4</div><p><strong>Covariant admissibility.</strong> \(\mathcal M_\epsilon(R)\) is determined by interaction structure and causal support rather than observer tags.</p></div>
+<div class="block def"><div class="label">Definition 2.5</div><p>\(\rho\sim_\epsilon \sigma\) iff \(\mathcal D_\epsilon^{(R)}(\rho,\sigma)=0\) for all admissible \(R\).</p></div>
+</div>
+<div class="panel section" id="paper-budget">
+<h2>3. Budgeted admissibility and composability</h2>
+<div class="block def"><div class="label">Definition 3.1</div><p>Write the total budget as \(\bar\epsilon=\epsilon_c\oplus \epsilon_m\), where \(\epsilon_c\) is the channel budget and \(\epsilon_m\) is the measurement budget.</p></div>
+<div class="block def"><div class="label">Definition 3.2</div><p>For the finite-dimensional qubit model, the channel budget is naturally expressed by the action \(K:=\int_0^\tau \|H(t)\|_\infty\,dt\).</p></div>
+<div class="block def"><div class="label">Definition 3.3</div><div class="equation">\[\mathcal C_{\epsilon_c}=\left\{\Phi(\rho)=\operatorname{Tr}_A\!\big[U(\rho\otimes|0\rangle\!\langle0|_A)U^\dagger\big]:U=\mathcal T e^{-i\int_0^{\tau_c}H(t)dt},\int_0^{\tau_c}\|H(t)\|dt\le K_c\right\}.\]</div></div>
+<div class="block def"><div class="label">Definition 3.4</div><div class="equation">\[\mathcal D_{\le \bar\epsilon}(\rho,\sigma):=\sup_{\epsilon_c\oplus\epsilon_m\preceq \bar\epsilon}\sup_{\Phi\in\mathcal C_{\epsilon_c}}\sup_{M\in\mathcal M_{\epsilon_m}}D_{\rm KL}(p_{\Phi(\rho)}^M\|p_{\Phi(\sigma)}^M).\]</div></div>
+<div class="block prop"><div class="label">Proposition 3.5</div><div class="equation">\[\mathcal D_{\le \bar\epsilon}(\Psi(\rho),\Psi(\sigma))\le\mathcal D_{\le \eta\oplus\bar\epsilon}(\rho,\sigma).\]</div><p>for every \(\Psi\in\mathcal C_\eta\).</p></div>
+<div class="block remark"><div class="label">Interpretive role</div><p>The budget split is what keeps the primitive from becoming an idealized all-POVM distinguishability. The channel budget and measurement budget are part of the theory's physical content: a distinction counts only to the extent that it survives under operations actually available to the regime. This is also what later makes an admissibility-coupled RG flow possible; after a quotient, the future channel class must be pushed forward rather than allowed to recover deleted detail for free.</p></div>
+</div>
+<div class="panel section" id="paper-qubit">
+<h2>4. Worked admissibility example: bounded-action qubit measurement</h2>
+<div class="block def"><div class="label">Definition 4.1</div><div class="equation">\[M_0=(1-\delta_m)|0\rangle\!\langle0|+\delta_m|1\rangle\!\langle1|,\qquad M_1=\delta_m|0\rangle\!\langle0|+(1-\delta_m)|1\rangle\!\langle1|,\qquad \eta:=1-2\delta_m.\]</div></div>
+<div class="block prop"><div class="label">Proposition 4.2</div><div class="equation">\[\mathcal D_{\epsilon_m}(\rho_z,\sigma_{z'})=d_{\rm bin}\!\left(\frac{1+\eta z}{2}\,\middle\|\,\frac{1+\eta z'}{2}\right),\qquad \mathcal D_{\epsilon_m}(|0\rangle\!\langle0|,|1\rangle\!\langle1|)=\eta\ln\frac{1+\eta}{1-\eta}.\]</div></div>
+<div class="block cor"><div class="label">Corollary 4.3</div><div class="equation">\[\mathcal D_{\epsilon_m}(|0\rangle\!\langle0|,|1\rangle\!\langle1|)=2\eta^2+O(\eta^4)\qquad (\eta\to0).\]</div></div>
+</div>
+<div class="panel section" id="paper-homogeneous">
+<h2>5. Einselection and homogeneous Quantum Darwinism model</h2>
+<div class="block remark"><div class="label">Mechanism placement</div><p>This section should be read as a toy model of the einselection/Quantum-Darwinism stack. Einselection is the stability-selection step: the interaction Hamiltonian privileges a pointer variable whose alternatives survive environmental monitoring. Quantum Darwinism is the replication step: many environment fragments acquire accessible information about that pointer variable. The accessible-information threshold below is therefore not decorative; it is the point where a stable pointer distinction becomes recoverable from fragments as a public record.</p></div>
+<div class="block def"><div class="label">Definition 5.1</div><div class="equation">\[|\Psi\rangle=\alpha |0\rangle |0\rangle^{\otimes N}+\beta |1\rangle |\phi_\theta\rangle^{\otimes N},\qquad \langle0|\phi_\theta\rangle = c=\cos\theta\in(0,1).\]</div></div>
+<div class="block prop"><div class="label">Proposition 5.2</div><div class="equation">\[I_{\rm acc}(m)=1-h_2\!\left(\frac12\Big(1-\sqrt{1-c^{2m}}\Big)\right).\]</div></div>
+<div class="block def"><div class="label">Definition 5.3</div><div class="equation">\[u_\delta:=h_2^{-1}(\delta),\qquad A_\delta:=4u_\delta(1-u_\delta).\]</div></div>
+<div class="block prop"><div class="label">Proposition 5.5</div><div class="equation">\[m_\delta=\left\lceil\frac{\ln A_\delta}{2\ln c}\right\rceil=\left\lceil\frac{|\ln A_\delta|}{2|\ln c|}\right\rceil.\]</div></div>
+<div class="block def"><div class="label">Definition 5.6</div><div class="equation">\[\bar R_\delta \approx \frac{N}{m_\delta},\qquad Q_{\epsilon,\delta}^{(N)}=\frac1N\sum_{m=1}^N\Theta\!\big(I_{\rm acc}(m)-(1-\delta)\big).\]</div></div>
+<div class="block prop"><div class="label">Proposition 5.7</div><div class="equation">\[Q_{\epsilon,\delta}^{(N)}=\frac{N-m_\delta+1}{N}\quad\text{if }m_\delta\le N,\qquad Q_{\epsilon,\delta}^{(N)}=0\quad\text{if }m_\delta&gt;N,\]</div><div class="equation">\[m_\delta\le N\iff c^{2N}\le A_\delta.\]</div></div>
+<div class="block cor"><div class="label">Corollary 5.8</div><div class="equation">\[c^2\le A_\delta \Rightarrow m_\delta=1,\quad \bar R_\delta\approx N,\quad Q_{\epsilon,\delta}^{(N)}=1.\]</div></div>
+<div class="block cor"><div class="label">Corollary 5.9</div><div class="equation">\[m_\delta=\frac{|\ln A_\delta|}{1-c^2}+O(1),\qquad \bar R_\delta\sim\frac{N(1-c^2)}{|\ln A_\delta|}.\]</div></div>
+<div class="block cor"><div class="label">Corollary 5.10</div><div class="equation">\[1-c^2 \gtrsim \frac{|\ln A_\delta|}{N}\]</div><p>is the weak-imprinting envelope of the exact threshold.</p></div>
+<div class="block cor"><div class="label">Corollary 5.11</div><div class="equation">\[F(\Psi_0,\Psi_1)=|\langle\Psi_0|\Psi_1\rangle|^2=c^{2N},\qquad F(\Psi_0,\Psi_1)\le A_\delta.\]</div></div>
+<div class="block cor"><div class="label">Corollary 5.12</div><div class="equation">\[D_B^2(\Psi_0,\Psi_1)=2(1-c^N),\qquad D_B^2(\Psi_0,\Psi_1)\ge 2(1-\sqrt{A_\delta}).\]</div></div>
+</div>
+<div class="panel section" id="paper-branch">
+<h2>6. Branching locus and admissibility-sensitive branch distance</h2>
+<div class="block def"><div class="label">Definition 6.1</div><p>The branching locus \(\mathfrak B_{\epsilon,\delta,\kappa}^{(N)}\) consists of effectively classical-branching states whose fragment records exceed threshold and whose variance across relevant fragments is bounded.</p></div>
+<div class="block def"><div class="label">Definition 6.2</div><div class="equation">\[d_{\rm br}^\epsilon(\rho):=\inf_{\omega\in\mathfrak B_{\epsilon,\delta,\kappa}^{(N)}}\mathcal D_\epsilon(\rho,\omega).\]</div></div>
+<div class="block repair"><div class="label">Technical caveat</div><p>The scaling formulas below are currently best read as comparison divergences to a dephased candidate branch state. To claim true distance-to-locus, the manuscript must still prove that the comparison state lies in \(\mathfrak B\) and that no closer branch-locus element exists.</p></div>
+<div class="block prop"><div class="label">Comparison scaling 6.3</div><div class="equation">\[D_{\rm comp}^{\epsilon,\mathrm{joint}}(m)=\frac12 c^{2(N-m)}+O(c^{4(N-m)}).\]</div></div>
+<div class="block prop"><div class="label">Comparison scaling 6.4</div><div class="equation">\[D_{\rm comp}^{\epsilon,S\text{-only}}=\frac12 c^{2N}+O(c^{4N}).\]</div></div>
+</div>
+<div class="panel section" id="paper-hetero">
+<h2>7. Heterogeneous environments</h2>
+<div class="block def"><div class="label">Definition 7.1</div><div class="equation">\[C_F:=\prod_{i\in F} c_i\]</div></div>
+<div class="block prop"><div class="label">Proposition 7.2</div><div class="equation">\[I_{\rm acc}(F)\ge 1-\delta\iff C_F^2\le A_\delta.\]</div></div>
+<div class="block def"><div class="label">Definition 7.3</div><div class="equation">\[c_{(1)}\le c_{(2)}\le \cdots \le c_{(N)}.\]</div></div>
+<div class="block prop"><div class="label">Proposition 7.4</div><div class="equation">\[m_\delta^{\rm best}:=\min\left\{k:\ \prod_{i=1}^k c_{(i)}^2\le A_\delta\right\}.\]</div><p>This is the smallest size for which <em>some</em> fragment works.</p></div>
+<div class="block prop"><div class="label">Proposition 7.5</div><div class="equation">\[m_\delta^{\rm worst}:=\min\left\{k:\ \prod_{i=N-k+1}^{N} c_{(i)}^2\le A_\delta\right\}.\]</div><p>This is the smallest size for which <em>every</em> fragment works.</p></div>
+<div class="block cor"><div class="label">Corollary 7.6</div><div class="equation">\[m_\delta^{\rm best}\le m_\delta^{\rm worst}.\]</div><p>The interval between them is the partial-consensus window.</p></div>
+<div class="block def"><div class="label">Definition 7.7</div><div class="equation">\[C_\delta^{\rm het}(m):=1-\frac{\operatorname{Var}_{|F|=m} I_{\rm acc}(F)}{H(X)^2}.\]</div></div>
+<div class="block def"><div class="label">Definition 7.8</div><div class="equation">\[Q_{\epsilon,\delta}^{\rm frac,(N)}:=\frac1N\sum_{m=1}^N q_m,\qquad q_m:=\frac{1}{\binom{N}{m}}\sum_{|F|=m}\Theta\!\big(I_{\rm acc}(F)-(1-\delta)\big).\]</div></div>
+<div class="block cor"><div class="label">Corollary 7.9</div><div class="equation">\[Q_{\epsilon,\delta}^{\rm worst,(N)}\le Q_{\epsilon,\delta}^{\rm frac,(N)}\le Q_{\epsilon,\delta}^{\rm best,(N)}.\]</div></div>
+<div class="block cor"><div class="label">Corollary 7.10</div><p>In the homogeneous limit, all three heterogeneous order parameters collapse to the original homogeneous \(Q_{\epsilon,\delta}^{(N)}\).</p></div>
+</div>
+<div class="panel section" id="paper-commuting">
+<h2>8. Admissibility-coupled bottleneck flow: commuting sector and RG interpretation</h2>
+<div class="block def"><div class="label">Definition 8.1</div><div class="equation">\[X=(S,R),\qquad Y=f(S).\]</div></div>
+<div class="block axiom"><div class="label">Convention 8.2</div><p>\(f\) acts as the identity on its image, so \(\Pi_Y^2=\Pi_Y\).</p></div>
+<div class="block def"><div class="label">Definition 8.3</div><div class="equation">\[(\Pi)_*\mathfrak C:=\left\{\Psi\ \middle|\ \exists \Phi\in\mathfrak C\text{ such that }\Pi\circ\Phi=\Psi\circ\Pi\right\}.\]</div></div>
+<div class="block prop"><div class="label">Proposition 8.4</div><p>Under the iterated flow \(X\to S\to Y\to Y\cdots\), the minimal sufficient statistic \(Y\) is a nontrivial absorbing fixed point.</p></div>
+<div class="block remark"><div class="label">RG / information-bottleneck interpretation</div><p>The research reason to keep this section is that it gives a controlled version of the fixed-point idea. Ordinary compression does not generically produce a meaningful nontrivial attractor. The admissibility-coupled version is stronger: compression maps content forward while also pushing forward the admissible channel class. Directions quotiented out at one scale are no longer admissible distinctions at the next scale. In RG language, the surviving variable behaves like a relevance algebra; irrelevant directions are deleted, intermediate directions may survive one quotient, and relevant directions remain load-bearing.</p></div>
+<div class="equation">\[
+      (\mathcal A_{k+1},\mathcal C_{k+1},\mathcal R_{k+1})\cong(\mathcal A_k,\mathcal C_k,\mathcal R_k)\quad	ext{up to }\sim_\epsilon
+    \]</div>
+<p class="lead-note">This fixed-point criterion is not meant to replace the explicit commuting-sector proposition; it states the more general target suggested by the RG/information-bottleneck research pass.</p>
+</div>
+<div class="panel section" id="paper-noncommuting">
+<h2>9. Noncommuting extension in the <span class="tooltip" tabindex="0">modularly admissible sector<span class="tooltip-text" role="tooltip">The restricted noncommuting regime where the relevant operator-algebraic conditional expectations actually exist and can be used safely.</span></span></h2>
+<div class="block def"><div class="label">Definition 9.1</div><p>Let \(\mathcal A\) be a finite-dimensional von Neumann algebra with faithful state \(\omega\), and let \(\mathcal B_1\supseteq \mathcal B_2\supseteq\cdots\) be a descending chain of \(\sigma_t^\omega\)-invariant subalgebras.</p></div>
+<div class="block prop"><div class="label">Proposition 9.2</div><p>In finite dimension, the chain stabilizes after finitely many steps at \(\mathcal B_\infty\), and the associated \(\omega\)-preserving conditional expectations converge to an idempotent \(E_\infty\) with fixed-point algebra \(\mathcal B_\infty\).</p></div>
+<div class="block prop"><div class="label">Proposition 9.3</div><div class="equation">\[X=E_\infty(X)+\sum_{n\ge1}(E_n-E_{n+1})(X)+(X-E_1(X)).\]</div></div>
+</div>
+<div class="panel section" id="paper-intrinsic">
+<h2>10. Intrinsic admissibility and the embedded observer principle</h2>
+<div class="block axiom"><div class="label">Axiom 10.1</div><p>Each macrostate \(\rho\) comes with an intrinsic admissibility profile \(\epsilon_{\rm int}(\rho)\) whose instruments must be buildable from the same macrostate family.</p></div>
+<div class="block axiom"><div class="label">Axiom 10.2</div><p>\(\epsilon_{\rm int}\) measures counterfactual admissibility: what the state could support as measurement structure, not only what is actually performed.</p></div>
+<div class="block axiom"><div class="label">Axiom 10.3</div><p>Intrinsic admissibility evolves component-wise continuously:</p><div class="equation">\[|R_{\rm int}(\Lambda\rho)-R_{\rm int}(\rho)|\le L_R\|\Lambda\rho-\rho\|_1,\]</div><div class="equation">\[|\tau_{\rm int}(\Lambda\rho)-\tau_{\rm int}(\rho)|\le L_\tau\|\Lambda\rho-\rho\|_1,\]</div><div class="equation">\[|K_{\rm int}(\Lambda\rho)-K_{\rm int}(\rho)|\le L_K\|\Lambda\rho-\rho\|_1,\]</div><div class="equation">\[|\nu_{\rm int}(\Lambda\rho)-\nu_{\rm int}(\rho)|\le L_\nu\|\Lambda\rho-\rho\|_1,\]</div><div class="equation">\[|\delta_{\rm int}(\Lambda\rho)-\delta_{\rm int}(\rho)|\le L_\delta\|\Lambda\rho-\rho\|_1.\]</div></div>
+</div>
+<div class="panel section" id="paper-q">
+<h2>11. Cosmological record-rank</h2>
+<div class="block def"><div class="label">Definition 11.1</div><div class="equation">\[Q_{\epsilon,\delta}(\rho):=\sup_{X\in\mathsf O_\epsilon}\int_0^1 df\,\Theta\!\Big(\bar I_{\rm acc}^\epsilon(X:F_f)-(1-\delta)H(X)\Big).\]</div><p>This is a DFRC record-rank diagnostic, not identical to standard Quantum Darwinism redundancy. In the refined notation it should be separated from fragment threshold \(f_\delta\), redundancy \(R_\delta\), and consensus variance.</p></div>
+</div>
+<div class="panel section" id="paper-heat">
+<h2>12. Heat death</h2>
+<div class="block prop"><div class="label">Proposition 12.1</div><p>If a finite-dimensional CPTP semigroup relaxes to a unique product fixed point, and the observable class excludes trivial zero-entropy observables by an entropy-floor condition, then \(Q_{\epsilon,\delta}(\Lambda_t(\rho))\to0\). Infinite-dimensional or cosmological versions require energy-constrained continuity and causal-patch/local-algebra hypotheses.</p></div>
+<div class="block cor"><div class="label">Corollary 12.2</div><p>If additionally \(K_{\rm int}\to0\) and \(\delta_{\rm int}\to\frac12\), then \(Q_\delta^{\rm int}\to0\).</p></div>
+</div>
+<div class="panel section" id="paper-bigbang">
+<h2>13. Big Bang-side vanishing through factorization collapse</h2>
+<div class="block def"><div class="label">Definition 13.1</div><p>The intrinsic split scale \(\lambda_{\rm split}(\rho)\) is the minimal thickening scale needed for type-I interpolation between local algebras.</p></div>
+<div class="block def"><div class="label">Definition 13.2</div><div class="equation">\[\Xi(\rho):=\frac{R_{\rm int}(\rho)}{\lambda_{\rm split}(\rho)}.\]</div></div>
+<div class="block prop"><div class="label">Criterion 13.3</div><p>If \(\Xi(\rho_t)\to0\) as \(t\to0^+\), and if admissible fragments require an AQFT split inclusion inside the intrinsic budget, then admissible fragment families become trivial and \(Q_\delta^{\rm int}(\rho_t)\to0\). This is a criterion theorem pending a concrete early-universe split-scale model.</p></div>
+</div>
+<div class="panel section" id="paper-locality">
+<h2>14. Emergent locality from admissible distinguishability neighborhoods</h2>
+<div class="block def"><div class="label">Definition 14.1</div><div class="equation">\[w_{ij}^{(\epsilon)}:=\sup_{M_i\in\mathcal M_{\epsilon,i},\,M_j\in\mathcal M_{\epsilon,j}}I(M_i:M_j).\]</div></div>
+<div class="block def"><div class="label">Definition 14.2</div><div class="equation">\[d_{ij}^{(\epsilon)}:=-\xi \log\frac{w_{ij}^{(\epsilon)}}{w_*}.\]</div></div>
+<div class="block def"><div class="label">Definition 14.3</div><p>Locality emerges at scale \(\epsilon\) if the weighted graph of admissible edge weights admits a low-distortion embedding into a low-dimensional metric manifold and admissible dynamics are approximately banded in that induced metric.</p></div>
+</div>
+<div class="panel section" id="paper-regimes">
+<h2>15. Intrinsic admissibility in cosmological regimes</h2>
+<div class="block def"><div class="label">Definition 15.1</div><div class="equation">\[\epsilon_{\rm int}(\rho)=(R_{\rm int},\tau_{\rm int},K_{\rm int},\nu_{\rm int},\delta_{\rm int}).\]</div></div>
+<div class="block remark"><div class="label">Remark 15.2</div><p>Reheating is the first natural epoch where ordinary detector-supporting matter sectors become broadly available, making it the first clear record-bearing regime in ordinary cosmological terms.</p></div>
+<div class="block remark"><div class="label">Remark 15.3</div><p>In a late de Sitter-like regime, usable non-equilibrium budgets are expected to shrink while intrinsic readout infidelity rises.</p></div>
+</div>
+<div class="panel section" id="paper-cross">
+<h2>16. Cross-aeon compression, boundary kernel, and structural inheritance</h2>
+<div class="block def"><div class="label">Definition 16.1</div><div class="equation">\[\mathcal T_B(U):=\{\,U(p)\ :\ |p|\le B\,\}.\]</div></div>
+<div class="block def"><div class="label">Definition 16.2</div><div class="equation">\[\mathcal E_{\beta,\epsilon}^{\star,\mathcal T_B}=\arg\min_{\mathcal E\in\mathfrak C_\epsilon,\ \mathrm{codom}(\mathcal E)\subseteq\mathcal T_B}\Big[I(X;Z)-\beta I(Z;Y)\Big],\qquad Z^*=\mathcal E_{\beta,\epsilon}^{\star,\mathcal T_B}(X).\]</div></div>
+<div class="block def"><div class="label">Definition 16.3</div><p>Reconstruction requires three distinct objects: \(\mathcal F\), \(Z^*\), and \(\mathcal I\).</p></div>
+<div class="block def"><div class="label">Definition 16.4</div><div class="equation">\[\mathrm{Score}=L(\mathcal F)+L(\mathcal I)+L(Z^*)+L(\Delta c\mid\mathcal N).\]</div></div>
+<div class="block repair"><div class="label">Definition 16.5 — boundary kernel without a forced seed/physics split</div>
+<p>The seed/physics distinction should not be forced before the transition map is known. The safer move is to define a boundary-relevance representative and then quotient it by boundary-admissible equivalence. The kernel is not literally asserted to be three separate substances; the three entries are roles that may appear as separate only from inside a successor regime.</p>
+<div class="equation">\[
+\widetilde Y_B := (\mathcal U_*,\lambda_{\rm rel},\chi_{\rm edge}),
+\qquad
+Y_B := [\widetilde Y_B]_{\sim_B}.
+\]</div>
+<p>Here \(\mathcal U_*\) denotes successor universality or fixed-point structure, \(\lambda_{\rm rel}\) denotes finitely many relevant deformation coordinates, and \(\chi_{\rm edge}\) denotes minimal parent-child edge data. The equivalence relation \(\sim_B\) is boundary-admissible equivalence: two representatives are equivalent when no admissible comparison available at the boundary can distinguish them in any way that changes successor record-making capacity.</p>
+<div class="equation">\[
+\widetilde Y_B\sim_B \widetilde Y'_B
+\quad\Longleftrightarrow\quad
+\mathcal D^{(B)}_{\epsilon_B}(\widetilde Y_B,\widetilde Y'_B)=0
+\quad\text{for the boundary-admissible comparison class.}
+\]</div>
+<p>When a successor regime has already formed, the kernel may admit inside-view projections,</p>
+<div class="equation">\[
+\pi_{\mathcal U}(Y_B)\simeq\mathcal U_*,\qquad
+\pi_{\lambda}(Y_B)\simeq\lambda_{\rm rel},\qquad
+\pi_{\chi}(Y_B)\simeq\chi_{\rm edge},
+\]</div>
+<p>but these projections should not be mistaken for proof that physics, seed values, and edge data are ontologically separate prior to the successor reconstruction map.</p></div>
+<div class="block target"><div class="label">Open target 16.6</div><p>Identify a physically motivated boundary relevance algebra and boundary-admissible equivalence relation \(\sim_B\), then show that admissibility-coupled compression can converge to a nontrivial kernel \(Y_B\) without preserving microhistory and without collapsing to a vacuous equivalence class.</p><div class="equation">\[
+(\mathcal A_k,\mathcal C_k,\mathcal R_k)
+\xrightarrow[k\to B]{\Pi_*}
+Y_B.
+\]</div></div>
+</div>
+<div class="panel section" id="paper-fals">
+<h2>17. Falsification criteria</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Criterion</th><th>Failure condition</th></tr></thead>
+<tbody>
+<tr><td>Primitive failure</td><td>\(\mathcal M_\epsilon\) cannot be built from interaction bounds without observer dependence.</td></tr>
+<tr><td>No branching locus</td><td>No stable \(\mathfrak B_{\epsilon,\delta,\kappa}\) exists.</td></tr>
+<tr><td>No nontrivial seed</td><td>Compression yields only trivial fixed points or unbounded cost.</td></tr>
+<tr><td>Boundary failure</td><td>Neither late-time relaxation nor early-time factorization collapse drives \(Q^{\rm int}\to0\).</td></tr>
+<tr><td>Residual non-identifiability</td><td>The residual vector is indistinguishable from preregistered noise models.</td></tr>
+<tr><td>Einselection / Darwinism failure</td><td>Realistic environments fail to produce pointer stability plus redundant accessible records.</td></tr><tr><td>Kernel non-identifiability</td><td>No physically motivated boundary kernel \(Y_B\) or boundary relevance algebra can be specified.</td></tr><tr><td>Black-hole extension failure</td><td>Black-hole boundary descriptions remain only external bookkeeping and cannot support any parent-child inheritance relation.</td></tr></tbody>
+</table>
+</div>
+</div>
+<div class="panel section" id="paper-status">
+<h2>18. Proven results, constructed objects, and open targets</h2>
+<ul>
+<li>Budgeted data processing, conditional on explicit resource-composition closure.</li>
+<li>Explicit noisy-qubit distinguishability.</li>
+<li>Exact homogeneous fragment threshold and finite-\(N\) phase boundary in a pure product-fragment toy model.</li>
+<li>Fidelity/Bures reformulation in the pure-state toy setting.</li>
+<li>Branch comparison-divergence scalings; true distance-to-locus remains an open target.</li>
+<li>Heterogeneous best/worst thresholds and fractional record diagnostic.</li>
+<li>Commuting-sector bottleneck fixed point.</li>
+<li>Finite-dimensional modular fixed point under stated conditional-expectation assumptions.</li>
+<li>Finite-dimensional heat-death result with entropy-floor constraint.</li>
+<li>Criterion for Big-Bang-side vanishing via AQFT split/factorization collapse, pending physical instantiation.</li>
+<li>Mechanism-stack clarification: decoherence, einselection, Quantum Darwinism, and branch emergence are distinct roles rather than interchangeable labels.</li><li>Admissibility-coupled RG interpretation of the bottleneck fixed-point problem.</li><li>Boundary-kernel formulation \(\widetilde Y_B=(\mathcal U_*,\lambda_{\rm rel},\chi_{\rm edge})\), with \(Y_B=[\widetilde Y_B]_{\sim_B}\), as the current cross-aeon inheritance target.</li><li>Black-hole successor-universe material remains a necessary conjectural module for the full cosmological extension, not part of the finite-dimensional theorem core.</li></ul>
+<div class="note paper-bridge-note">
+<strong>Terminology bridge.</strong> DFRC's names are intended as extensions of existing neighborhoods, not replacements for them. 
+Admissible distinguishability is a resource-sensitive version of restricted-measurement distinguishability; record-rank extends Quantum-Darwinist redundancy and spectrum-broadcast objectivity diagnostics; branch-regime is adjacent to decoherent/consistent histories and branching-state analyses; the boundary kernel is modeled on an RG/information-bottleneck fixed-point shape with finite relevant directions.
+</div></div>
+<div class="panel section" id="paper-close">
+<h2>19. Closing</h2>
+<p>The framework is a research scaffold with a controlled mathematical core and a deliberately exposed conjectural frontier. The primitive is explicit enough to attack, the toy models yield exact thresholds and finite-\(N\) phase structure, the heterogeneous section gives a route toward imperfect records, and the modular sector identifies a controlled noncommuting domain. The current formulation separates the main mechanisms: einselection is the stability-selection mechanism, Quantum Darwinism is the public-record mechanism, RG-style bottleneck flow is the fixed-point mechanism candidate, and the boundary kernel is the formal target for cross-aeon inheritance.</p>
+</div>
+</section>
+<section class="mode-panel" id="reader">
+<div class="reader-flow">
+<div class="reader-section section" id="reader-overview"><h2>Overview</h2>
+<p class="reader-lede">DFRC begins with a narrow question and follows it farther than usual: when does a difference become physically real enough to matter inside a universe?</p>
+<p>A mathematical description can draw endless distinctions. Two states can have different symbols, two histories can have different labels, and two possible universes can be imagined as separate. DFRC does not treat every written distinction as equally load-bearing. A distinction starts to matter physically when some process can register it, preserve it, compare it, or pass it forward as a record.</p>
+<p>This is why the theory begins with <strong>admissible distinguishability</strong>. The word <em>distinguishability</em> says that a difference has to be capable of showing up in physical consequences. The word <em>admissible</em> says that not every ideal measurement is allowed. The relevant interactions are limited by the regime itself: finite energy, finite time, finite bandwidth, finite causal access, noise, locality, and the couplings actually available.</p>
+<p>That move does not say that human observers create reality. It also does not say that anything humans cannot currently measure is unreal. It says that the internal construction of classical facts, identity, locality, time, and branch-like history depends on differences that can become stable records for physical systems inside the world.</p>
+<p>The core mechanism is therefore layered. Decoherence suppresses interference. <strong>Einselection</strong> selects the pointer states stable under environmental monitoring. <strong>Quantum Darwinism</strong> explains how many environment fragments can redundantly encode those pointer states. Stronger objectivity ideas, such as strong Quantum Darwinism and spectrum broadcast structure, clarify why redundancy alone is not enough: the records must be accessible, mutually compatible, and effectively non-disturbing. DFRC’s terms are meant to extend that record-centered picture rather than replace it.</p>
+<p>The cosmological extension applies the same language to boundaries. Heat death is not treated as literal nonexistence, but as loss of usable gradients and accessible witness structure. The Big-Bang side is not treated as a tiny object inside ordinary space, but as a regime where the factorization into systems, environments, and fragments may not yet be admissible. Black holes are treated as local boundary analogues in which the exterior-accessible description becomes horizon-centered. These are not claimed to be the same physical event. They are compared under one question: what kinds of distinction-making remain available?</p>
+<div aria-label="Mechanism stack diagram" class="concept-figure">
+<svg role="img" viewbox="0 0 980 255">
+<defs><lineargradient id="stackg" x1="0" x2="1"><stop offset="0" stop-color="var(--accent2)"></stop><stop offset="1" stop-color="var(--accent)"></stop></lineargradient></defs>
+<rect fill="rgba(255,255,255,.035)" height="86" rx="22" stroke="var(--line-strong)" width="150" x="28" y="82"></rect><text fill="var(--heading)" font-size="17" font-weight="700" text-anchor="middle" x="103" y="115">admissible</text><text fill="var(--heading)" font-size="17" font-weight="700" text-anchor="middle" x="103" y="139">interaction</text>
+<rect fill="rgba(255,255,255,.035)" height="86" rx="22" stroke="var(--line-strong)" width="150" x="222" y="82"></rect><text fill="var(--heading)" font-size="18" font-weight="700" text-anchor="middle" x="297" y="119">einselection</text><text fill="var(--muted)" font-size="14" text-anchor="middle" x="297" y="144">stable pointer states</text>
+<rect fill="rgba(255,255,255,.035)" height="86" rx="22" stroke="var(--line-strong)" width="150" x="416" y="82"></rect><text fill="var(--heading)" font-size="17" font-weight="700" text-anchor="middle" x="491" y="113">Quantum</text><text fill="var(--heading)" font-size="17" font-weight="700" text-anchor="middle" x="491" y="136">Darwinism</text><text fill="var(--muted)" font-size="14" text-anchor="middle" x="491" y="157">redundant records</text>
+<rect fill="rgba(255,255,255,.035)" height="86" rx="22" stroke="var(--line-strong)" width="150" x="610" y="82"></rect><text fill="var(--heading)" font-size="17" font-weight="700" text-anchor="middle" x="685" y="113">branch-like</text><text fill="var(--heading)" font-size="17" font-weight="700" text-anchor="middle" x="685" y="136">classicality</text><text fill="var(--muted)" font-size="14" text-anchor="middle" x="685" y="157">shared facts</text>
+<rect fill="rgba(255,255,255,.035)" height="86" rx="22" stroke="var(--line-strong)" width="150" x="804" y="82"></rect><text fill="var(--heading)" font-size="17" font-weight="700" text-anchor="middle" x="879" y="113">recursive</text><text fill="var(--heading)" font-size="17" font-weight="700" text-anchor="middle" x="879" y="136">record closure</text><text fill="var(--muted)" font-size="14" text-anchor="middle" x="879" y="157">identity / life</text>
+<path d="M178 125 H216M372 125 H410M566 125 H604M760 125 H798" stroke="url(#stackg)" stroke-linecap="round" stroke-width="6"></path>
+<text fill="var(--callout)" font-size="18" font-weight="700" text-anchor="middle" x="490" y="42">DFRC mechanism stack</text>
+<text fill="var(--muted)" font-size="15" text-anchor="middle" x="490" y="215">The theory depends on keeping these roles separate. Decoherence alone is not objectivity; life is not privileged collapse.</text>
+</svg>
+<p class="concept-caption"><strong>Mechanism stack.</strong> The page uses this stack throughout. A distinction first has to be physically accessible; then stable pointer states have to be selected; then records have to proliferate; only then does branch-like classicality become a good description.</p>
+</div><div class="interactive-module" id="theory-comparison-module">
+<div class="interactive-head"><h3>Neighboring theories and DFRC's difference</h3><p>DFRC is not built by rejecting the surrounding literature. It borrows pressure from several nearby programs, but changes what is treated as primitive.</p></div>
+<div class="interactive-body">
+<div aria-label="Theory comparison" class="theory-tabs" role="tablist">
+<button class="theory-tab active" data-theory="decoherence" type="button">Decoherence</button>
+<button class="theory-tab" data-theory="darwinism" type="button">Quantum Darwinism</button>
+<button class="theory-tab" data-theory="ccc" type="button">CCC</button>
+<button class="theory-tab" data-theory="baby" type="button">Baby universes / CNS</button>
+<button class="theory-tab" data-theory="dfrc" type="button">DFRC</button>
+</div>
+<div class="theory-panel active" data-theory-panel="decoherence"><h4>Standard decoherence</h4><p>Decoherence explains why interference between alternatives becomes practically inaccessible when a system entangles with its environment. It is essential, but by itself it does not say that many independent observers can recover the same record from different fragments.</p><p><strong>DFRC's use:</strong> decoherence is the suppression layer, not the whole theory of public reality.</p></div>
+<div class="theory-panel" data-theory-panel="darwinism"><h4>Quantum Darwinism</h4><p>Quantum Darwinism adds the replication layer: pointer-state information is copied into many environment fragments. This is much closer to DFRC because it explains how classical facts become public and redundant.</p><p><strong>DFRC's use:</strong> Darwinian redundancy becomes one part of a larger admissibility-first account of branches, record-rank, and cosmological boundaries.</p></div>
+<div class="theory-panel" data-theory-panel="ccc"><h4>Conformal cyclic cosmology</h4><p>CCC treats the remote future of one aeon and the Big Bang of the next as related through conformal structure, where scale loses its ordinary meaning.</p><p><strong>DFRC's difference:</strong> DFRC does not start with conformal geometry. It asks whether the admissible means of registering, comparing, and stabilizing distinctions have failed on both sides of a boundary.</p></div>
+<div class="theory-panel" data-theory-panel="baby"><h4>Baby universes and cosmological natural selection</h4><p>Black-hole successor-universe ideas and cosmological natural selection already explore genealogical cosmology. They give DFRC a research neighborhood rather than a conclusion.</p><p><strong>DFRC's difference:</strong> the proposed inheritance is not a full copy or ordinary signal. It is a boundary-admissible kernel that may preserve only universality, relevant coordinates, and local parent-child consistency.</p></div>
+<div class="theory-panel" data-theory-panel="dfrc"><h4>DFRC</h4><p>DFRC's primitive is admissible distinguishability: what differences can be physically registered, stabilized, copied, compared, or compressed by available interactions. From there it builds records, classicality, branches, time, locality, and boundary behavior.</p><p><strong>Core claim:</strong> the same currency—admissible record-making capacity—should be used from quantum measurement through cosmological boundary claims.</p></div>
+</div>
+</div></div><div class="reader-section section" id="reader-bridges">
+<h2>Conceptual bridges: DFRC names and established neighborhoods</h2>
+<p class="reader-lede">DFRC uses some of its own names because it is trying to connect several areas at once. Those names should not hide their ancestry. Each one is meant to sit near an existing problem, then extend it in a specific direction.</p>
+<p><strong>Admissible distinguishability</strong> is closest to restricted measurement distinguishability in quantum information: two states may be distinguishable in principle, but not under a restricted family of measurements. DFRC makes that restriction physical and regime-dependent. The admissible family is not merely a mathematical convenience; it encodes what bounded interactions can actually do inside the regime being described.</p>
+<p><strong>Record-rank</strong> is closest to Quantum Darwinist redundancy, accessible information in environment fragments, and the stronger objectivity conditions studied through strong Quantum Darwinism and spectrum broadcast structures. DFRC keeps the record-redundancy idea but generalizes it into a diagnostic for whether a whole regime has enough accessible, redundant, consensus-supporting witness structure.</p>
+<p><strong>Branch-regime</strong> sits near decoherent histories, consistent histories, and branching-state analyses. DFRC differs by refusing to treat a branch as a primitive metaphysical object. A branch-regime is a high-redundancy, high-consensus, low-interference region of record structure. It is a condition a state can approach, not a hard split assumed in advance.</p>
+<p><strong>Boundary kernel</strong> sits near renormalization-group and information-bottleneck thinking. The inherited object is not a complete diary of the previous universe. The better analogy is a fixed point plus finitely many relevant directions: the smallest surviving structure that can still generate a record-making successor regime, if such a successor transition exists.</p>
+<div aria-label="DFRC terms mapped to conventional neighborhoods" class="bridge-map">
+<div class="bridge-row header"><div class="bridge-cell">DFRC term</div><div class="bridge-cell">Nearest conventional bridge</div><div class="bridge-cell">How DFRC extends it</div></div>
+<div class="bridge-row"><div class="bridge-cell"><strong>Admissible distinguishability</strong></div><div class="bridge-cell">Restricted measurement distinguishability; operational distinguishability</div><div class="bridge-cell">Makes the measurement class physical, resource-bounded, and regime-dependent rather than merely chosen for convenience.</div></div>
+<div class="bridge-row"><div class="bridge-cell"><strong>Record-rank</strong></div><div class="bridge-cell">Quantum Darwinism; accessible information; spectrum broadcast structure</div><div class="bridge-cell">Treats redundant, accessible records as a regime-level diagnostic, including cosmological limits where ordinary fragment structure may fail.</div></div>
+<div class="bridge-row"><div class="bridge-cell"><strong>Branch-regime</strong></div><div class="bridge-cell">Decoherent histories; consistent histories; branching states</div><div class="bridge-cell">Defines branch-likeness as proximity to stable redundant record structure rather than as a primitive ontology.</div></div>
+<div class="bridge-row"><div class="bridge-cell"><strong>Boundary kernel</strong></div><div class="bridge-cell">RG fixed point plus relevant deformations; information bottleneck relevance</div><div class="bridge-cell">Frames cross-boundary inheritance as a finite equivalence class of successor-relevant structure, not a stored archive.</div></div>
+</div>
+<p>This bridge map should be read as positioning, not surrender. The existing literature supplies the local tools. DFRC’s distinctive move is to use admissible distinguishability as the common currency connecting measurement, records, branches, locality, time, and cosmological boundaries.</p>
+</div>
+<div class="reader-section section" id="reader-intro"><h2>1. Introduction</h2>
+<p>Most physical theories begin by granting some structure as basic: spacetime, fields, particles, a universal wavefunction, or a preferred family of histories. DFRC does not deny the usefulness of those descriptions. It asks whether they are the right starting point for explaining how a universe becomes classical, local, and history-bearing from the inside.</p>
+<p>The first question is operational, but not psychological. It is not “what does an observer know?” It is: when can one physical state be told apart from another by processes the universe itself supports? A photon bath, a detector, a rock, a molecule, a gravitational imprint, a cell, or a brain can all participate if they carry stable correlations. The central issue is whether a difference can be converted into a durable record.</p>
+<p>This reorders several familiar ideas. A branch is no longer a primitive world-line drawn into the ontology; it is a high-redundancy region of record structure. Locality is no longer assumed to be the first fact; it becomes tied to low-cost, high-fidelity exchange of records. Time is no longer treated as an external clock for the whole construction; it is the internal ordering of record production and comparison. A cosmological boundary is therefore not only a place where geometry becomes difficult. It is a place where the preconditions for record-making may fail.</p>
+<div class="prose-spine">
+<p><strong>The dependency chain is the spine of the reader mode:</strong> possible difference → admissible distinction → stable record → redundant record → consensus-supporting objectivity → branch-like regime → cosmological record-rank → boundary failure or boundary inheritance.</p>
+<p>Each later term is downstream of the earlier terms. If admissible distinctions fail, records cannot form. If records cannot stabilize, redundancy cannot accumulate. If redundancy does not support compatible access from fragments, objectivity does not arise. If objectivity does not arise, branch-like classical history is not yet a good description.</p>
+</div>
+<div class="foundation-block">
+<h3>The first picture: a difference has to climb into the world</h3>
+<p>DFRC uses the word <em>difference</em> in a deliberately physical way. A difference can be written into a mathematical description without yet being a difference that anything in the universe can use. To become part of a world with histories, the difference must become accessible to an interaction, then stable enough to leave a trace, then copied or preserved well enough that later systems can rely on it.</p>
+<p>This is why the framework begins below words like “observer,” “world,” or “branch.” It first asks whether a physical process can turn a possible distinction into a record. A record does not have to be conscious or intentional. A scattered photon, a detector state, a chemical trace, a gravitational imprint, or a biological memory can all be records if they preserve a usable correlation.</p>
+<div aria-label="From possible difference to branch-like classicality" class="concept-ladder">
+<div class="ladder-step"><strong>possible difference</strong><span>Two descriptions differ on paper, but nothing has yet shown that the difference can be accessed.</span></div>
+<div class="ladder-step"><strong>admissible distinction</strong><span>A bounded physical interaction can in principle make the difference show up in some readout.</span></div>
+<div class="ladder-step"><strong>stable record</strong><span>The readout persists long enough to affect later systems rather than vanishing immediately.</span></div>
+<div class="ladder-step"><strong>redundant record</strong><span>Many fragments carry compatible traces, allowing independent recovery of the same fact.</span></div>
+<div class="ladder-step"><strong>branch-like regime</strong><span>Records are stable and separated enough that histories behave as effectively distinct sectors.</span></div>
+</div>
+<p>The ladder is not meant to imply that every physical process moves neatly through five literal stages. It is a way of keeping the dependencies clear: branch-like classicality is downstream of records, records are downstream of admissible interactions, and admissible interactions are downstream of real physical budgets.</p>
+<div class="example-weave">
+<div class="example-card"><h4>A detector click</h4><p>A particle leaves a mark only if the apparatus couples to the relevant degree of freedom, amplifies it, and preserves it against noise. Without that chain, the mathematical distinction was not a usable record.</p></div>
+<div class="example-card"><h4>A scattered photon</h4><p>Light bouncing off an object can carry pointer-state information into the environment. Many scattered photons can make the same object-state recoverable from many different fragments.</p></div>
+<div class="example-card"><h4>A cosmological trace</h4><p>A fossil signal matters only if it remains physically accessible. DFRC’s boundary claims ask what happens when the universe loses the conditions needed for such traces to be compared at all.</p></div>
+</div>
+</div></div>
+<div class="reader-section section" id="reader-primitive">
+<h2>2. Primitive layer</h2><div class="prose-spine primitive-bridge">
+<p>In conventional quantum information language, this section is about <strong>distinguishability under restricted measurements</strong>. DFRC uses the phrase <strong>admissible distinguishability</strong> for a reason: the restriction is not arbitrary. It is the set of measurements, channels, or instruments physically available under the regime’s own budgets.</p>
+<p>So \(\mathcal D_\epsilon\) should be read as a physical question: if the universe grants only the resources encoded by \(\epsilon\), how far apart can two states be made to appear? The answer may change when energy, time, resolution, causal access, or readout reliability changes.</p>
+</div>
+<p>
         The primitive object is written as \(\mathcal D_\epsilon\). The notation is technical, but the idea is straightforward.
         Take two possible states of a system. Then ask: under the actual constraints of the situation — finite time, finite control strength, finite resolution,
         finite readout reliability, finite causal access — how distinguishable are they?
       </p>
-      <p>
+<p>
         The resource profile \(\epsilon\) is there to block a very common mistake. If we allow every measurement that is mathematically definable,
         then distinguishability becomes an abstract ideal detached from physics. The point of the framework is the opposite:
         only distinctions that can be realized by physically allowed couplings are allowed to count.
       </p>
-      <p>
+<p>
         That is why the primitive is not just “distance between states.” It is
         <span class="call">distinguishability under physical access conditions</span>.
         This is one of the most important philosophical and mathematical moves in the theory.
       </p>
-      <div class="viz-grid" aria-label="Generated visualization of the resource profile">
-        <div class="viz-card">
-          <h3 class="viz-title">Resource profile ε</h3>
-          <p class="viz-caption">Each spoke is one component of \(\epsilon=(R,\tau,E,\nu,\delta)\), but the fifth spoke is plotted as \(1-\delta\) so that every spoke grows outward on the same 0–1 scale. The separate scale guide shows how to read the 0.25, 0.50, 0.75, and 1.00 levels.</p>
-          <div class="viz-plot" data-viz="resource-radar"></div>
-          <p class="viz-note">Read it as a budget summary: the larger copper polygon represents a regime with more reach, time, energy, complexity, and fidelity available for measurement; the smaller red polygon represents a regime where those budgets are tighter. The axis key and radial scale are included so the diagram can be read without guessing.</p>
-        </div>
-      </div>
-    </div>
-
-    <div id="reader-budget" class="reader-section section">
-      <h2>3. Budgeted admissibility</h2>
-      <p>
+<div aria-label="Generated visualization of the resource profile" class="viz-grid">
+<div class="viz-card">
+<h3 class="viz-title">Resource profile ε</h3>
+<p class="viz-caption">Each spoke is one component of \(\epsilon=(R,\tau,E,\nu,\delta)\), but the fifth spoke is plotted as \(1-\delta\) so that every spoke grows outward on the same 0–1 scale. The separate scale guide shows how to read the 0.25, 0.50, 0.75, and 1.00 levels.</p>
+<div class="viz-plot" data-viz="resource-radar"></div>
+<p class="viz-note">Read it as a budget summary: the larger copper polygon represents a regime with more reach, time, energy, complexity, and fidelity available for measurement; the smaller red polygon represents a regime where those budgets are tighter. The axis key and radial scale are included so the diagram can be read without guessing.</p>
+</div>
+</div>
+<p>The distinction between a mathematical measurement and an admissible measurement is essential. Quantum theory allows many measurements to be written down as formal objects. DFRC asks which of those measurements can be realized by bounded interactions in the regime under discussion. That is why \(\mathcal M_\epsilon\) matters: it is the gate between mathematical distinguishability and physical distinguishability.</p>
+<div class="foundation-block">
+<h3>Distinguishability in ordinary language</h3>
+<p>Two states are distinguishable when some allowed interaction can make them lead to different physical consequences. If a detector can reliably sort them into different outcomes, they are distinguishable for that detector and resource budget. If every physically available interaction produces the same statistics, then the two descriptions may still differ mathematically, but that difference is not active inside the regime being modeled.</p>
+<p>This is why DFRC writes \(\mathcal D_\epsilon\) rather than just \(\mathcal D\). The subscript matters. It says that distinguishability is always being judged relative to access conditions: where the interaction can occur, how much energy and time it can use, how much bandwidth is available, and how reliable the readout is. A distinction that becomes visible only after granting impossible resources is not discarded as meaningless; it is classified as inadmissible for that regime.</p>
+<p>The same idea scales upward. In the laboratory it describes noisy readout. In Quantum Darwinism it describes whether fragments carry accessible pointer-state information. In the cosmological sections it describes whether any stable witness structure remains at all.</p>
+</div>
+</div>
+<div class="reader-section section" id="reader-budget">
+<h2>3. Budgeted admissibility</h2>
+<p>
         Real measurements cost something. They use time, interaction strength, apparatus complexity, and readout quality.
         Once that is admitted, another fact follows: preprocessing a state and then measuring it cannot be treated as free extra power.
       </p>
-      <p>
+<p>
         The budgeted formalism makes this explicit. It splits the available resources into what is spent on dynamics and what is spent on measurement, then asks how distinguishability behaves under that split.
         This is less flashy than the cosmological claims, but it is one of the things that makes the framework more serious.
       </p>
-      <p>
-        For a non-specialist, the takeaway is simple:
-        the theory is trying to stay <span class="emph">honest about physical cost</span>.
+<p>
+        The operational takeaway is that the theory is trying to stay <span class="emph">honest about physical cost</span>.
         A distinction that only appears if one grants an impossible measuring setup does not count as fundamental here.
       </p>
-    </div>
-
-    <div id="reader-qubit" class="reader-section section">
-      <h2>4. Worked qubit example</h2>
-      <p>
+</div>
+<div class="reader-section section" id="reader-qubit">
+<h2>4. Worked qubit example</h2>
+<p>
         The qubit example is the first anchor. A qubit is the simplest nontrivial quantum system, so it is the natural place to show that the framework’s primitive
         object can actually be computed and is not just philosophical language.
       </p>
-      <p>
+<p>
         The specific example uses a noisy pointer-basis measurement. The result is exactly what one hopes for:
         better readout means stronger distinguishability, worse readout means weaker distinguishability. In other words, the primitive behaves like a genuinely physical quantity.
       </p>
-      <p>
+<p>
         This matters because the framework does not postpone all substance to the cosmology.
         It already has a calculable core at the smallest worked level.
       </p>
-      <div class="viz-grid" aria-label="Generated visualizations for the qubit example">
-        <div class="viz-card">
-          <h3 class="viz-title">Noisy readout curve</h3>
-          <p class="viz-caption">The solid curve is the exact distinguishability of a noisy readout. The dashed curve is the weak-\(\eta\) approximation, which is accurate only when the readout is poor enough that \(\eta\) is small.</p>
-          <div class="viz-plot" data-viz="qubit-kl"></div>
-          <p class="viz-note">Interpretation: moving right means a more reliable detector; moving up means the two qubit alternatives become easier to distinguish. The exact curve and weak-η approximation are labeled in a separate reading lane so the data remains visible.</p>
-        </div>
-      </div>
-    </div>
-
-    <div id="reader-homogeneous" class="reader-section section">
-      <h2>5. Homogeneous Darwinism model</h2>
-      <p>
+<div aria-label="Generated visualizations for the qubit example" class="viz-grid">
+<div class="viz-card">
+<h3 class="viz-title">Noisy readout curve</h3>
+<p class="viz-caption">The solid curve is the exact distinguishability of a noisy readout. The dashed curve is the weak-\(\eta\) approximation, which is accurate only when the readout is poor enough that \(\eta\) is small.</p>
+<div class="viz-plot" data-viz="qubit-kl"></div>
+<p class="viz-note">Interpretation: moving right means a more reliable detector; moving up means the two qubit alternatives become easier to distinguish. The exact curve and weak-η approximation are labeled in a separate reading lane so the data remains visible.</p>
+</div>
+</div>
+</div>
+<div class="reader-section section" id="reader-homogeneous">
+<h2>5. Einselection and Quantum Darwinism model</h2>
+<p>Classical reality does not appear merely because a system interacts with an environment. Interaction first tends to suppress interference between alternatives; that is decoherence. But decoherence by itself does not yet explain why a particular set of alternatives becomes stable enough to function as classical states. That stability step is einselection: environmental monitoring favors pointer states, the states least disrupted by the monitoring interaction.</p>
+<p>Quantum Darwinism adds the next step. A pointer state becomes objective-like when information about it is not stored in only one fragile place, but redundantly distributed across many environment fragments. If many different fragments can each answer the same question about the system, then many observers can independently arrive at the same description without disturbing the system directly. DFRC uses this as the bridge from admissible distinguishability to branch-like classicality.</p>
+<p>
         This is where the framework becomes easiest to visualize. A small system interacts with many parts of its environment.
         If the interaction leaves strong enough imprints, then many different fragments of the environment each end up carrying information about the same coarse property of the system.
       </p>
-      <p>
+<p>
         That is the basic insight of <span class="tooltip" tabindex="0">Quantum Darwinism<span class="tooltip-text" role="tooltip">A framework in which classical-looking facts emerge when many different fragments of the environment redundantly encode the same information about a system.</span></span>,
         and the theory uses it directly:
         <span class="call">classicality is not assumed — it is produced by redundant record structure</span>.
       </p>
-      <p>
+<p>
         In the toy model, the strength of imprinting is controlled by a single overlap parameter \(c\).
         If \(c\) is small, the two environment records are easy to tell apart.
         If \(c\) is close to 1, they overlap heavily and are hard to separate.
       </p>
-      <div class="equation">\[
+<div class="equation">\[
         c^{2N}\le A_\delta
       \]</div>
-      <p>
+<p>
         This is the first result that should stick in the mind. It says there is an exact finite-\(N\) threshold for redundant record formation.
         In ordinary language: before fragments can act like many independent witnesses of the same fact, the environment as a whole must already separate the alternatives strongly enough. For the plots below, read the first graphic horizontally as “how much information do I get if I collect a fragment of size \(m\)?” and the second as “for a given overlap \(c\) and environment size \(N\), am I above or below the redundancy threshold?”
       </p>
-      <p>
+<p>
         That gives the theory a true phase picture. Strong imprinting gives trivial classicality. Intermediate imprinting gives a meaningful redundancy regime.
         Weak imprinting means the environment never becomes a good witness, so operational classicality does not really switch on.
       </p>
-      <div class="viz-grid" aria-label="Generated visualizations for homogeneous record formation">
-        <div class="viz-card">
-          <<h3 class="viz-title">Fragment threshold</h3>
-          <p class="viz-caption">Each bar is the accessible information \(I_{\rm acc}(m)\) carried by a fragment of size \(m\). The dashed horizontal line is the acceptance threshold \(1-\delta\), and the vertical marker \(m_\delta\) is the smallest fragment size that counts as a reliable witness.</p>
-          <div class="viz-plot" data-viz="fragment-threshold"></div>
-          <p class="viz-note">How to read it: bars left of \(m_\delta\) are too small to support a stable shared record. Bars at and to the right of \(m_\delta\) are large enough to witness the system under the chosen tolerance.</p>
-        </div>
-        <div class="viz-card">
-          <h3 class="viz-title">Finite-\(N\) phase boundary</h3>
-          <p class="viz-caption">The curve separates two regimes. Above and to the left, the total imprinting is strong enough for redundant records to switch on; below and to the right, it is not.</p>
-          <div class="viz-plot" data-viz="phase-boundary"></div>
-          <p class="viz-note">Read the axes carefully: moving right increases the overlap \(c\), so record states become harder to distinguish; moving upward increases the environment size \(N\), so more fragments are available. The plotted boundary is the exact finite-\(N\) threshold from the toy model.</p>
-        </div>
-      </div>
-    </div>
-
-    <div id="reader-branch" class="reader-section section">
-      <h2>6. Branching locus</h2>
-      <p>
+<div aria-label="Generated visualizations for homogeneous record formation" class="viz-grid">
+<div class="viz-card">
+<h3 class="viz-title">Fragment threshold</h3>
+<p class="viz-caption">Each bar is the accessible information \(I_{\rm acc}(m)\) carried by a fragment of size \(m\). The dashed horizontal line is the acceptance threshold \(1-\delta\), and the vertical marker \(m_\delta\) is the smallest fragment size that counts as a reliable witness.</p>
+<div class="viz-plot" data-viz="fragment-threshold"></div>
+<p class="viz-note">Interpretation: bars left of \(m_\delta\) are too small to support a stable shared record. Bars at and to the right of \(m_\delta\) are large enough to witness the system under the chosen tolerance.</p>
+</div>
+<div class="viz-card">
+<h3 class="viz-title">Finite-\(N\) phase boundary</h3>
+<p class="viz-caption">The curve separates two regimes. Above and to the left, the total imprinting is strong enough for redundant records to switch on; below and to the right, it is not.</p>
+<div class="viz-plot" data-viz="phase-boundary"></div>
+<p class="viz-note">Read the axes carefully: moving right increases the overlap \(c\), so record states become harder to distinguish; moving upward increases the environment size \(N\), so more fragments are available. The plotted boundary is the exact finite-\(N\) threshold from the toy model.</p>
+</div>
+</div>
+<div class="foundation-block objectivity-note">
+<h3>Objectivity is stronger than redundancy</h3>
+<p>Quantum Darwinism supplies the record-proliferation picture: many fragments of the environment can carry information about the same pointer state. DFRC needs that, but it also needs the stronger condition that those records support public agreement. A record is not enough if it is inaccessible, badly corrupted, or incompatible with the records carried by other fragments.</p>
+<p>This is where bridge terms such as <em>strong Quantum Darwinism</em> and <em>spectrum broadcast structure</em> are useful. They name stricter versions of the same classicality problem: not merely whether information is copied, but whether independently accessible fragments contain compatible, effectively non-disturbing records. DFRC’s consensus and record-rank language should be understood in that stronger neighborhood.</p>
+</div></div>
+<div class="interactive-module exact-darwinism" id="exact-darwinism-module">
+<div class="interactive-head">
+<h3>Exact finite-\(N\) Darwinism calculator</h3>
+<p>This control uses the same homogeneous toy-model equations as the paper section. Changing \(c\), \(N\), or \(\delta\) recomputes \(I_{\rm acc}(m)\), \(m_\delta\), \(\bar R_\delta\), and \(Q_{\epsilon,\delta}^{(N)}\). The bars are therefore a live view of the toy model, not decorative data.</p>
+</div>
+<div class="interactive-body interactive-grid">
+<div class="control-stack">
+<div aria-label="Quantum Darwinism toy-model controls" class="control-strip">
+<label>environment overlap \(c\)
+          <input id="qd-c" max="0.98" min="0.45" step="0.01" type="range" value="0.82"/>
+<span id="qd-c-out">0.82</span>
+</label>
+<label>environment size \(N\)
+          <input id="qd-n" max="60" min="4" step="1" type="range" value="24"/>
+<span id="qd-n-out">24</span>
+</label>
+<label>allowed deficit \(\delta\)
+          <input id="qd-delta" max="0.30" min="0.02" step="0.01" type="range" value="0.10"/>
+<span id="qd-delta-out">0.10</span>
+</label>
+</div>
+<div class="kernel-projections darwinism-metrics">
+<div class="kernel-projection"><strong>\(m_\delta\)</strong><span id="qd-md">—</span></div>
+<div class="kernel-projection"><strong>\(\bar R_\delta\approx N/m_\delta\)</strong><span id="qd-red">—</span></div>
+<div class="kernel-projection"><strong>\(Q_{\epsilon,\delta}^{(N)}\)</strong><span id="qd-q">—</span></div>
+</div>
+<p class="viz-note" id="qd-note">The threshold relation is evaluated directly from the toy model.</p>
+</div>
+<div class="darwinism-chart-wrap">
+<canvas aria-label="Exact accessible-information bars for the finite-N Quantum Darwinism toy model" height="520" id="qd-canvas" width="1100"></canvas>
+</div>
+</div>
+</div>
+<div class="reader-section section" id="reader-branch">
+<h2>6. Branching locus</h2>
+<p>
         A distinctive choice in the framework is that it does not treat branches as perfectly sharp pre-existing slices of reality.
         Instead, it defines a <span class="tooltip" tabindex="0">branching locus<span class="tooltip-text" role="tooltip">The family of states close to stable, redundant record structure. In this theory, branching is proximity to that family rather than an exact split.</span></span>.
       </p>
-      <p>
+<p>
         This matters because actual physical systems are messy. Record quality is finite, consensus can be partial, and classical structure often sharpens gradually rather than appearing all at once.
         The branching-locus picture captures that better than the image of a single exact split into worlds.
-      </p>
-      <p>
+      </p><div class="prose-spine branch-bridge">
+<p>This is where DFRC should be read beside decoherent histories and consistent histories rather than only beside Many Worlds. Histories become classical-looking when interference is sufficiently suppressed and probability assignments become stable. DFRC adds a record-centered requirement: a branch-like regime is strongest when the relevant alternatives are not only decohered, but also supported by redundant, accessible, mutually compatible records.</p>
+</div>
+<p>
         So branching becomes a gradient. The more redundancy there is and the more stable the records are, the more branch-like the state becomes. At this stage, the branch-distance formulas are best understood as comparison scalings; a full distance-to-locus theorem requires a true minimization over the branch locus.
       </p>
-    </div>
-
-    <div id="reader-hetero" class="reader-section section">
-      <h2>7. Heterogeneous environments</h2>
-      <p>
+</div>
+<div class="reader-section section" id="reader-hetero">
+<h2>7. Heterogeneous environments</h2>
+<p>
         Real environments are not uniform. Some pieces interact strongly with the system, some weakly, and some store cleaner records than others.
         The homogeneous model is therefore a useful baseline, but it is not the realistic case.
       </p>
-      <p>
+<p>
         DFRC handles that by asking a more careful question. Instead of asking only whether a fragment of size \(m\) works, it asks what fraction of all size-\(m\) fragments work.
-        That fraction is \(q_m\). If \(q_m=0\), none of those fragments are good witnesses. If \(0<q_m<1\), the environment has partial consensus: some fragments tell the story clearly while others do not. If \(q_m=1\), every fragment of that size passes the record threshold.
-      </p>
-      <div class="equation">\[
-        q_m:=\frac{1}{\binom{N}{m}}\sum_{|F|=m}\Theta\!\big(I_{\rm acc}(F)-(1-\delta)\big),
-        \qquad
-        Q_{\epsilon,\delta}^{\rm frac,(N)}:=\frac1N\sum_{m=1}^N q_m
-      \]</div>
-      <p>
-        This is the important conceptual move: classical-looking record structure need not appear everywhere at once.
-        In a heterogeneous environment, objectivity can grow gradually from no reliable witnesses, to partial agreement, to universal agreement across all fragments of a given size.
-        That is exactly what the graph is designed to show.
-      </p>
-      <div class="viz-grid" aria-label="Generated visualization for heterogeneous environments">
-        <div class="viz-card">
-          <h3 class="viz-title">Partial consensus window</h3>
-          <p class="viz-caption"><strong>What this graph measures:</strong> each bar is \(q_m\), the fraction of size-\(m\) environment fragments that clear the record threshold. The shaded band marks the region between the first size where at least one fragment works and the first size where every fragment works.</p>
-          <div class="viz-plot" data-viz="heterogeneous-window"></div>
-          <p class="viz-note"><strong>How to read it:</strong> low bars mean few fragments can act as witnesses; middle-height bars mean uneven or partial consensus; bars at 1 mean every fragment of that size carries enough accessible information to count as a reliable witness.</p>
-        </div>
-      </div>
-    </div>
-
-    <div id="reader-commuting" class="reader-section section">
-      <h2>8. Commuting bottleneck flow</h2>
-      <p>
-        Within a single era, the world becomes <em>classically readable</em> when differences become stable because the environment records them redundantly. The next question appears once one starts thinking cosmologically.
-        If a universe runs all the way toward a record-poor end state, and if the framework is serious about cycle-closure or cross-aeon inheritance,
-        then <span class="call">what exactly could survive in compressed form?</span>
-      </p>
-      <p>
-        That is why compression enters the story. The issue is not “compress for convenience.” It is:
-        if most late-universe detail is irrelevant to what the next aeon can become, is there a principled way to keep only the part that still matters?
-        The commuting bottleneck flow is the cleanest mathematical prototype of that idea.
-      </p>
-      <p>
-        In this simplified setting, one splits information into what is <span class="subemph">relevant for future structure</span> and what is not.
-        Repeated relevance-preserving compression then pushes the description toward a nontrivial fixed point:
-        not total erasure, but a smaller description that still retains the part that matters for what comes next.
-      </p>
-      <p>
-        The point is not technical elegance by itself. The commuting bottleneck flow provides a mathematically controlled version of the claim that a universe might not need to carry all of its microscopic detail forward —
-        only a compressed inheritance structure that still preserves the information relevant to the next stage of cosmic history.
-      </p>
-    </div>
-
-    <div id="reader-noncommuting" class="reader-section section">
-      <h2>9. Modular noncommuting sector</h2>
-      <p>
-        The previous section used the mathematically friendlier case: a setting where the relevant pieces of information can be treated as if they fit together cleanly.
-        Real quantum theory is often harder than that. Different observables can interfere with each other, fail to be jointly readable, or refuse to sit inside one tidy classical description.
-      </p>
-      <p>
-        The noncommuting sector asks whether the same compression idea works when the information one wants to keep is genuinely quantum and not classically compatible.
-        The answer is limited but meaningful: <span class="emph">the controlled theorem lives in a restricted regime where the mathematics behaves cleanly</span>.
-      </p>
-      <p>
-        That restricted regime is called the <span class="tooltip" tabindex="0">modularly admissible sector<span class="tooltip-text" role="tooltip">A limited quantum regime where the mathematical tools needed for the compression theorem work cleanly. Beyond that regime, the full theorem remains open.</span></span>.
-        For a non-specialist, the right way to read that phrase is not “here is more jargon to learn,” but “this is the part of the quantum problem where the framework has a controlled result.”
-      </p>
-      <p>
-        This marks the boundary between controlled result and open problem. The full quantum compression problem remains open, but the framework identifies a domain in which the structure survives and can be rigorously controlled.
-      </p>
-    </div>
-
-    <div id="reader-intrinsic" class="reader-section section">
-      <h2>10. Intrinsic admissibility</h2>
-      <p>
-        One of the theory’s most important physical constraints is the <span class="tooltip" tabindex="0">Embedded Observer Principle<span class="tooltip-text" role="tooltip">The rule that observers and measuring devices must be built from the same universe they are measuring, rather than borrowed from outside it.</span></span>.
-        That means you do not get to import a perfect clock or detector from outside the universe whenever it is convenient.
-      </p>
-      <p>
-        The intrinsic admissibility profile \(\epsilon_{\rm int}\) is the formal way of describing what kinds of measurements a given cosmological regime can support from within itself.
-        This is why the framework can talk seriously about access, screening, and observational limitations without falling back into vague mysticism.
-      </p>
-      <p>
-        The component-wise transport law matters because it keeps that internal measurement capacity from fluctuating arbitrarily under the very dynamics it is meant to describe.
-      </p>
-    </div>
-
-    <div id="reader-q" class="reader-section section">
-      <h2>11. Record-rank</h2>
-      <p>
-        The quantity \(Q\) is not a count of worlds, and it is not identical to standard Quantum Darwinism redundancy.
-        In this framework it is a witness-capacity diagnostic: it asks how much above-threshold record structure remains accessible under the chosen physical limits.
-      </p>
-      <p>
-        In the homogeneous toy model, \(Q\) can be read very concretely. Once the threshold fragment size \(m_\delta\) is known, every fragment size \(m\ge m_\delta\) counts as above threshold, while smaller fragments do not. For finite \(N\), that gives the stepwise expression
-      </p>
-      <div class="equation">\[
+        That fraction is \(q_m\). If \(q_m=0\), none of those fragments are good witnesses. If \(0<q_m<1\), <="" \(q_m="1\)," a="" consensus="" do="" every="" fragment="" fragments="" good="" if="" is="" not,="" of="" others="" p="" partial:="" pass="" record="" size="" so="" some="" structure="" that="" the="" threshold="" uneven.="" while="" witness.="">
+<div class="equation">\[
         Q_{\epsilon,\delta}^{(N)}=\frac{N-m_\delta+1}{N}\quad (m_\delta\le N),
         \qquad
-        Q_{\epsilon,\delta}^{(N)}=0\quad (m_\delta>N).
+        Q_{\epsilon,\delta}^{(N)}=0\quad (m_\delta&gt;N).
       \]</div>
-      <p>
+<p>
         A high \(Q\) means the environment has many usable witness sizes; a low \(Q\) means the records are sparse or require nearly the whole environment to recover. The graph keeps the staircase form because \(m_\delta\) is an integer threshold.
       </p>
-      <div class="viz-grid" aria-label="Generated visualization for record-rank">
-        <div class="viz-card">
-          <h3 class="viz-title">Record-rank as witness capacity</h3>
-          <p class="viz-caption"><strong>What this graph measures:</strong> as the overlap \(c\) increases, environment records become less distinguishable, so the threshold fragment size grows and the record-rank \(Q\) falls.</p>
-          <div class="viz-plot" data-viz="record-rank"></div>
-          <p class="viz-note"><strong>Why it is stepped:</strong> the curve changes only when the integer threshold \(m_\delta\) changes. The staircase is therefore part of the finite-\(N\) mathematics, not a visual artifact.</p>
-        </div>
-      </div>
-    </div>
-
-    <div id="reader-heat" class="reader-section section">
-      <h2>12. Heat death</h2>
-      <p>
+<div class="explorer-explanation">
+<p><strong>The next explorer has two jobs.</strong> The exact graph above is tied to the finite-
+\(N\) toy model. The explorer below is different: it is a conceptual dependency model for the reader. It shows why DFRC does not identify “branching” with any single quantity. A public branch-like regime needs accessible interactions, fragmentable environments, low enough readout noise, and sufficiently suppressed residual interference.</p>
+<p>The sliders should be read as proposed ingredients in a mechanism stack, not as measured cosmological parameters. Moving one slider is a way of asking which part of the stack fails first.</p>
+<div class="explorer-dictionary">
+<div><strong>Admissible access</strong>The amount of physically allowed coupling and readout power available. Low access means the distinction may exist formally but cannot be reliably probed.</div>
+<div><strong>Environmental fragmentability</strong>The degree to which the environment can split into fragments that independently carry records. Low fragmentability blocks public objectivity.</div>
+<div><strong>Readout noise</strong>The corruption of the record once a fragment is accessed. High noise means fragments exist but do not answer the question reliably.</div>
+<div><strong>Residual interference</strong>The remaining coherence between alternatives. High residual interference weakens branch separation even if some records exist.</div>
+</div>
+</div>
+<div aria-label="Generated visualization for record-rank" class="viz-grid">
+<div class="viz-card">
+<h3 class="viz-title">Record-rank as witness capacity</h3>
+<p class="viz-caption"><strong>What this graph measures:</strong> as the overlap \(c\) increases, environment records become less distinguishable, so the threshold fragment size grows and the record-rank \(Q\) falls.</p>
+<div class="viz-plot" data-viz="record-rank"></div>
+<p class="viz-note"><strong>Why it is stepped:</strong> the curve changes only when the integer threshold \(m_\delta\) changes. The staircase is therefore part of the finite-\(N\) mathematics, not a visual artifact.</p>
+</div>
+</div>
+<div class="interactive-module" id="record-rank-explorer">
+<div class="interactive-head"><h3>Record-rank and branch-regime explorer</h3><div class="prose-spine rr-added-explanation">
+<p>This explorer is a conceptual dependency model. It does not replace the exact finite-\(N\) Darwinism calculator above. The exact calculator follows the toy-model formula for accessible information and the integer threshold \(m_\delta\). This explorer shows the broader logic DFRC proposes: a regime becomes more branch-like when access, fragmentability, record reliability, and interference suppression reinforce one another.</p>
+<p>The sliders should therefore be read as proposed limiting conditions. Low admissible access means the distinction cannot be reliably probed. Low fragmentability means the environment cannot provide independent witnesses. High readout noise means fragments exist but answer unreliably. High residual interference means alternatives have not separated cleanly enough. The regime diagnosis is meant to show which part of the stack fails first.</p>
+</div><p>This explorer keeps the causal logic visible: records require access and fragments; consensus requires fragments with low noise; branch separation additionally requires low residual interference. The output is a conceptual regime diagnosis, not a new theorem.</p></div>
+<div class="interactive-body interactive-grid">
+<div class="control-stack">
+<div class="control-row"><label for="rr-access">admissible access</label><output id="rr-access-out">70</output><input id="rr-access" max="100" min="0" type="range" value="70"/></div>
+<div class="control-row"><label for="rr-frag">environmental fragmentability</label><output id="rr-frag-out">75</output><input id="rr-frag" max="100" min="0" type="range" value="75"/></div>
+<div class="control-row"><label for="rr-noise">readout noise</label><output id="rr-noise-out">20</output><input id="rr-noise" max="100" min="0" type="range" value="20"/></div>
+<div class="control-row"><label for="rr-coherence">residual interference</label><output id="rr-coherence-out">15</output><input id="rr-coherence" max="100" min="0" type="range" value="15"/></div>
+</div>
+<div>
+<div class="metric-stack">
+<div class="metric-line"><span>record availability</span><div class="metric-bar"><div class="metric-fill" id="rr-q"></div></div><div class="metric-value" id="rr-q-v">0</div></div>
+<div class="metric-line"><span>consensus</span><div class="metric-bar"><div class="metric-fill" id="rr-consensus"></div></div><div class="metric-value" id="rr-consensus-v">0</div></div>
+<div class="metric-line"><span>branch separation</span><div class="metric-bar"><div class="metric-fill" id="rr-branch"></div></div><div class="metric-value" id="rr-branch-v">0</div></div>
+<div class="metric-line"><span>boundary pressure</span><div class="metric-bar"><div class="metric-fill" id="rr-boundary"></div></div><div class="metric-value" id="rr-boundary-v">0</div></div>
+</div>
+<div class="regime-readout"><strong id="rr-regime">branch-like record regime</strong><p id="rr-note">Accessible fragments carry enough compatible pointer information that a public classical description is plausible.</p><p class="regime-limiter" id="rr-limiter">Primary limiting factor: none dominant.</p></div><div class="explorer-formula-note"><strong>Internal dependency used by the explorer:</strong> record availability is driven by access, fragmentability, and low noise; consensus is fragmentability multiplied by readout reliability; branch separation is record availability multiplied by suppression of residual interference. This mirrors the paper’s mechanism stack without pretending to be the exact finite-\(N\) formula above.</div>
+</div>
+</div>
+</div>
+</q_m<1\),></p></div>
+<div class="reader-section section" id="reader-heat">
+<h2>12. Heat death</h2>
+<p>
         In ordinary thermodynamic language, heat death means exhausted gradients. DFRC adds an informational reading: the universe can lose the physical conditions needed to maintain redundant accessible records of the observables that make a shared classical description possible.
       </p>
-      <p>
+<p>
         The controlled theorem is narrower than the cosmological story. In a finite-dimensional relaxation setting, with trivial zero-entropy observables excluded, \(Q_{\epsilon,\delta}\) tends to zero. The cosmological version still needs energy-constrained continuity and a precise causal-patch or local-algebra formulation.
       </p>
-      <p>
+<p>
         The schematic below should therefore be read as an explanation of the logic, not as observational data. If usable measurement budgets collapse and readout infidelity rises, then reliable fragments stop being recoverable. In that situation, record-rank goes to zero because the environment no longer functions as a stable witness architecture.
       </p>
-      <div class="viz-grid" aria-label="Generated visualization for heat death as record collapse">
-        <div class="viz-card">
-          <h3 class="viz-title">Record collapse schematic</h3>
-          <p class="viz-caption"><strong>What the schematic means:</strong> the budget curve represents usable resources for maintaining records; infidelity represents rising readout error; \(Q\) represents remaining accessible witness structure.</p>
-          <div class="viz-plot" data-viz="heat-collapse"></div>
-          <p class="viz-note"><strong>Status:</strong> this is a conceptual visual aid, not a fitted cosmological dataset. Its role is to show the dependency chain behind record collapse: falling budget plus rising error makes redundant records inaccessible, so \(Q\to0\).</p>
-        </div>
-      </div>
-    </div>
-
-    <div id="reader-bigbang" class="reader-section section">
-      <h2>13. Big Bang-side vanishing</h2>
-      <p>
+<div aria-label="Generated visualization for heat death as record collapse" class="viz-grid">
+<div class="viz-card">
+<h3 class="viz-title">Record collapse schematic</h3>
+<p class="viz-caption"><strong>What the schematic means:</strong> the budget curve represents usable resources for maintaining records; infidelity represents rising readout error; \(Q\) represents remaining accessible witness structure.</p>
+<div class="viz-plot" data-viz="heat-collapse"></div>
+<p class="viz-note"><strong>Status:</strong> this is a conceptual visual aid, not a fitted cosmological dataset. Its role is to show the dependency chain behind record collapse: falling budget plus rising error makes redundant records inaccessible, so \(Q\to0\).</p>
+</div>
+</div>
+</div>
+<div class="reader-section section" id="reader-bigbang">
+<h2>13. Big Bang-side vanishing</h2>
+<p>
         The early-boundary claim is subtler than the late one. The theory does not say the Big Bang is simply the same as heat death.
         It says that near the early boundary, the subsystem structure needed to define fragments may fail altogether.
       </p>
-      <p>
+<p>
         If fragments cannot be meaningfully separated, then the setup required for record redundancy never comes online.
         In that sense, \(Q\) can vanish at the beginning for a different reason than it vanishes at the end.
       </p>
-      <p>
+<p>
         This is the heart of the framework’s phase-equivalence idea:
         beginning and end may converge as limits of vanishing record structure without becoming the same geometric state. This is a criterion-level claim rather than a derived early-universe model; its mathematical burden is to make the split-scale story precise in algebraic quantum field theory or an equivalent local-algebra framework.
       </p>
-    </div>
-
-    <div id="reader-locality" class="reader-section section">
-      <h2>14. Emergent locality</h2>
-      <p>
+</div>
+<div class="reader-section section" id="reader-locality">
+<h2>14. Emergent locality</h2>
+<p>
         This is one of the boldest claims in the framework, so it has to be explained carefully.
         The idea is not that space is an illusion. It is that the <em>useful notion of nearness</em> may be reconstructed from patterns of physically available correlation and record exchange rather than assumed from the start.
       </p>
-      <p>
+<p>
         A good lay analogy is a map reconstructed from travel times rather than from an aerial photograph.
         If city A can exchange people, goods, and information with city B very quickly, but only very slowly with city C,
         then even without seeing a literal map one can begin to infer which cities are effectively near each other.
@@ -1430,103 +1753,199 @@ body.reader-theme .viz-plot{
         systems that can strongly and reliably stabilize each other’s records count as near in an emergent sense,
         while systems whose correlations are weak, delayed, or inaccessible count as far apart.
       </p>
-      <p>
+<p>
         In formal language, the theory tries to build a notion of neighborhood out of <span class="subemph">admissible distinguishability patterns</span>:
         which subsystems can exchange robust information, how strongly they are linked, and whether those links can be organized into something that behaves like a low-dimensional geometry.
       </p>
-      <p>
+<p>
         When the framework says locality could be “reconstructed,” it means something specific:
         one tries to recover the effective shape of space from the structure of record-bearing relations,
         rather than taking the spatial background as primitive from the outset.
         The toy result assumes strong exponential-weight structure, so it is not a derivation of locality from nothing. It is a sanity check and a target for a harder theorem.
       </p>
-    </div>
-
-    <div id="reader-regimes" class="reader-section section">
-      <h2>15. Cosmological regimes</h2>
-      <p>
+</div>
+<div class="reader-section section" id="reader-regimes">
+<h2>15. Cosmological regimes</h2>
+<p>
         The theory does not assume one single measurement capacity across all of cosmic history.
         Different eras should have different intrinsic admissibility profiles.
       </p>
-      <p>
+<p>
         Reheating matters because it is the first obvious regime in which ordinary matter sectors, scattering, and record-bearing interactions become broadly available.
         A late de Sitter-like regime matters because it is the natural place where usable non-equilibrium budgets and readout fidelity may collapse.
       </p>
-      <p>
+<p>
         So the cosmological story here is not one universal bridge. It is a family of bridges, each tied to a specific regime and its own measurement structure.
       </p>
-    </div>
-
-    <div id="reader-cross" class="reader-section section">
-      <h2>16. Cross-aeon compression</h2>
-      <p>
-        The role of compression is central to the cycle question:
-        if the universe approaches a regime where ordinary record structure dissolves, then any cycle picture has to answer a hard question —
-        what, if anything, could carry forward without requiring an impossible archive of everything that ever happened?
-      </p>
-      <p>
-        The seed is not treated as an unconstrained archive of everything that happened.
-        Such an archive would demand implausible channel capacity and blur the framework into fantasy.
-      </p>
-      <p>
-        The seed is restricted to a bounded space of effective-theory structures \(\mathcal T_B(U)\).
-        In ordinary language: what carries across aeons is not a complete diary. It is, at most, a compressed inheritance object describing what kind of universe can be rebuilt.
-      </p>
-      <p>
-        This bounded-seed view makes the cross-aeon claim smaller, but far more defensible. It also marks the boundary clearly: cross-aeon inheritance is a formal scaffold and research target, not an established physical mechanism.
-      </p>
-    </div>
-
-    <div id="reader-fals" class="reader-section section">
-      <h2>17. Falsification</h2>
-      <p>
+<h3>Black holes as local boundary analogues</h3>
+<p>In the full cosmological extension, black holes are not decorative. They are the most important local case where ordinary access to interior structure breaks down and the exterior description becomes boundary-centered. DFRC should not say that the infalling description is simply false. The safer statement is that the external admissible description is horizon-bound: what can be registered, stabilized, and later recovered is associated with boundary degrees of freedom and outgoing radiation rather than direct inspection of an interior.</p>
+<p>This makes black holes natural candidates for a successor-universe module, but not a proven mechanism. The finite-dimensional theorem core does not depend on black holes. The stronger cosmological genealogy does.</p>
+<p>
+      The next section compares these boundary conditions directly. The comparison is deliberately cautious: it does not collapse heat death, the Big-Bang side, and black holes into one ordinary event. It asks what kind of admissibility failure or boundary dominance is being proposed in each case.
+    </p></div>
+<div class="reader-section section" id="reader-cross">
+<h2>16. Boundary conditions and the boundary kernel</h2><div class="prose-spine kernel-bridge">
+<p>The boundary kernel should be read through the bridge of renormalization-group and information-bottleneck reasoning. In RG language, most microscopic details are irrelevant at a fixed point; what remains is a universality structure plus a finite number of relevant directions. DFRC adapts that shape to cosmological inheritance: the successor does not need a complete memory of the parent, but it cannot be explanatory nothing either.</p>
+<p>This is why the notation separates \(\widetilde Y_B\) from \(Y_B\). The tuple names a representative structure. The quotient says only boundary-admissibly distinguishable content counts as inherited structure. The kernel is therefore not “the seed” in an ordinary archival sense. It is the finite successor-relevant equivalence class, if such a boundary map exists.</p>
+</div>
+<p>
+  The boundary-kernel idea exists because the theory needs a more careful answer than “the seed survives” or “the physics survives.”
+  At a cosmological boundary, the full prior microhistory cannot be treated as a recoverable archive. If the late universe has lost the admissible means to compare and stabilize most distinctions, then the surviving object cannot be a complete diary of what happened.
+  But total erasure is also too strong. A successor universe, if such a thing is possible, cannot be generated by nothing in the explanatory sense. Something must play the role of a minimal inherited structure.
+</p>
+<p>
+  DFRC therefore separates a representative object from its equivalence class. The representative is written as
+  \(\widetilde Y_B=(\mathcal U_*,\lambda_{\rm rel},\chi_{\rm edge})\).
+  The actual boundary kernel is not that tuple as a naked object; it is the tuple considered only up to boundary admissible indistinguishability:
+</p>
+<div class="equation">\[
+  \widetilde Y_B=(\mathcal U_*,\lambda_{\rm rel},\chi_{\rm edge}),
+  \qquad
+  Y_B=[\widetilde Y_B]_{\sim_B}.
+\]</div>
+<p>
+  This notation matters. \(\mathcal U_*\) is the universality or fixed-point structure that would appear from inside the successor as law-like physics.
+  \(\lambda_{\rm rel}\) are finite relevant coordinates: values, deformations, or initial-condition biases that remain important after irrelevant detail has been compressed away.
+  \(\chi_{\rm edge}\) is the parent-child edge datum: not a full memory of the parent, but the minimum relation that prevents the successor from being treated as source-free.
+  The quotient \([\cdot]_{\sim_B}\) says that distinctions which cannot survive the boundary admissibility relation should not be counted as separate inherited facts.
+</p>
+<p>
+  The interactive comparison below is schematic, not a theorem. It does not put heat death, the Big-Bang side, and black holes on one measured scale.
+  It shows which kind of failure is doing the explanatory work in each case: exhausted gradients, missing factorization, lost record capacity, or boundary-centered edge structure.
+</p>
+<div class="explorer-explanation">
+<p>The boundary explorer is meant to prevent a common misunderstanding. DFRC is not saying that heat death, the Big-Bang side, and black holes are the same event. It is comparing them under one question: <strong>what kind of admissible distinction-making is still available?</strong></p>
+<p>Each bar names a role in that question. None of the bars are observational values; they are a disciplined schematic for keeping the different boundary claims separate.</p>
+<div class="boundary-axis-guide">
+<div><strong>Usable gradients</strong>Free energy, clock structure, or other non-equilibrium resources that can power record-making and comparison.</div>
+<div><strong>Factorization</strong>The availability of a meaningful split into system, environment, and fragments. Without it, Quantum-Darwinian records cannot be defined.</div>
+<div><strong>Record capacity</strong>The ability to preserve accessible witness structure across time or across fragments.</div>
+<div><strong>Edge dominance</strong>The degree to which the relevant admissible description is boundary-centered rather than interior-inspectable.</div>
+</div>
+</div>
+<div class="interactive-module" id="boundary-condition-explorer">
+<div class="interactive-head">
+<h3>Boundary-condition explorer</h3><div class="prose-spine boundary-added-explanation">
+<p>This explorer compares three boundary-like regimes without pretending they are the same physical event. Heat death, the Big-Bang side, and black-hole horizons differ in geometry, scale, and known physics. They are placed in one visual frame only because DFRC asks the same operational question of each: what kind of admissible distinction-making is still available?</p>
+<p>Usable gradients represent free energy, clock structure, and other resources that can power comparison. Factorization represents whether it still makes sense to split the world into systems, environments, and fragments. Record capacity represents whether witness structure can be preserved and accessed. Edge dominance represents how much the relevant description becomes boundary-centered rather than interior-accessible. These are disciplined conceptual coordinates, not measured cosmological data.</p>
+</div>
+<p>Toggle the regime to see which failure mode is being proposed. The point is not to equate the regimes, but to compare their roles in admissible record-making.</p>
+</div>
+<div class="interactive-body boundary-explorer-layout">
+<div>
+<div aria-label="Boundary condition selector" class="condition-tabs" role="tablist">
+<button class="condition-tab active" data-boundary="heat" type="button">Heat death</button>
+<button class="condition-tab" data-boundary="bang" type="button">Big-Bang side</button>
+<button class="condition-tab" data-boundary="hole" type="button">Black hole</button>
+</div>
+<div class="condition-panel">
+<h4 id="boundary-title">Heat death</h4>
+<p id="boundary-copy">Record-making fails because usable gradients, clocks, and recoverable witnesses fade.</p>
+<div class="condition-metrics">
+<div class="metric-line"><span>usable gradients</span><div class="metric-bar"><div class="metric-fill" id="b-grad"></div></div><span class="metric-value" id="b-grad-v">0</span></div>
+<div class="metric-line"><span>factorization</span><div class="metric-bar"><div class="metric-fill" id="b-fact"></div></div><span class="metric-value" id="b-fact-v">0</span></div>
+<div class="metric-line"><span>record capacity</span><div class="metric-bar"><div class="metric-fill" id="b-record"></div></div><span class="metric-value" id="b-record-v">0</span></div>
+<div class="metric-line"><span>edge dominance</span><div class="metric-bar"><div class="metric-fill" id="b-edge"></div></div><span class="metric-value" id="b-edge-v">0</span></div>
+</div>
+<div class="boundary-logic-note" id="boundary-logic"><strong>Interpretation:</strong> Heat death is record failure after records existed; the Big-Bang side is record failure before fragment structure is available; black holes are boundary-dominant exterior descriptions.</div>
+</div>
+</div>
+<div class="condition-visual">
+<div class="condition-svg-wrap">
+<svg aria-labelledby="boundary-svg-title boundary-svg-desc" role="img" viewbox="0 0 760 390">
+<title id="boundary-svg-title">Boundary-condition comparison schematic</title>
+<desc id="boundary-svg-desc">A schematic comparison of heat death, Big-Bang-side factorization failure, and black-hole boundary behavior.</desc>
+<defs>
+<lineargradient id="boundaryGrad" x1="0" x2="1">
+<stop offset="0%" stop-color="var(--accent)"></stop>
+<stop offset="100%" stop-color="var(--callout)"></stop>
+</lineargradient>
+</defs>
+<rect fill="rgba(255,255,255,.025)" height="328" rx="24" stroke="rgba(255,255,255,.12)" width="704" x="28" y="30"></rect>
+<line stroke="rgba(255,255,255,.20)" stroke-dasharray="7 7" stroke-width="3" x1="112" x2="650" y1="275" y2="275"></line>
+<circle class="boundary-node" cx="155" cy="166" fill="rgba(99,208,255,.13)" id="node-heat" r="58" stroke="var(--accent2)" stroke-width="3"></circle>
+<circle class="boundary-node" cx="380" cy="166" fill="rgba(255,199,119,.12)" id="node-bang" r="58" stroke="var(--callout)" stroke-width="3"></circle>
+<circle class="boundary-node" cx="605" cy="166" fill="rgba(122,240,198,.12)" id="node-hole" r="58" stroke="var(--accent)" stroke-width="3"></circle>
+<text fill="var(--heading)" font-size="18" font-weight="800" text-anchor="middle" x="155" y="154">heat</text>
+<text fill="var(--heading)" font-size="18" font-weight="800" text-anchor="middle" x="155" y="178">death</text>
+<text fill="var(--heading)" font-size="18" font-weight="800" text-anchor="middle" x="380" y="154">Big-Bang</text>
+<text fill="var(--heading)" font-size="18" font-weight="800" text-anchor="middle" x="380" y="178">side</text>
+<text fill="var(--heading)" font-size="18" font-weight="800" text-anchor="middle" x="605" y="154">black</text>
+<text fill="var(--heading)" font-size="18" font-weight="800" text-anchor="middle" x="605" y="178">hole</text>
+<text fill="var(--muted)" font-size="13" text-anchor="middle" x="155" y="246">loss by fading</text>
+<text fill="var(--muted)" font-size="13" text-anchor="middle" x="155" y="264">witness capacity</text>
+<text fill="var(--muted)" font-size="13" text-anchor="middle" x="380" y="246">loss by absent</text>
+<text fill="var(--muted)" font-size="13" text-anchor="middle" x="380" y="264">fragment structure</text>
+<text fill="var(--muted)" font-size="13" text-anchor="middle" x="605" y="246">edge-centered</text>
+<text fill="var(--muted)" font-size="13" text-anchor="middle" x="605" y="264">exterior description</text>
+<path d="M205 166 C260 116 315 116 330 166" fill="none" opacity=".65" stroke="url(#boundaryGrad)" stroke-linecap="round" stroke-width="5"></path>
+<path d="M430 166 C485 216 540 216 555 166" fill="none" opacity=".65" stroke="url(#boundaryGrad)" stroke-linecap="round" stroke-width="5"></path>
+<text fill="var(--muted)" font-size="14" text-anchor="middle" x="380" y="326">same DFRC question: what admissible distinctions can still be stabilized?</text>
+</svg>
+</div>
+<div class="boundary-legend">
+<div><strong>Heat death:</strong> gradients and witnesses fade after record structure existed.</div>
+<div><strong>Big-Bang side:</strong> records fail before a stable fragment split is available.</div>
+<div><strong>Black hole:</strong> the relevant exterior description becomes boundary-centered.</div>
+<div><strong>Kernel:</strong> only boundary-admissible inherited structure is counted.</div>
+</div>
+</div>
+</div>
+</div>
+<p>
+  The point of the explorer is to keep the regimes distinct. DFRC is not claiming that these are literally the same physical object.
+  It is claiming that they may be comparable under the question of admissible distinguishability: what can still be registered, compared, stabilized, and inherited?
+</p>
+<p>
+  This is also why the boundary kernel is written as an equivalence class. The inherited structure is not whatever an omniscient observer might name; it is only the structure that remains distinct under the boundary admissibility relation. That keeps the speculative cosmology tied to the same rule as the finite-dimensional core: do not count distinctions that the regime itself cannot support.
+</p>
+</div>
+<div class="reader-section section" id="reader-fals">
+<h2>17. Falsification</h2>
+<p>
         A serious theory must be able to lose. This framework can fail in clear ways:
         if admissibility secretly depends on observers, if no stable branching locus exists, if compression only yields trivial fixed points,
         if cosmological boundaries do not actually drive record-rank to zero, or if the supposed residual channel cannot be distinguished from noise.
       </p>
-      <p>
+<p>
         In other words, the theory is trying to move out of the realm of suggestive language and into the realm of breakable claims.
       </p>
-    </div>
-
-    <div id="reader-status" class="reader-section section">
-      <h2>18. Status</h2>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Controlled core</th><th>Open targets</th></tr></thead>
-          <tbody>
-            <tr>
-              <td>Exact toy-model threshold, asymptotics, heterogeneous threshold diagnostics, commuting fixed point, finite-dimensional modular fixed point under assumptions, and finite-dimensional heat-death result with entropy-floor condition</td>
-              <td>True branch-distance minimization, general noncommuting qIB convergence, realistic early-universe factorization collapse, infinite-dimensional cosmological heat-death theorem, emergent-locality reconstruction, concrete cosmological \(\epsilon_{\rm int}\), and a physical cross-aeon channel</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p>
+</div>
+<div class="reader-section section" id="reader-status">
+<h2>18. Status</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Controlled core</th><th>Open targets</th></tr></thead>
+<tbody>
+<tr>
+<td>Exact toy-model threshold, asymptotics, heterogeneous threshold diagnostics, commuting fixed point, finite-dimensional modular fixed point under assumptions, and finite-dimensional heat-death result with entropy-floor condition</td>
+<td>True branch-distance minimization, general noncommuting qIB convergence, realistic early-universe factorization collapse, infinite-dimensional cosmological heat-death theorem, emergent-locality reconstruction, concrete cosmological \(\epsilon_{\rm int}\), and a physical cross-aeon channel</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>
         The important point is that the framework is not empty speculation, but it is also not finished physics. It contains exact toy-model results, explicit formal structures, and a clearly marked frontier between theorem core, criterion-level cosmology, and speculative cross-aeon scaffolding.
       </p>
-    </div>
-
-    <div id="reader-close" class="reader-section section">
-      <h2>19. Closing</h2>
-      <p>
+<p>This status is intentionally uneven. Einselection and Quantum Darwinism strengthen the branch/classicality side. RG-style information bottleneck ideas strengthen the fixed-point strategy. The boundary kernel makes the cross-aeon claim more precise. None of those ingredients prove the cosmological extension; they make its assumptions more explicit and therefore easier to test or reject.</p>
+</div>
+<div class="reader-section section" id="reader-close">
+<h2>19. Closing</h2>
+<p>
         The shortest statement of the proposal is this:
         <span class="call">reality becomes classical where differences can be copied into many stable records, and it loses classical structure where that record-making capacity disappears.</span>
-      </p>
-      <p>
+</p>
+<p>
         What makes the framework promising is not completeness. It is that its central claims are clear enough to be criticized, extended, tested, and perhaps eventually falsified.
       </p>
-    </div>
-  </div>
+</div>
+</div>
 </section>
-
-
-        <div class="foot">Distinguishability-First Relational Cosmology</div>
-      </div>
-    </main>
-  </div>
-
-  <script>
+<div class="foot">Distinguishability-First Relational Cosmology</div>
+</div>
+</main>
+</div>
+<script>
 
 
     // Lightweight DFRC visualization layer: generated SVG plots, themed from CSS variables.
@@ -2498,5 +2917,129 @@ document.addEventListener('keydown', (e) => {
 });
 
   </script>
+<script>
+(function(){
+  function clamp(n){ return Math.max(0, Math.min(100, Math.round(n))); }
+  function setBar(id, val){
+    var bar=document.getElementById(id), txt=document.getElementById(id+'-v');
+    if(bar) bar.style.width=clamp(val)+'%';
+    if(txt) txt.textContent=clamp(val);
+  }
+  function initTheoryTabs(){
+    document.querySelectorAll('.theory-tab').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var key=btn.getAttribute('data-theory');
+        document.querySelectorAll('.theory-tab').forEach(function(b){ b.classList.toggle('active', b===btn); });
+        document.querySelectorAll('.theory-panel').forEach(function(panel){
+          panel.classList.toggle('active', panel.getAttribute('data-theory-panel')===key);
+        });
+      });
+    });
+  }
+  function initRecordRank(){
+    var ids=['rr-access','rr-frag','rr-noise','rr-coherence'];
+    if(!document.getElementById('rr-access')) return;
+    function update(){
+      var access=+document.getElementById('rr-access').value;
+      var frag=+document.getElementById('rr-frag').value;
+      var noise=+document.getElementById('rr-noise').value;
+      var coherence=+document.getElementById('rr-coherence').value;
+      ids.forEach(function(id){ var el=document.getElementById(id), out=document.getElementById(id+'-out'); if(out) out.textContent=el.value; });
+      var q=clamp(0.38*access + 0.42*frag + 0.20*(100-noise));
+      var consensus=clamp(frag*(100-noise)/100);
+      var branch=clamp(q*(100-coherence)/100);
+      var boundary=clamp(100 - (0.55*q + 0.25*consensus + 0.20*branch));
+      setBar('rr-q', q); setBar('rr-consensus', consensus); setBar('rr-branch', branch); setBar('rr-boundary', boundary);
+      var limiting = [
+        ['admissible access', access],
+        ['environmental fragmentability', frag],
+        ['readout reliability', 100-noise],
+        ['interference suppression', 100-coherence]
+      ].sort(function(a,b){ return a[1]-b[1]; })[0];
+      var title='record-poor regime', note='The available conditions do not support stable public records. This is closer to a boundary or pre-classical description than to a branch-like classical sector.';
+      if(branch>70 && consensus>65){ title='branch-like record regime'; note='Accessible fragments carry enough compatible pointer information that a public classical description is plausible.'; }
+      else if(q>55 && consensus>45){ title='partial record regime'; note='Some records exist, but the public consensus structure is not yet strong enough to treat branches as sharply separated.'; }
+      else if(access<35 || frag<35){ title='low-admissibility regime'; note='The limiting factor is not merely noise. The system lacks enough admissible access or fragment structure for records to become public.'; }
+      if(coherence>70){ title='interference-leaky regime'; note='Even with records, residual interference remains high enough that branch separation is weak.'; }
+      document.getElementById('rr-regime').textContent=title;
+      document.getElementById('rr-note').textContent=note;
+      var lim=document.getElementById('rr-limiter');
+      if(lim) lim.textContent='Primary limiting factor: '+limiting[0]+' ('+Math.round(limiting[1])+'/100).';
+    }
+    ids.forEach(function(id){ document.getElementById(id).addEventListener('input', update); });
+    update();
+  }
+
+  function initExactDarwinism(){
+    var canvas=document.getElementById('qd-canvas');
+    if(!canvas) return;
+    var C={bg:'rgba(255,255,255,0.025)', grid:'rgba(255,255,255,0.12)', text:'#eaf2ff', muted:'#9fb0c0', accent:'#63d0ff', accent2:'#7af0c6', warn:'#ffc777', bad:'#ff8d8d'};
+    function h2(p){ if(p<=0 || p>=1) return 0; return -(p*Math.log2(p)+(1-p)*Math.log2(1-p)); }
+    function invH2(target){
+      if(target<=0) return 0; if(target>=1) return 0.5;
+      var lo=0, hi=0.5;
+      for(var i=0;i<70;i++){ var mid=(lo+hi)/2; if(h2(mid)<target) lo=mid; else hi=mid; }
+      return (lo+hi)/2;
+    }
+    function constants(delta){ var u=invH2(delta); return {u:u,A:4*u*(1-u)}; }
+    function mDeltaLocal(c,delta){ var A=constants(delta).A; return Math.ceil(Math.log(A)/(2*Math.log(c))); }
+    function iacc(c,m){ var s=Math.pow(c,m); var pe=0.5*(1-Math.sqrt(Math.max(0,1-s*s))); return 1-h2(pe); }
+    function draw(){
+      var c=+document.getElementById('qd-c').value, N=+document.getElementById('qd-n').value, delta=+document.getElementById('qd-delta').value;
+      document.getElementById('qd-c-out').textContent=c.toFixed(2); document.getElementById('qd-n-out').textContent=N; document.getElementById('qd-delta-out').textContent=delta.toFixed(2);
+      var md=mDeltaLocal(c,delta), q=md<=N?(N-md+1)/N:0, red=md>0?N/md:0, thresh=1-delta;
+      document.getElementById('qd-md').textContent=md;
+      document.getElementById('qd-red').textContent=red.toFixed(2);
+      document.getElementById('qd-q').textContent=q.toFixed(3);
+      var note = md<=N ? 'Threshold reached: fragments of size '+md+' and larger clear the '+(1-delta).toFixed(2)+' accessible-information criterion.' : 'Threshold not reached: even the full environment does not clear the chosen accessible-information criterion.';
+      document.getElementById('qd-note').textContent=note;
+      var dpr=window.devicePixelRatio||1, W=canvas.width, H=canvas.height, ctx=canvas.getContext('2d');
+      ctx.clearRect(0,0,W,H); ctx.fillStyle='rgba(5,8,12,0.45)'; ctx.fillRect(0,0,W,H);
+      var ml=62,mr=28,mt=32,mb=58,pw=W-ml-mr,ph=H-mt-mb;
+      function X(m){return ml+(m-1)/(Math.max(1,N-1))*pw;} function Y(v){return mt+(1-v)*ph;}
+      ctx.strokeStyle=C.grid; ctx.lineWidth=1;
+      for(var gy=0;gy<=4;gy++){ var y=mt+gy*ph/4; ctx.beginPath(); ctx.moveTo(ml,y); ctx.lineTo(W-mr,y); ctx.stroke(); }
+      ctx.strokeStyle='rgba(255,255,255,0.38)'; ctx.beginPath(); ctx.moveTo(ml,mt); ctx.lineTo(ml,H-mb); ctx.lineTo(W-mr,H-mb); ctx.stroke();
+      ctx.strokeStyle=C.warn; ctx.setLineDash([7,5]); ctx.beginPath(); ctx.moveTo(ml,Y(thresh)); ctx.lineTo(W-mr,Y(thresh)); ctx.stroke(); ctx.setLineDash([]);
+      var bw=Math.max(3, Math.min(18, pw/N*0.66));
+      for(var m=1;m<=N;m++){
+        var v=iacc(c,m); ctx.fillStyle=v>=thresh?C.accent:C.accent2; ctx.globalAlpha=v>=thresh?0.88:0.35;
+        ctx.fillRect(X(m)-bw/2,Y(v),bw,Y(0)-Y(v)); ctx.globalAlpha=1;
+      }
+      if(md<=N){ ctx.strokeStyle=C.warn; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(X(md),mt); ctx.lineTo(X(md),H-mb); ctx.stroke(); }
+      ctx.fillStyle=C.text; ctx.font='13px JetBrains Mono, monospace'; ctx.textAlign='center'; ctx.fillText('fragment size m', ml+pw/2, H-18);
+      ctx.save(); ctx.translate(20,mt+ph/2); ctx.rotate(-Math.PI/2); ctx.fillText('I_acc(m) bits',0,0); ctx.restore();
+      ctx.fillStyle=C.muted; ctx.textAlign='right'; ctx.fillText('1.0', ml-10, Y(1)+4); ctx.fillText('0.5', ml-10, Y(.5)+4); ctx.fillText('0', ml-10, Y(0)+4);
+      ctx.textAlign='center'; ctx.fillText('1', X(1), H-mb+20); ctx.fillText(String(N), X(N), H-mb+20);
+      ctx.fillStyle=C.warn; ctx.textAlign='left'; ctx.fillText('1−δ = '+thresh.toFixed(2), ml+8, Y(thresh)-8);
+      if(md<=N){ ctx.fillText('mδ='+md, X(md)+8, mt+18); }
+    }
+    ['qd-c','qd-n','qd-delta'].forEach(function(id){ document.getElementById(id).addEventListener('input', draw); });
+    draw();
+  }
+
+  function initBoundaryExplorer(){
+    var data={
+      heat:{title:'Heat death',copy:'Record-making fails because usable gradients, clocks, and recoverable witnesses fade. The issue is not that history never existed; it is that distinctions can no longer be stably compared.',logic:'Interpretation: record structure once existed, but the resources that keep witnesses accessible and comparable have drained away.',grad:8,fact:70,record:5,edge:8},
+      bang:{title:'Big-Bang side',copy:'Record-making fails for the opposite reason: the system/environment/fragment split needed to define public records may not yet be available.',logic:'Interpretation: the failure is upstream of ordinary records. Without a stable fragment split, there is no environment architecture for public witness redundancy.',grad:18,fact:6,record:5,edge:2},
+      hole:{title:'Black-hole boundary',copy:'The exterior description becomes boundary-centered. Ordinary interior inspection is unavailable, while horizon-associated bookkeeping becomes the relevant admissible description.',logic:'Interpretation: the claim is not that the infalling frame is erased. DFRC uses the exterior admissible description, where horizon or edge structure dominates access.',grad:55,fact:30,record:38,edge:88}
+    };
+    if(!document.getElementById('boundary-condition-explorer')) return;
+    function show(key){
+      var d=data[key];
+      document.getElementById('boundary-title').textContent=d.title;
+      document.getElementById('boundary-copy').textContent=d.copy;
+      var logic=document.getElementById('boundary-logic');
+      if(logic) logic.innerHTML='<strong>Interpretation:</strong> '+d.logic.replace(/^Interpretation:\s*/,'');
+      setBar('b-grad', d.grad); setBar('b-fact', d.fact); setBar('b-record', d.record); setBar('b-edge', d.edge);
+      document.querySelectorAll('.condition-tab').forEach(function(btn){ btn.classList.toggle('active', btn.getAttribute('data-boundary')===key); });
+    }
+    document.querySelectorAll('.condition-tab').forEach(function(btn){ btn.addEventListener('click', function(){ show(btn.getAttribute('data-boundary')); }); });
+    show('heat');
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', function(){ initTheoryTabs(); initRecordRank(); initExactDarwinism(); initBoundaryExplorer(); });
+  else { initTheoryTabs(); initRecordRank(); initExactDarwinism(); initBoundaryExplorer(); }
+})();
+</script>
 </body>
 </html>
