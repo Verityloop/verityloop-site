@@ -1279,7 +1279,7 @@ body.reader-theme .viz-plot{
 <div class="block prop"><div class="label">Proposition 8.4</div><p>Under the iterated flow \(X\to S\to Y\to Y\cdots\), the minimal sufficient statistic \(Y\) is a nontrivial absorbing fixed point.</p></div>
 <div class="block remark"><div class="label">RG / information-bottleneck interpretation</div><p>The research reason to keep this section is that it gives a controlled version of the fixed-point idea. Ordinary compression does not generically produce a meaningful nontrivial attractor. The admissibility-coupled version is stronger: compression maps content forward while also pushing forward the admissible channel class. Directions quotiented out at one scale are no longer admissible distinctions at the next scale. In RG language, the surviving variable behaves like a relevance algebra; irrelevant directions are deleted, intermediate directions may survive one quotient, and relevant directions remain load-bearing.</p></div>
 <div class="equation">\[
-      (\mathcal A_{k+1},\mathcal C_{k+1},\mathcal R_{k+1})\cong(\mathcal A_k,\mathcal C_k,\mathcal R_k)\quad	ext{up to }\sim_\epsilon
+      (\mathcal A_{k+1},\mathcal C_{k+1},\mathcal R_{k+1})\cong(\mathcal A_k,\mathcal C_k,\mathcal R_k)\quad\text{up to }\sim_\epsilon
     \]</div>
 <p class="lead-note">This fixed-point criterion is not meant to replace the explicit commuting-sector proposition; it states the more general target suggested by the RG/information-bottleneck research pass.</p>
 </div>
@@ -1396,12 +1396,10 @@ Admissible distinguishability is a resource-sensitive version of restricted-meas
 <section class="mode-panel" id="reader">
 <div class="reader-flow">
 <div class="reader-section section" id="reader-overview"><h2>Overview</h2>
-<p class="reader-lede">DFRC begins with a narrow question and follows it farther than usual: when does a difference become physically real enough to matter inside a universe?</p>
-<p>A mathematical description can draw endless distinctions. Two states can have different symbols, two histories can have different labels, and two possible universes can be imagined as separate. DFRC does not treat every written distinction as equally load-bearing. A distinction starts to matter physically when some process can register it, preserve it, compare it, or pass it forward as a record.</p>
-<p>This is why the theory begins with <strong>admissible distinguishability</strong>. The word <em>distinguishability</em> says that a difference has to be capable of showing up in physical consequences. The word <em>admissible</em> says that not every ideal measurement is allowed. The relevant interactions are limited by the regime itself: finite energy, finite time, finite bandwidth, finite causal access, noise, locality, and the couplings actually available.</p>
-<p>That move does not say that human observers create reality. It also does not say that anything humans cannot currently measure is unreal. It says that the internal construction of classical facts, identity, locality, time, and branch-like history depends on differences that can become stable records for physical systems inside the world.</p>
-<p>The core mechanism is therefore layered. Decoherence suppresses interference. <strong>Einselection</strong> selects the pointer states stable under environmental monitoring. <strong>Quantum Darwinism</strong> explains how many environment fragments can redundantly encode those pointer states. Stronger objectivity ideas, such as strong Quantum Darwinism and spectrum broadcast structure, clarify why redundancy alone is not enough: the records must be accessible, mutually compatible, and effectively non-disturbing. DFRC’s terms are meant to extend that record-centered picture rather than replace it.</p>
-<p>The cosmological extension applies the same language to boundaries. Heat death is not treated as literal nonexistence, but as loss of usable gradients and accessible witness structure. The Big-Bang side is not treated as a tiny object inside ordinary space, but as a regime where the factorization into systems, environments, and fragments may not yet be admissible. Black holes are treated as local boundary analogues in which the exterior-accessible description becomes horizon-centered. These are not claimed to be the same physical event. They are compared under one question: what kinds of distinction-making remain available?</p>
+<p class="reader-lede">DFRC asks how a universe becomes a place with usable facts, histories, identities, and boundaries when the only structure allowed to do that work is structure that can be physically distinguished.</p>
+<p>The proposal is not that observers create reality, and it is not that anything outside present human measurement is unreal. The narrower claim is that a difference becomes load-bearing inside a regime only when admissible physical processes can register it, stabilize it, compare it, or pass it forward as a record.</p>
+<p>The reader mode develops that claim in stages. First it explains how possible differences become admissible distinctions. Then it explains how distinctions become records, how records become redundant across fragments, how redundancy can support objectivity, and how branch-like classical history emerges only after those earlier conditions are in place.</p>
+<p>The cosmological sections apply the same discipline to boundaries. Heat death, Big-Bang-side factorization failure, and black-hole horizon behavior are not treated as one identical event. They are compared because each stresses ordinary record-making in a different way. The guiding question is always the same: what kinds of distinction-making remain physically available?</p>
 <div aria-label="Mechanism stack diagram" class="concept-figure">
 <svg role="img" viewbox="0 0 980 255">
 <defs><lineargradient id="stackg" x1="0" x2="1"><stop offset="0" stop-color="var(--accent2)"></stop><stop offset="1" stop-color="var(--accent)"></stop></lineargradient></defs>
@@ -1431,28 +1429,12 @@ Admissible distinguishability is a resource-sensitive version of restricted-meas
 <div class="theory-panel" data-theory-panel="baby"><h4>Baby universes and cosmological natural selection</h4><p>Black-hole successor-universe ideas and cosmological natural selection already explore genealogical cosmology. They give DFRC a research neighborhood rather than a conclusion.</p><p><strong>DFRC's difference:</strong> the proposed inheritance is not a full copy or ordinary signal. It is a boundary-admissible kernel that may preserve only universality, relevant coordinates, and local parent-child consistency.</p></div>
 <div class="theory-panel" data-theory-panel="dfrc"><h4>DFRC</h4><p>DFRC's primitive is admissible distinguishability: what differences can be physically registered, stabilized, copied, compared, or compressed by available interactions. From there it builds records, classicality, branches, time, locality, and boundary behavior.</p><p><strong>Core claim:</strong> the same currency—admissible record-making capacity—should be used from quantum measurement through cosmological boundary claims.</p></div>
 </div>
-</div></div><div class="reader-section section" id="reader-bridges">
-<h2>Conceptual bridges: DFRC names and established neighborhoods</h2>
-<p class="reader-lede">DFRC uses some of its own names because it is trying to connect several areas at once. Those names should not hide their ancestry. Each one is meant to sit near an existing problem, then extend it in a specific direction.</p>
-<p><strong>Admissible distinguishability</strong> is closest to restricted measurement distinguishability in quantum information: two states may be distinguishable in principle, but not under a restricted family of measurements. DFRC makes that restriction physical and regime-dependent. The admissible family is not merely a mathematical convenience; it encodes what bounded interactions can actually do inside the regime being described.</p>
-<p><strong>Record-rank</strong> is closest to Quantum Darwinist redundancy, accessible information in environment fragments, and the stronger objectivity conditions studied through strong Quantum Darwinism and spectrum broadcast structures. DFRC keeps the record-redundancy idea but generalizes it into a diagnostic for whether a whole regime has enough accessible, redundant, consensus-supporting witness structure.</p>
-<p><strong>Branch-regime</strong> sits near decoherent histories, consistent histories, and branching-state analyses. DFRC differs by refusing to treat a branch as a primitive metaphysical object. A branch-regime is a high-redundancy, high-consensus, low-interference region of record structure. It is a condition a state can approach, not a hard split assumed in advance.</p>
-<p><strong>Boundary kernel</strong> sits near renormalization-group and information-bottleneck thinking. The inherited object is not a complete diary of the previous universe. The better analogy is a fixed point plus finitely many relevant directions: the smallest surviving structure that can still generate a record-making successor regime, if such a successor transition exists.</p>
-<div aria-label="DFRC terms mapped to conventional neighborhoods" class="bridge-map">
-<div class="bridge-row header"><div class="bridge-cell">DFRC term</div><div class="bridge-cell">Nearest conventional bridge</div><div class="bridge-cell">How DFRC extends it</div></div>
-<div class="bridge-row"><div class="bridge-cell"><strong>Admissible distinguishability</strong></div><div class="bridge-cell">Restricted measurement distinguishability; operational distinguishability</div><div class="bridge-cell">Makes the measurement class physical, resource-bounded, and regime-dependent rather than merely chosen for convenience.</div></div>
-<div class="bridge-row"><div class="bridge-cell"><strong>Record-rank</strong></div><div class="bridge-cell">Quantum Darwinism; accessible information; spectrum broadcast structure</div><div class="bridge-cell">Treats redundant, accessible records as a regime-level diagnostic, including cosmological limits where ordinary fragment structure may fail.</div></div>
-<div class="bridge-row"><div class="bridge-cell"><strong>Branch-regime</strong></div><div class="bridge-cell">Decoherent histories; consistent histories; branching states</div><div class="bridge-cell">Defines branch-likeness as proximity to stable redundant record structure rather than as a primitive ontology.</div></div>
-<div class="bridge-row"><div class="bridge-cell"><strong>Boundary kernel</strong></div><div class="bridge-cell">RG fixed point plus relevant deformations; information bottleneck relevance</div><div class="bridge-cell">Frames cross-boundary inheritance as a finite equivalence class of successor-relevant structure, not a stored archive.</div></div>
-</div>
-<p>This bridge map should be read as positioning, not surrender. The existing literature supplies the local tools. DFRC’s distinctive move is to use admissible distinguishability as the common currency connecting measurement, records, branches, locality, time, and cosmological boundaries.</p>
-</div>
-<div class="reader-section section" id="reader-intro"><h2>1. Introduction</h2>
-<p>Most physical theories begin by granting some structure as basic: spacetime, fields, particles, a universal wavefunction, or a preferred family of histories. DFRC does not deny the usefulness of those descriptions. It asks whether they are the right starting point for explaining how a universe becomes classical, local, and history-bearing from the inside.</p>
-<p>The first question is operational, but not psychological. It is not “what does an observer know?” It is: when can one physical state be told apart from another by processes the universe itself supports? A photon bath, a detector, a rock, a molecule, a gravitational imprint, a cell, or a brain can all participate if they carry stable correlations. The central issue is whether a difference can be converted into a durable record.</p>
+</div></div><div class="reader-section section" id="reader-intro"><h2>1. Introduction: differences, records, and bridge terms</h2>
+<p class="reader-lede">Most physical theories begin by granting some structure as basic: spacetime, fields, particles, a universal wavefunction, a preferred family of histories, or a pre-given ontology of branches. DFRC does not deny that those descriptions are useful. It asks whether they should be treated as the first explanatory layer when the problem is classicality, locality, identity, and cosmological history as seen from inside a universe.</p>
+<p>The first question is operational, but not psychological. It is not “what does a human observer know?” It is: when can one physical state be told apart from another by processes the universe itself supports? A photon bath, a detector, a rock, a molecule, a gravitational imprint, a cell, or a brain can all participate if they carry stable correlations. The central issue is whether a possible difference can be converted into a durable record.</p>
 <p>This reorders several familiar ideas. A branch is no longer a primitive world-line drawn into the ontology; it is a high-redundancy region of record structure. Locality is no longer assumed to be the first fact; it becomes tied to low-cost, high-fidelity exchange of records. Time is no longer treated as an external clock for the whole construction; it is the internal ordering of record production and comparison. A cosmological boundary is therefore not only a place where geometry becomes difficult. It is a place where the preconditions for record-making may fail.</p>
 <div class="prose-spine">
-<p><strong>The dependency chain is the spine of the reader mode:</strong> possible difference → admissible distinction → stable record → redundant record → consensus-supporting objectivity → branch-like regime → cosmological record-rank → boundary failure or boundary inheritance.</p>
+<p><strong>The dependency chain is the spine of reader mode:</strong> possible difference → admissible distinction → stable record → redundant record → consensus-supporting objectivity → branch-like regime → cosmological record-rank → boundary failure or boundary inheritance.</p>
 <p>Each later term is downstream of the earlier terms. If admissible distinctions fail, records cannot form. If records cannot stabilize, redundancy cannot accumulate. If redundancy does not support compatible access from fragments, objectivity does not arise. If objectivity does not arise, branch-like classical history is not yet a good description.</p>
 </div>
 <div class="foundation-block">
@@ -1472,7 +1454,27 @@ Admissible distinguishability is a resource-sensitive version of restricted-meas
 <div class="example-card"><h4>A scattered photon</h4><p>Light bouncing off an object can carry pointer-state information into the environment. Many scattered photons can make the same object-state recoverable from many different fragments.</p></div>
 <div class="example-card"><h4>A cosmological trace</h4><p>A fossil signal matters only if it remains physically accessible. DFRC’s boundary claims ask what happens when the universe loses the conditions needed for such traces to be compared at all.</p></div>
 </div>
-</div></div>
+</div>
+<div class="foundation-block">
+<h3>Known neighborhoods, not invented problems</h3>
+<p>DFRC uses some of its own names because it is trying to connect several areas at once. Those names should not hide their ancestry. Each one is meant to sit near an established problem, then extend it in a specific direction.</p>
+<p><strong>Admissible distinguishability</strong> is closest to restricted measurement distinguishability in quantum information: two states may be distinguishable in principle, but not under a restricted family of measurements. DFRC makes that restriction physical and regime-dependent. The admissible family is not merely a mathematical convenience; it encodes what bounded interactions can actually do inside the regime being described.</p>
+<p><strong>Record-rank</strong> is closest to Quantum Darwinist redundancy, accessible information in environment fragments, and the stronger objectivity conditions studied through strong Quantum Darwinism and spectrum broadcast structures. DFRC keeps the record-redundancy idea but generalizes it into a diagnostic for whether a whole regime has enough accessible, redundant, consensus-supporting witness structure.</p>
+<p><strong>Branch-regime</strong> sits near decoherent histories, consistent histories, and branching-state analyses. DFRC differs by refusing to treat a branch as a primitive metaphysical object. A branch-regime is a high-redundancy, high-consensus, low-interference region of record structure. It is a condition a state can approach, not a hard split assumed in advance.</p>
+<p><strong>Boundary kernel</strong> sits near renormalization-group and information-bottleneck thinking. The inherited object is not a complete diary of the previous universe. The better analogy is a fixed point plus finitely many relevant directions: the smallest surviving structure that can still generate a record-making successor regime, if such a successor transition exists.</p>
+<table>
+<thead><tr><th>DFRC term</th><th>Nearest conventional bridge</th><th>How DFRC extends it</th></tr></thead>
+<tbody>
+<tr><td><strong>Admissible distinguishability</strong></td><td>Restricted measurement distinguishability; operational distinguishability</td><td>Makes the measurement class physical, resource-bounded, and regime-dependent rather than merely chosen for convenience.</td></tr>
+<tr><td><strong>Record-rank</strong></td><td>Quantum Darwinism; accessible information in environment fragments; strong Quantum Darwinism; spectrum broadcast structure</td><td>Treats redundant, accessible records as a regime-level diagnostic, including cosmological limits where ordinary fragment structure may fail.</td></tr>
+<tr><td><strong>Branch-regime</strong></td><td>Decoherent histories; consistent histories; branching-state analyses</td><td>Defines branch-likeness as proximity to stable redundant record structure rather than as a primitive ontology.</td></tr>
+<tr><td><strong>Boundary kernel</strong></td><td>RG fixed point plus relevant deformations; information-bottleneck relevance</td><td>Frames cross-boundary inheritance as a finite equivalence class of successor-relevant structure, not a stored archive.</td></tr>
+</tbody>
+</table>
+<p>This bridge map is positioning, not surrender. The existing literature supplies local tools: restricted measurement families, einselection, redundant environmental records, histories frameworks, spectrum-broadcast objectivity, and RG-style relevance. DFRC’s distinctive move is to use admissible distinguishability as the common currency connecting those tools to cosmological boundaries.</p>
+<p>The bridge terms also prevent an important misreading. DFRC is not inventing new problems to solve. It is asking whether several known problems are symptoms of one deeper issue: which differences can remain physically available as stable, shareable records under the admissibility conditions of a given regime?</p>
+</div>
+</div>
 <div class="reader-section section" id="reader-primitive">
 <h2>2. Primitive layer</h2><div class="prose-spine primitive-bridge">
 <p>In conventional quantum information language, this section is about <strong>distinguishability under restricted measurements</strong>. DFRC uses the phrase <strong>admissible distinguishability</strong> for a reason: the restriction is not arbitrary. It is the set of measurements, channels, or instruments physically available under the regime’s own budgets.</p>
@@ -1647,31 +1649,76 @@ Admissible distinguishability is a resource-sensitive version of restricted-meas
 <div class="reader-section section" id="reader-hetero">
 <h2>7. Heterogeneous environments</h2>
 <p>
-        Real environments are not uniform. Some pieces interact strongly with the system, some weakly, and some store cleaner records than others.
-        The homogeneous model is therefore a useful baseline, but it is not the realistic case.
-      </p>
+  Real environments are not uniform. Some pieces interact strongly with the system, some weakly, and some store cleaner records than others. The homogeneous model is therefore a useful baseline, but it is not the realistic case. A photon field, a gas, a detector array, or a cosmological environment will not usually copy the same record with identical strength into every fragment.
+</p>
 <p>
-        DFRC handles that by asking a more careful question. Instead of asking only whether a fragment of size \(m\) works, it asks what fraction of all size-\(m\) fragments work.
-        That fraction is \(q_m\). If \(q_m=0\), none of those fragments are good witnesses. If \(0<q_m<1\), <="" \(q_m="1\)," a="" consensus="" do="" every="" fragment="" fragments="" good="" if="" is="" not,="" of="" others="" p="" partial:="" pass="" record="" size="" so="" some="" structure="" that="" the="" threshold="" uneven.="" while="" witness.="">
+  This matters because redundancy and objectivity can come apart. A single unusually good fragment may carry a usable record, while most fragments of the same size do not. In that case, the record exists, but it is not yet broadly public. DFRC therefore asks a more careful question than “does a fragment of size \(m\) work?” It asks what fraction of all size-\(m\) fragments work.
+</p>
+<p>
+  That fraction is written as \(q_m\). If \(q_m=0\), none of the fragments of that size clear the record threshold. If \(0&lt;q_m&lt;1\), witness structure is partial: some fragments carry usable records while others do not. If \(q_m=1\), every fragment of that size passes the threshold, so the information has become broadly available across the environment.
+</p>
 <div class="equation">\[
-        Q_{\epsilon,\delta}^{(N)}=\frac{N-m_\delta+1}{N}\quad (m_\delta\le N),
-        \qquad
-        Q_{\epsilon,\delta}^{(N)}=0\quad (m_\delta&gt;N).
-      \]</div>
+q_m:=\frac{1}{\binom{N}{m}}\sum_{|F|=m}\Theta\!\big(I_{\rm acc}(F)-(1-\delta)H(X)\big),
+\qquad
+Q_{\epsilon,\delta}^{\rm frac,(N)}:=\frac1N\sum_{m=1}^N q_m.
+\]</div>
 <p>
-        A high \(Q\) means the environment has many usable witness sizes; a low \(Q\) means the records are sparse or require nearly the whole environment to recover. The graph keeps the staircase form because \(m_\delta\) is an integer threshold.
-      </p>
-<div class="explorer-explanation">
-<p><strong>The next explorer has two jobs.</strong> The exact graph above is tied to the finite-
-\(N\) toy model. The explorer below is different: it is a conceptual dependency model for the reader. It shows why DFRC does not identify “branching” with any single quantity. A public branch-like regime needs accessible interactions, fragmentable environments, low enough readout noise, and sufficiently suppressed residual interference.</p>
-<p>The sliders should be read as proposed ingredients in a mechanism stack, not as measured cosmological parameters. Moving one slider is a way of asking which part of the stack fails first.</p>
-<div class="explorer-dictionary">
-<div><strong>Admissible access</strong>The amount of physically allowed coupling and readout power available. Low access means the distinction may exist formally but cannot be reliably probed.</div>
-<div><strong>Environmental fragmentability</strong>The degree to which the environment can split into fragments that independently carry records. Low fragmentability blocks public objectivity.</div>
-<div><strong>Readout noise</strong>The corruption of the record once a fragment is accessed. High noise means fragments exist but do not answer the question reliably.</div>
-<div><strong>Residual interference</strong>The remaining coherence between alternatives. High residual interference weakens branch separation even if some records exist.</div>
+  In the binary equal-prior toy models used for the live graph, \(H(X)=1\), so the threshold becomes \(I_{\rm acc}(F)\ge 1-\delta\). The general expression keeps \(H(X)\) visible because, outside that toy model, the target record variable need not have one bit of entropy.
+</p>
+<p>
+  This is why the paper mode distinguishes best-case and worst-case fragment thresholds. The best threshold asks when <em>some</em> fragment can work. The worst threshold asks when <em>every</em> fragment of that size works. The gap between those two thresholds is the partial-consensus window.
+</p>
+<div class="equation">\[
+m_\delta^{\rm best}\le m_\delta^{\rm worst},\qquad
+Q_{\epsilon,\delta}^{\rm worst,(N)}\le Q_{\epsilon,\delta}^{\rm frac,(N)}\le Q_{\epsilon,\delta}^{\rm best,(N)}.
+\]</div>
+<p>
+  The conceptual move is that classical-looking record structure need not appear everywhere at once. In a heterogeneous environment, objectivity can grow gradually from no reliable witnesses, to partial agreement, to broad agreement across all fragments of a given size. This gives DFRC a way to talk about record structure that is neither purely private nor already fully public.
+</p>
+<div aria-label="Generated visualization for heterogeneous environments" class="viz-grid">
+<div class="viz-card">
+<h3 class="viz-title">Partial consensus window</h3>
+<p class="viz-caption"><strong>What this graph measures:</strong> each bar is \(q_m\), the fraction of size-\(m\) environment fragments that clear the record threshold. The shaded band marks the region between the first size where at least one fragment works and the first size where every fragment works.</p>
+<div class="viz-plot" data-viz="heterogeneous-window"></div>
+<p class="viz-note"><strong>Interpretation:</strong> low bars mean few fragments can act as witnesses; middle-height bars mean uneven or partial consensus; bars at 1 mean every fragment of that size carries enough accessible information to count as a reliable public witness.</p>
 </div>
 </div>
+<p>
+  In plain language, heterogeneous environments force the theory to separate “there exists a usable witness” from “public objectivity is broadly available.” A universe can contain isolated good records without yet containing enough compatible fragments to support a shared classical description.
+</p>
+</div>
+<div class="reader-section section" id="reader-commuting">
+<h2>8. Admissibility-coupled RG bottleneck flow</h2>
+<p>The fixed-point problem is where DFRC asks how anything can survive a boundary without smuggling in a complete microscopic archive. The bridge here is renormalization-group and information-bottleneck reasoning: many microscopic details can wash out, while a smaller set of relevant variables remains capable of controlling large-scale behavior.</p>
+<p>The DFRC addition is that compression alone is not enough. If a map quotients away a distinction, the later theory should not quietly allow that same deleted distinction to reappear as if it were still measurable. The admissible channel class has to flow with the compression. That is what the pushforward of admissibility is doing.</p>
+<div class="equation">\[
+(\Pi)_*\mathfrak C:=\left\{\Psi\ \middle|\ \exists \Phi\in\mathfrak C\text{ such that }\Pi\circ\Phi=\Psi\circ\Pi\right\}.
+\]</div>
+<p>A simple commuting example is \(X=(S,R)\) with \(Y=f(S)\). The details in \(R\) are irrelevant to \(Y\); some information in \(S\) may be intermediate; the part captured by \(Y\) is relevant. After the flow reaches \(Y\), the surviving description is not merely smaller. It is smaller together with a smaller admissible measurement structure.</p>
+<p>This is the reader-mode reason the paper mode treats the fixed point as a triple of algebra, channel class, and relevance structure rather than as a single compressed variable. The theory is not asking what information could be remembered by an impossible observer. It is asking what remains load-bearing after both description and admissibility have been pushed through the bottleneck.</p>
+</div>
+<div class="reader-section section" id="reader-noncommuting">
+<h2>9. Noncommuting modular sector</h2>
+<p>The commuting bottleneck picture is the cleanest place to explain the idea, but quantum theory is not generally commuting. Many observables cannot be treated as if they were ordinary simultaneously readable variables. That is why the noncommuting extension is restricted to a modularly admissible sector rather than claimed in full generality.</p>
+<p>In the paper mode, this sector is described using finite-dimensional von Neumann algebras, a faithful state \(\omega\), and a descending chain of subalgebras invariant under the modular flow \(\sigma_t^\omega\). The important reader-mode point is not the technical machinery itself; it is why the machinery is needed. Conditional expectations in a noncommuting algebra are delicate. DFRC only uses them where they actually exist and preserve the relevant state.</p>
+<p>Within that controlled setting, the chain stabilizes at a limiting algebra \(\mathcal B_\infty\), and the associated expectation becomes an idempotent projection onto the surviving fixed-point structure. The decomposition in paper mode is therefore a noncommuting analogue of separating what survives from what is discarded.</p>
+<p>This section is deliberately cautious. It does not claim that every quantum cosmological situation has already been reduced to this finite-dimensional sector. It marks a safe mathematical foothold for the broader noncommuting program.</p>
+</div>
+<div class="reader-section section" id="reader-intrinsic">
+<h2>10. Intrinsic admissibility</h2>
+<p>Admissibility would be too weak if it meant “whatever an external super-observer is allowed to do.” DFRC’s embedded-observer principle says that the measuring structures must be buildable from the same macrostate family being described. A universe does not get to borrow an apparatus from outside itself.</p>
+<p>This does not mean only actually performed measurements count. The relevant notion is counterfactual admissibility: what the regime could physically support as measurement, comparison, and record-making structure. A world may contain no one currently performing a measurement, while still having the resources to support that measurement in principle.</p>
+<p>That is why paper mode gives each macrostate an intrinsic profile \(\epsilon_{\rm int}(\rho)\). The profile tracks available region, time, interaction strength, bandwidth or complexity, and readout fidelity as features of the regime itself. The continuity assumptions prevent tiny changes of state from causing arbitrary jumps in what counts as physically admissible.</p>
+<p>In reader-mode terms, intrinsic admissibility is the guardrail that keeps DFRC from becoming either pure observer-relativism or pure ideal-measurement Platonism. Measurement capacity is physical, embedded, and regime-dependent.</p>
+</div>
+<div class="reader-section section" id="reader-q">
+<h2>11. Cosmological record-rank</h2>
+<p>Record-rank is DFRC’s regime-level diagnostic for witness capacity. It asks whether admissible observables can be recovered from environment fragments with enough accessible information to support a shared description. It is inspired by Quantum Darwinist redundancy, but it is not identical to a single standard redundancy number.</p>
+<div class="equation">\[
+Q_{\epsilon,\delta}(\rho):=\sup_{X\in\mathsf O_\epsilon}\int_0^1 df\,\Theta\!\Big(\bar I_{\rm acc}^\epsilon(X:F_f)-(1-\delta)H(X)\Big).
+\]</div>
+<p>The distinction from ordinary redundancy matters. A regime can have many correlations that are not accessible. It can have accessible fragments that disagree. It can have redundant information that is too noisy to support consensus. Stronger objectivity ideas, such as strong Quantum Darwinism and spectrum broadcast structure, are useful bridges here because they emphasize that public reality requires more than “many copies.” The records must be accessible, mutually compatible, and effectively non-disturbing.</p>
+<p>Record-rank also needs to stay separate from fragment threshold, redundancy, and consensus variance. A fragment threshold asks how large a fragment must be. Redundancy asks how many such fragments exist. Consensus asks whether those fragments agree. Record-rank is the broader DFRC diagnostic that tries to track when the whole witness structure is available enough for classicality.</p>
 <div aria-label="Generated visualization for record-rank" class="viz-grid">
 <div class="viz-card">
 <h3 class="viz-title">Record-rank as witness capacity</h3>
@@ -1703,7 +1750,7 @@ Admissible distinguishability is a resource-sensitive version of restricted-meas
 </div>
 </div>
 </div>
-</q_m<1\),></p></div>
+</div>
 <div class="reader-section section" id="reader-heat">
 <h2>12. Heat death</h2>
 <p>
