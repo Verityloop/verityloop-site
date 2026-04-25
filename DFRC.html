@@ -349,6 +349,81 @@
       border-color:var(--line-strong);
       transform:translateY(-1px);
     }
+
+    .viz-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:14px;
+      margin:16px 0 8px;
+    }
+    .viz-card{
+      position:relative;
+      overflow:hidden;
+      border:1px solid var(--line);
+      border-radius:var(--radius-lg);
+      background:
+        radial-gradient(circle at 18% 10%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 34%),
+        linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.018));
+      padding:16px 16px 12px;
+      box-shadow:0 12px 28px rgba(0,0,0,.18);
+    }
+    .viz-card::after{
+      content:"";
+      position:absolute;
+      inset:auto -18% -35% 38%;
+      height:80%;
+      background:radial-gradient(circle, color-mix(in srgb, var(--accent2) 16%, transparent), transparent 62%);
+      pointer-events:none;
+    }
+    .viz-title{
+      position:relative;
+      z-index:1;
+      margin:0 0 4px;
+      color:var(--heading);
+      font:700 .88rem 'JetBrains Mono',monospace;
+      letter-spacing:.035em;
+    }
+    .viz-caption{
+      position:relative;
+      z-index:1;
+      margin:0 0 10px;
+      color:var(--muted);
+      font-size:.88rem;
+      line-height:1.45;
+    }
+    .viz-plot{
+      position:relative;
+      z-index:1;
+      width:100%;
+      min-height:260px;
+      border-radius:14px;
+      background:rgba(8,12,18,.50);
+      border:1px solid rgba(255,255,255,.045);
+    }
+    body.reader-theme .viz-plot{
+      background:rgba(16,13,10,.48);
+    }
+    .viz-plot svg{
+      display:block;
+      width:100%;
+      height:auto;
+      min-height:260px;
+      overflow:visible;
+    }
+    .viz-note{
+      position:relative;
+      z-index:1;
+      margin:9px 0 0;
+      color:var(--muted);
+      font-size:.82rem;
+      line-height:1.45;
+    }
+    @media (max-width: 760px){
+      .viz-grid{grid-template-columns:1fr}
+      .viz-card{padding:14px 12px 12px}
+      .viz-plot, .viz-plot svg{min-height:235px}
+    }
+
     .reader-lede{
       color:var(--callout);
       font-size:1.04rem;
@@ -409,8 +484,8 @@
 
     mjx-container[jax="CHTML"][display="true"]{
       margin:.95rem 0 !important;
-      overflow-x:auto;
-      overflow-y:hidden;
+      overflow:visible !important;
+      max-width:100%;
       padding:.1rem 0;
     }
 
@@ -1037,6 +1112,14 @@
         This matters because the framework does not postpone all substance to the cosmology.
         It already has a calculable core at the smallest worked level.
       </p>
+      <div class="viz-grid" aria-label="Generated visualizations for the qubit example">
+        <div class="viz-card">
+          <h3 class="viz-title">Noisy readout curve</h3>
+          <p class="viz-caption">As readout reliability \(\eta\) improves, admissible distinguishability rises nonlinearly. The dashed curve shows the weak-contrast approximation.</p>
+          <div class="viz-plot" data-viz="qubit-kl"></div>
+          <p class="viz-note">Generated from \(D=\eta\log((1+\eta)/(1-\eta))\) and its small-\(\eta\) approximation \(2\eta^2\).</p>
+        </div>
+      </div>
     </div>
 
     <div id="reader-homogeneous" class="reader-section section">
@@ -1066,6 +1149,20 @@
         That gives the theory a true phase picture. Strong imprinting gives trivial classicality. Intermediate imprinting gives a meaningful redundancy regime.
         Weak imprinting means the environment never becomes a good witness, so operational classicality does not really switch on.
       </p>
+      <div class="viz-grid" aria-label="Generated visualizations for homogeneous record formation">
+        <div class="viz-card">
+          <h3 class="viz-title">Fragment threshold</h3>
+          <p class="viz-caption">Accessible information rises as larger fragments are gathered. The vertical marker is the first fragment size that clears the threshold.</p>
+          <div class="viz-plot" data-viz="fragment-threshold"></div>
+          <p class="viz-note">Generated from the test-suite threshold formula for a representative overlap and error tolerance.</p>
+        </div>
+        <div class="viz-card">
+          <h3 class="viz-title">Finite-\(N\) phase boundary</h3>
+          <p class="viz-caption">The bright region marks parameter pairs where redundant records switch on: \(c^{2N}\le A_\delta\).</p>
+          <div class="viz-plot" data-viz="phase-boundary"></div>
+          <p class="viz-note">This is not a cosmological fit; it is a generated map of the toy-model criterion.</p>
+        </div>
+      </div>
     </div>
 
     <div id="reader-branch" class="reader-section section">
@@ -1107,6 +1204,14 @@
       <p>
         Conceptually, this is a major gain. It means the theory can talk about imperfect and uneven environments without pretending classicality appears everywhere at once.
       </p>
+      <div class="viz-grid" aria-label="Generated visualization for heterogeneous environments">
+        <div class="viz-card">
+          <h3 class="viz-title">Partial consensus window</h3>
+          <p class="viz-caption">In an uneven environment, some fragments cross the record threshold before all fragments do. The shaded middle zone is partial consensus.</p>
+          <div class="viz-plot" data-viz="heterogeneous-window"></div>
+          <p class="viz-note">Generated by brute-force fragment counting over a representative heterogeneous overlap profile.</p>
+        </div>
+      </div>
     </div>
 
     <div id="reader-commuting" class="reader-section section">
@@ -1174,6 +1279,14 @@
       <p>
         A high \(Q\) means the world is rich in accessible records. A low \(Q\) means those records are sparse, fragile, or absent. As a cosmological order parameter, \(Q\) depends on specifying the observable class, fragment family, entropy floor, and consensus criterion in realistic settings.
       </p>
+      <div class="viz-grid" aria-label="Generated visualization for record-rank">
+        <div class="viz-card">
+          <h3 class="viz-title">Record-rank as witness capacity</h3>
+          <p class="viz-caption">For a fixed tolerance, stronger imprinting yields smaller threshold fragments and therefore higher record-rank.</p>
+          <div class="viz-plot" data-viz="record-rank"></div>
+          <p class="viz-note">Generated from \(Q=(N-m_\delta+1)/N\), clipped to zero when the threshold exceeds the environment size.</p>
+        </div>
+      </div>
     </div>
 
     <div id="reader-heat" class="reader-section section">
@@ -1190,6 +1303,14 @@
       <p>
         That gives heat death an informational meaning in addition to a thermodynamic one.
       </p>
+      <div class="viz-grid" aria-label="Generated visualization for heat death as record collapse">
+        <div class="viz-card">
+          <h3 class="viz-title">Record collapse schematic</h3>
+          <p class="viz-caption">A conceptual generated plot: usable budget falls, readout infidelity rises, and record-rank tends toward zero.</p>
+          <div class="viz-plot" data-viz="heat-collapse"></div>
+          <p class="viz-note">This is a qualitative visual aid, not an observational fit.</p>
+        </div>
+      </div>
     </div>
 
     <div id="reader-bigbang" class="reader-section section">
@@ -1319,6 +1440,185 @@
   </div>
 
   <script>
+
+
+    // Lightweight DFRC visualization layer: generated SVG plots, themed from CSS variables.
+    // No static status images and no external chart dependency.
+    function dfrcVizColors(){
+      const cs = getComputedStyle(document.body);
+      return {
+        text: cs.getPropertyValue('--text').trim() || '#f5f8fc',
+        muted: cs.getPropertyValue('--muted').trim() || '#a9b8c8',
+        accent: cs.getPropertyValue('--accent').trim() || '#56ffe0',
+        accent2: cs.getPropertyValue('--accent2').trim() || '#4fc3f7',
+        callout: cs.getPropertyValue('--callout').trim() || '#d4a574',
+        good: cs.getPropertyValue('--good').trim() || '#89e59b',
+        warn: cs.getPropertyValue('--warn').trim() || '#f2cd79',
+        bad: cs.getPropertyValue('--bad').trim() || '#ff9b96',
+        line: cs.getPropertyValue('--line-strong').trim() || 'rgba(96,181,255,.30)'
+      };
+    }
+    function binaryEntropy(p){
+      if(p <= 0 || p >= 1) return 0;
+      return -(p*Math.log(p) + (1-p)*Math.log(1-p));
+    }
+    function inverseBinaryEntropy(target){
+      if(target <= 0) return 0;
+      if(target >= Math.log(2)) return .5;
+      let lo = 1e-12, hi = .5;
+      for(let i=0;i<70;i++){
+        const mid = (lo+hi)/2;
+        if(binaryEntropy(mid) < target) lo = mid; else hi = mid;
+      }
+      return (lo+hi)/2;
+    }
+    function thresholdConstants(delta){
+      const u = inverseBinaryEntropy(delta);
+      return {u, A: 4*u*(1-u)};
+    }
+    function mDelta(c, delta){
+      const A = thresholdConstants(delta).A;
+      return Math.ceil(Math.abs(Math.log(A))/(2*Math.abs(Math.log(c))));
+    }
+    function svgEl(tag, attrs={}){
+      const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+      Object.entries(attrs).forEach(([k,v]) => el.setAttribute(k, v));
+      return el;
+    }
+    function drawPlot(target, cfg){
+      const C = dfrcVizColors();
+      const W=720, H=320, m={l:54,r:24,t:26,b:44};
+      target.innerHTML = '';
+      const svg = svgEl('svg', {viewBox:`0 0 ${W} ${H}`, role:'img', 'aria-label':cfg.label || 'DFRC generated graph'});
+      const defs = svgEl('defs');
+      const grad = svgEl('linearGradient', {id:`grad-${cfg.id}`, x1:'0%', x2:'100%', y1:'0%', y2:'0%'});
+      grad.append(svgEl('stop', {offset:'0%', 'stop-color':C.accent, 'stop-opacity':.95}));
+      grad.append(svgEl('stop', {offset:'100%', 'stop-color':C.accent2, 'stop-opacity':.95}));
+      defs.append(grad); svg.append(defs);
+      const xmin=cfg.xmin, xmax=cfg.xmax, ymin=cfg.ymin, ymax=cfg.ymax;
+      const X=x=>m.l+(x-xmin)/(xmax-xmin)*(W-m.l-m.r);
+      const Y=y=>H-m.b-(y-ymin)/(ymax-ymin)*(H-m.t-m.b);
+      const grid = svgEl('g', {'stroke':C.line, 'stroke-opacity':.35, 'stroke-width':1});
+      for(let i=0;i<=4;i++){
+        const x=m.l+i*(W-m.l-m.r)/4;
+        const y=m.t+i*(H-m.t-m.b)/4;
+        grid.append(svgEl('line',{x1:x,y1:m.t,x2:x,y2:H-m.b}));
+        grid.append(svgEl('line',{x1:m.l,y1:y,x2:W-m.r,y2:y}));
+      }
+      svg.append(grid);
+      const axis = svgEl('g', {'stroke':C.muted, 'stroke-width':1.2, 'stroke-opacity':.75});
+      axis.append(svgEl('line',{x1:m.l,y1:H-m.b,x2:W-m.r,y2:H-m.b}));
+      axis.append(svgEl('line',{x1:m.l,y1:m.t,x2:m.l,y2:H-m.b}));
+      svg.append(axis);
+      function label(txt,x,y,anchor='middle',size=13,fill=C.muted){
+        const t=svgEl('text',{x,y,'text-anchor':anchor,fill,'font-size':size,'font-family':'JetBrains Mono, monospace'});
+        t.textContent=txt; svg.append(t); return t;
+      }
+      label(cfg.xlabel || '', (m.l+W-m.r)/2, H-12, 'middle');
+      label(cfg.ylabel || '', 14, (m.t+H-m.b)/2, 'middle').setAttribute('transform',`rotate(-90 14 ${(m.t+H-m.b)/2})`);
+      if(cfg.xTicks){ cfg.xTicks.forEach(([v,txt])=>label(txt, X(v), H-m.b+18)); }
+      if(cfg.yTicks){ cfg.yTicks.forEach(([v,txt])=>label(txt, m.l-8, Y(v)+4, 'end')); }
+      (cfg.layers||[]).forEach(layer=>layer(svg,{X,Y,W,H,m,C,label}));
+      target.appendChild(svg);
+    }
+    function pathFrom(points, X, Y){
+      return points.map((p,i)=>(i?'L':'M')+X(p[0]).toFixed(2)+' '+Y(p[1]).toFixed(2)).join(' ');
+    }
+    function renderQubitKL(el){
+      const pts=[], asym=[];
+      for(let i=0;i<=120;i++){
+        const eta=.01+i*.97/120;
+        pts.push([eta, eta*Math.log((1+eta)/(1-eta))]);
+        asym.push([eta, 2*eta*eta]);
+      }
+      drawPlot(el,{id:'kl', xmin:0, xmax:1, ymin:0, ymax:4.6, xlabel:'readout reliability η', ylabel:'distinguishability D', xTicks:[[0,'0'],[.5,'.5'],[1,'1']], yTicks:[[0,'0'],[2,'2'],[4,'4']], layers:[
+        (svg,{X,Y,C})=>{ svg.append(svgEl('path',{d:pathFrom(asym,X,Y),fill:'none',stroke:C.warn,'stroke-width':3,'stroke-dasharray':'7 7','stroke-linecap':'round'})); },
+        (svg,{X,Y,C})=>{ svg.append(svgEl('path',{d:pathFrom(pts,X,Y),fill:'none',stroke:'url(#grad-kl)','stroke-width':4,'stroke-linecap':'round'})); },
+        (svg,{C,label})=>{ label('exact D',590,54,'start',13,C.accent); label('2η²',590,78,'start',13,C.warn); }
+      ]});
+    }
+    function renderFragmentThreshold(el){
+      const c=.82, delta=.1, N=24, thresh=1-delta;
+      const md=mDelta(c,delta);
+      const bars=[];
+      for(let m=1;m<=N;m++){
+        const s=Math.pow(c,m), pe=.5*(1-Math.sqrt(1-s*s));
+        bars.push([m,1-binaryEntropy(pe)]);
+      }
+      drawPlot(el,{id:'frag', xmin:.5, xmax:N+.5, ymin:0, ymax:1.02, xlabel:'fragment size m', ylabel:'I_acc', xTicks:[[1,'1'],[md,String(md)],[N,String(N)]], yTicks:[[0,'0'],[.5,'.5'],[.9,'.9'],[1,'1']], layers:[
+        (svg,{X,Y,C})=>{ bars.forEach(([m,v])=>svg.append(svgEl('rect',{x:X(m)-7,y:Y(v),width:14,height:Y(0)-Y(v),rx:4,fill:v>=thresh?C.accent:C.accent2,'fill-opacity':v>=thresh?.9:.38}))); },
+        (svg,{X,Y,W,m,C,label})=>{ svg.append(svgEl('line',{x1:m.l,y1:Y(thresh),x2:W-m.r,y2:Y(thresh),stroke:C.warn,'stroke-width':2,'stroke-dasharray':'6 6'})); svg.append(svgEl('line',{x1:X(md),y1:26,x2:X(md),y2:276,stroke:C.callout,'stroke-width':2})); label('threshold',575,Y(thresh)-8,'start',13,C.warn); label('mδ='+md,X(md)+8,44,'start',13,C.callout); }
+      ]});
+    }
+    function renderPhaseBoundary(el){
+      const delta=.1, A=thresholdConstants(delta).A;
+      drawPlot(el,{id:'phase', xmin:.42, xmax:.98, ymin:4, ymax:60, xlabel:'overlap c', ylabel:'environment size N', xTicks:[[.5,'.5'],[.7,'.7'],[.9,'.9']], yTicks:[[10,'10'],[30,'30'],[50,'50']], layers:[
+        (svg,{X,Y,C})=>{
+          const nx=28, ny=22;
+          for(let i=0;i<nx;i++) for(let j=0;j<ny;j++){
+            const c=.42+(i+.5)*(.98-.42)/nx, N=4+(j+.5)*(60-4)/ny;
+            const on=Math.pow(c,2*N)<=A;
+            svg.append(svgEl('rect',{x:X(.42+i*(.98-.42)/nx),y:Y(4+(j+1)*(60-4)/ny),width:(X(.42+(i+1)*(.98-.42)/nx)-X(.42+i*(.98-.42)/nx)+.8),height:(Y(4+j*(60-4)/ny)-Y(4+(j+1)*(60-4)/ny)+.8),fill:on?C.accent:C.bad,'fill-opacity':on?.72:.18}));
+          }
+        },
+        (svg,{X,Y,C,label})=>{
+          const pts=[]; for(let i=0;i<=100;i++){ const c=.43+i*(.97-.43)/100; pts.push([c, Math.log(A)/(2*Math.log(c))]); }
+          svg.append(svgEl('path',{d:pathFrom(pts,X,Y),fill:'none',stroke:C.callout,'stroke-width':3,'stroke-linecap':'round'}));
+          label('records on',145,68,'start',13,C.accent); label('no threshold',505,230,'start',13,C.bad);
+        }
+      ]});
+    }
+    function renderHeterogeneous(el){
+      const overlaps=[.62,.66,.71,.75,.78,.83,.87,.90,.93,.95], delta=.1, A=thresholdConstants(delta).A;
+      const N=overlaps.length, qs=[]; let best=N+1,worst=N+1;
+      function combos(arr,k,start=0,prefix=[],out=[]){ if(prefix.length===k){out.push(prefix.slice()); return out;} for(let i=start;i<arr.length;i++){prefix.push(arr[i]); combos(arr,k,i+1,prefix,out); prefix.pop();} return out; }
+      for(let m=1;m<=N;m++){
+        const all=combos([...Array(N).keys()],m); let ok=0;
+        all.forEach(f=>{ let prod=1; f.forEach(i=>prod*=overlaps[i]*overlaps[i]); if(prod<=A) ok++; });
+        if(ok>0 && best===N+1) best=m; if(ok===all.length && worst===N+1) worst=m;
+        qs.push([m,ok/all.length]);
+      }
+      drawPlot(el,{id:'het', xmin:.5, xmax:N+.5, ymin:0, ymax:1.02, xlabel:'fragment size m', ylabel:'fraction working', xTicks:[[1,'1'],[best,'best'],[worst,'worst'],[N,String(N)]], yTicks:[[0,'0'],[.5,'.5'],[1,'1']], layers:[
+        (svg,{X,Y,C})=>{ svg.append(svgEl('rect',{x:X(best)-9,y:Y(1),width:X(worst)-X(best)+18,height:Y(0)-Y(1),fill:C.warn,'fill-opacity':.12})); qs.forEach(([m,q])=>svg.append(svgEl('rect',{x:X(m)-9,y:Y(q),width:18,height:Y(0)-Y(q),rx:4,fill:q===1?C.accent:q>0?C.callout:C.bad,'fill-opacity':q===1?.9:q>0?.72:.25}))); },
+        (svg,{X,Y,C,label})=>{ label('partial consensus',X((best+worst)/2),46,'middle',13,C.warn); }
+      ]});
+    }
+    function renderRecordRank(el){
+      const N=50, delta=.1, pts=[];
+      for(let i=0;i<=100;i++){
+        const c=.45+i*.52/100, md=mDelta(c,delta), Q=md<=N?(N-md+1)/N:0;
+        pts.push([c,Q]);
+      }
+      drawPlot(el,{id:'qrank', xmin:.45, xmax:.97, ymin:0, ymax:1.02, xlabel:'overlap c', ylabel:'record-rank Q', xTicks:[[.5,'.5'],[.7,'.7'],[.9,'.9']], yTicks:[[0,'0'],[.5,'.5'],[1,'1']], layers:[
+        (svg,{X,Y,C})=>{ svg.append(svgEl('path',{d:pathFrom(pts,X,Y),fill:'none',stroke:'url(#grad-qrank)','stroke-width':4,'stroke-linecap':'round'})); },
+        (svg,{C,label})=>{ label('strong records',115,62,'start',13,C.accent); label('record-poor',520,242,'start',13,C.bad); }
+      ]});
+    }
+    function renderHeatCollapse(el){
+      const q=[], budget=[], inf=[];
+      for(let i=0;i<=120;i++){
+        const t=i/120*10;
+        q.push([t,Math.exp(-t/2.2)]);
+        budget.push([t,1/(1+Math.exp((t-4.6)/.75))]);
+        inf.push([t,.5*(1-Math.exp(-t/2.8))]);
+      }
+      drawPlot(el,{id:'heat', xmin:0, xmax:10, ymin:0, ymax:1.02, xlabel:'cosmic time parameter', ylabel:'normalized level', xTicks:[[0,'early'],[5,'mid'],[10,'late']], yTicks:[[0,'0'],[.5,'.5'],[1,'1']], layers:[
+        (svg,{X,Y,C})=>{ svg.append(svgEl('path',{d:pathFrom(q,X,Y),fill:'none',stroke:C.accent,'stroke-width':4,'stroke-linecap':'round'})); svg.append(svgEl('path',{d:pathFrom(budget,X,Y),fill:'none',stroke:C.callout,'stroke-width':3,'stroke-linecap':'round'})); svg.append(svgEl('path',{d:pathFrom(inf,X,Y),fill:'none',stroke:C.bad,'stroke-width':3,'stroke-dasharray':'7 6','stroke-linecap':'round'})); },
+        (svg,{C,label})=>{ label('Q',120,66,'start',13,C.accent); label('budget',315,150,'start',13,C.callout); label('infidelity',520,178,'start',13,C.bad); }
+      ]});
+    }
+    function renderDFRCVisuals(){
+      document.querySelectorAll('[data-viz]').forEach(el=>{
+        const kind=el.dataset.viz;
+        if(kind==='qubit-kl') renderQubitKL(el);
+        if(kind==='fragment-threshold') renderFragmentThreshold(el);
+        if(kind==='phase-boundary') renderPhaseBoundary(el);
+        if(kind==='heterogeneous-window') renderHeterogeneous(el);
+        if(kind==='record-rank') renderRecordRank(el);
+        if(kind==='heat-collapse') renderHeatCollapse(el);
+      });
+    }
+
     const modeButtons = Array.from(document.querySelectorAll('.toggle'));
     const heroModeButtons = Array.from(document.querySelectorAll('.hero-mode'));
     const faviconEl = document.getElementById('dynamic-favicon');
@@ -1424,6 +1724,7 @@
       document.title = mode === 'reader' ? 'DFRC — Reader Mode' : 'DFRC — Paper Mode';
       localStorage.setItem('dfrc-mode-v6', mode);
       setTimeout(refreshActiveToc, 20);
+      setTimeout(renderDFRCVisuals, 30);
     }
 
     modeButtons.forEach(btn => btn.addEventListener('click', () => setMode(btn.dataset.mode)));
@@ -1474,8 +1775,11 @@
       refreshActiveToc();
       if (!isMobileView()) closeSidebar();
       if (!window.matchMedia('(hover: none)').matches) closeAllTooltips();
+      clearTimeout(window.__dfrcVizResizeTimer);
+      window.__dfrcVizResizeTimer = setTimeout(renderDFRCVisuals, 120);
     });
     setMode(activeMode);
+    renderDFRCVisuals();
 
 
 const sidebarEl = document.getElementById('pageSidebar');
